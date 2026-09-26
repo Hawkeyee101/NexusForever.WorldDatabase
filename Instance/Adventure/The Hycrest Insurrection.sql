@@ -13,13 +13,34 @@ SET @EVENT_MAIN  = 419; -- The Hycrest Insurrection
 SET @EVENT_INTRO = 418; -- Intro
 DELETE FROM `entity_event` WHERE `eventId` IN (@EVENT_MAIN, @EVENT_INTRO);
 
--- Group finder entrance: loc 13039, Abandoned Orchards start, on the ground.
--- Tested 26 Sep 2026: loc 49984 (the drop ship area, ~100 m up) makes players fall, so the drop ship
--- is a spawned entity (probably creature 70557 "GC217 - Hycrest Adventure Intro - Set Ship"), not map
--- geometry. Move the entrance back to the ship once that entity spawns and can be stood on.
+-- Group finder entrance: loc 50008, a deck point inside the drop ship (spawned below, event 418 phase 0).
+-- Retail: players start standing inside the ship ~100 m above the Abandoned Orchards and jump out with a
+-- slow-burn jetpack. Without the ship entity players fall from here (tested 26 Sep 2026); the intro script
+-- then applies Rocket Fall so they glide down.
+-- Fallback if players can't stand on the ship: the ground entrance loc 13039 (Abandoned Orchards).
 DELETE FROM map_entrance WHERE mapId = @WORLD;
 INSERT INTO map_entrance (mapId, team, worldLocationId) VALUE
-    (@WORLD, 0, 13039);
+    (@WORLD, 0, 50008);
+--  (@WORLD, 0, 13039);
+
+-- --------------------------------------
+-- Drop ship: Dominion Dropship (creature 17722, creation type 11 Platform, PRP_Ship_Imperium_Transport_001.m3)
+-- with its doors, Dominion Transport Door - Right / Left - Platform (18338 / 28509). Platform entities are the
+-- type players can stand on and ride. Position: loc 49984 (identity rotation); the deck points 50008/50009/
+-- 50021/50022 are ~4.5 m above it. The doors use the ship's position, assuming the door models share the ship
+-- model's origin (not verified). Intro event (418): the script opens the doors after the briefing and sends
+-- the ship away.
+-- --------------------------------------
+SET @GUID = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`);
+INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`) VALUES
+    (@GUID + 1, 11, 17722, @WORLD, 0, -2537.90, -824.126, -1086.24, 0, 0, 0, 23787, 0, 219, 219),
+    (@GUID + 2, 11, 18338, @WORLD, 0, -2537.90, -824.126, -1086.24, 0, 0, 0, 23788, 0, 219, 219),
+    (@GUID + 3, 11, 28509, @WORLD, 0, -2537.90, -824.126, -1086.24, 0, 0, 0, 26374, 0, 219, 219);
+
+INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
+    (@GUID + 1, @EVENT_INTRO, 0),
+    (@GUID + 2, @EVENT_INTRO, 0),
+    (@GUID + 3, @EVENT_INTRO, 0);
 
 -- --------------------------------------
 -- Vice-Marshal Dawson - Mission Briefer - Hycrest Adventure (creature 18365)
