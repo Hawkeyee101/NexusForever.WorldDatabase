@@ -45,15 +45,14 @@ INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
 -- --------------------------------------
 -- Vice-Marshal Dawson - Mission Briefer - Hycrest Adventure (creature 18365)
 -- Intro objective 2113 TalkTo (TargetGroup 7183) and 2155 TimedWin 20 s.
--- Position: loc 43836 (Abandoned Orchards, on the ground, 9 m from the entrance 13039); its quaternion is
--- identity, so yaw 0 is a placeholder. Temporary until the drop ship spawns: retail had him on the ship
--- (drop ship deck candidate: loc 50021, -2544.45, -819.59, -1087.75, yaw -0.3093).
+-- Position: on the drop ship's deck, loc 50021 (yaw -0.3093 from its quaternion). Retail: he comes out of a door
+-- where the Caretaker's hologram was and briefs the players standing in the ship.
 -- DisplayInfo: Creature2 display group 28260 has 46 variants (25459 first); 25459 is a guess.
 -- OutfitInfo 8039 (outfit group 8734). Faction 219 as in Creature2.
 -- --------------------------------------
 SET @GUID = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`);
 INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`) VALUES
-    (@GUID + 1, 0, 18365, @WORLD, 0, -2548.56, -924.68, -1169.42, 0, 0, 0, 25459, 8039, 219, 219);
+    (@GUID + 1, 0, 18365, @WORLD, 0, -2544.45, -819.59, -1087.75, -0.3093, 0, 0, 25459, 8039, 219, 219);
 
 INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
     (@GUID + 1, @EVENT_INTRO, 0);
