@@ -21,34 +21,51 @@ INSERT INTO map_entrance (mapId, team, worldLocationId) VALUE
     (@WORLD, 0, 13039);
 
 -- --------------------------------------
--- Drop ship: GC217 - Hycrest Adventure Intro - Set Ship (creature 70557, Cine_Adv_Hycrest_Intro__set_ship.m3),
--- the intro ship's interior set, spawned as a Platform (Type 11) so players can stand inside it. (27 Sep 2026: the
--- Dominion Dropship 17722 put players on its roof; it's also a Dominion ship, not the Black Hoods'.)
--- Confirmed in game 27 Sep 2026: the interior (dark room, door with the red light strip, crates, stairs) matches the
--- retail videos. The interior floor is at Y -873.76 (measured at four spots). Two folded walkways are built into the
--- model, one on each side; in retail only the right one (+X) extends and is the exit. No separate door entities.
--- Position: hovering 17 m in front of the Abandoned Barn doorway (measured -2520.6, -929.1575, -1223.0962), deck
--- 60 m above the ground; identity rotation so the retail interior offsets around the set origin 49984 stay valid
--- (player spots 50008/50009/50022, Dawson 50021). Keep in sync with HycrestShipLayout.cs.
--- Intro event (418) phase 0; the script sends it away once everyone has jumped.
+-- Drop ship: Dominion Drop Ship - Hycrest Adventure (creature 17722, PRP_Ship_Imperium_Transport_001.m3, display
+-- 23787), confirmed against the retail videos (27 Sep 2026): its interior is the room from the videos (dark room,
+-- door with the red light strip, crates) and walkable. The model always spawns with both doorways open and its ramps
+-- out; retail closed the doorways with the door entities below. States (the script drives them like DoorEntity):
+-- State1 hovering (engines shake), State2 "jump away" (departure).
+-- Position: turned -90 degrees (RX -1.5708) so the right ramp points north; its lower end touches down in front of the
+-- Abandoned Barn at (-2520.6306, -929.33386, -1229.9689), measured. Floor at Y -923.79. Offsets measured on summoned
+-- copies; keep in sync with HycrestShipLayout.cs. (70557, the GC217 Set Ship, is the cinematic's interior stage and
+-- is no longer used.)
+-- Intro event (418) phase 0; the script sends it away once everyone has left it.
 -- --------------------------------------
 SET @GUID = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`);
 INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`) VALUES
-    (@GUID + 1, 11, 70557, @WORLD, 0, -2520.6, -873.6975, -1240.0, 0, 0, 0, 37379, 0, 219, 219);
+    (@GUID + 1, 11, 17722, @WORLD, 0, -2537.821, -920.104, -1245.569, -1.5708, 0, 0, 23787, 0, 219, 219);
 
 INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
     (@GUID + 1, @EVENT_INTRO, 0);
 
 -- --------------------------------------
+-- Dominion Transport Door - Right / Left - Platform - Hycrest Adventure (creatures 18338, 28509;
+-- PRP_Ship_Imperium_Transport_Door_000/001.m3, displays 23788 / 26374), Platforms like in Creature2. Retail used them
+-- to close the ship's always-open doorways: State0 closed, State1 open. Both stand at one point on the ship's centre
+-- line (13.28 m forward, 3.28 m below the ship's position, measured), turned like the ship. The script closes both
+-- on arrival and opens only the right one when the briefing ends.
+-- --------------------------------------
+SET @GUID = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`);
+INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`) VALUES
+    (@GUID + 1, 11, 18338, @WORLD, 0, -2524.541, -923.384, -1245.439, -1.5708, 0, 0, 23788, 0, 219, 219),
+    (@GUID + 2, 11, 28509, @WORLD, 0, -2524.541, -923.384, -1245.439, -1.5708, 0, 0, 26374, 0, 219, 219);
+
+INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
+    (@GUID + 1, @EVENT_INTRO, 0),
+    (@GUID + 2, @EVENT_INTRO, 0);
+
+-- --------------------------------------
 -- The Caretaker Disguise - Adventure Intro (creature 56685, EldanCaretaker.m3, model scale 0.6): the Caretaker's
 -- hologram inside the ship, at Dawson's spot. The script removes it when Dawson comes out (phase 1).
--- Position: measured in game (27 Sep 2026), in front of the door with the red light strip, facing into the room.
+-- Position: measured in game (27 Sep 2026) in the ship, in front of the door with the red light strip, facing into
+-- the room (offsets turned with the ship).
 -- Spawned as NonPlayer (type 0), not Simple (Creature2 says 10): a Simple entity doesn't animate. Retail put the
 -- Caretaker's look on an NPC with spell 63212 (Disguise 56685 + display name "The Caretaker").
 -- --------------------------------------
 SET @GUID = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`);
 INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`) VALUES
-    (@GUID + 1, 0, 56685, @WORLD, 0, -2521.1797, -873.81055, -1244.1765, -3.1174135, 0, 0, 24983, 0, 219, 219);
+    (@GUID + 1, 0, 56685, @WORLD, 0, -2520.181, -923.794, -1245.839, 1.6108, 0, 0, 24983, 0, 219, 219);
 
 INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
     (@GUID + 1, @EVENT_INTRO, 0);
@@ -67,7 +84,7 @@ INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
 -- --------------------------------------
 SET @GUID = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`);
 INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`) VALUES
-    (@GUID + 1, 0, 18365, @WORLD, 0, -2524.8179, -873.7381, -1243.8883, -2.81273, 0, 0, 25459, 8039, 219, 219);
+    (@GUID + 1, 0, 18365, @WORLD, 0, -2519.001, -923.724, -1246.529, 1.5913, 0, 0, 25459, 8039, 219, 219);
 
 INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
     (@GUID + 1, @EVENT_INTRO, 1);
