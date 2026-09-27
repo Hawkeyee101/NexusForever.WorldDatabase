@@ -13,49 +13,55 @@ SET @EVENT_MAIN  = 419; -- The Hycrest Insurrection
 SET @EVENT_INTRO = 418; -- Intro
 DELETE FROM `entity_event` WHERE `eventId` IN (@EVENT_MAIN, @EVENT_INTRO);
 
--- Group finder entrance: loc 50008, a deck point inside the drop ship (spawned below, event 418 phase 0).
--- Retail: players start standing inside the ship ~100 m above the Abandoned Orchards and jump out with a
--- slow-burn jetpack. Without the ship entity players fall from here (tested 26 Sep 2026); the intro script
--- then applies Rocket Fall so they glide down.
--- Fallback if players can't stand on the ship: the ground entrance loc 13039 (Abandoned Orchards).
+-- Group finder entrance: loc 13039 (Abandoned Orchards, on the ground). The entrance has to be a WorldLocation2
+-- point and none exists at the ship's position, so the intro script teleports arriving players onto the ship's
+-- deck while the ship is there.
 DELETE FROM map_entrance WHERE mapId = @WORLD;
 INSERT INTO map_entrance (mapId, team, worldLocationId) VALUE
-    (@WORLD, 0, 50008);
---  (@WORLD, 0, 13039);
+    (@WORLD, 0, 13039);
 
 -- --------------------------------------
--- Drop ship: Dominion Dropship (creature 17722, creation type 11 Platform, PRP_Ship_Imperium_Transport_001.m3)
--- with its doors, Dominion Transport Door - Right / Left - Platform (18338 / 28509). Platform entities are the
--- type players can stand on and ride. Position: loc 49984 (identity rotation); the deck points 50008/50009/
--- 50021/50022 are ~4.5 m above it. The doors use the ship's position, assuming the door models share the ship
--- model's origin (not verified). Intro event (418): the script opens the doors after the briefing and sends
--- the ship away.
+-- Drop ship: GC217 - Hycrest Adventure Intro - Set Ship (creature 70557, Cine_Adv_Hycrest_Intro__set_ship.m3),
+-- the intro ship's interior set, spawned as a Platform (Type 11) so players can stand inside it. (27 Sep 2026: the
+-- Dominion Dropship 17722 put players on its roof; it's also a Dominion ship, not the Black Hoods'.)
+-- Position: hovering 17 m in front of the Abandoned Barn doorway (measured -2520.6, -929.1575, -1223.0962), deck
+-- 60 m above the ground; identity rotation so the retail interior offsets around the set origin 49984 stay valid
+-- (player spots 50008/50009/50022, Dawson 50021). Keep in sync with HycrestShipLayout.cs.
+-- Intro event (418) phase 0; the script sends it away once everyone has jumped.
 -- --------------------------------------
 SET @GUID = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`);
 INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`) VALUES
-    (@GUID + 1, 11, 17722, @WORLD, 0, -2537.90, -824.126, -1086.24, 0, 0, 0, 23787, 0, 219, 219),
-    (@GUID + 2, 11, 18338, @WORLD, 0, -2537.90, -824.126, -1086.24, 0, 0, 0, 23788, 0, 219, 219),
-    (@GUID + 3, 11, 28509, @WORLD, 0, -2537.90, -824.126, -1086.24, 0, 0, 0, 26374, 0, 219, 219);
+    (@GUID + 1, 11, 70557, @WORLD, 0, -2520.6, -873.6975, -1240.0, 0, 0, 0, 37379, 0, 219, 219);
 
 INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
-    (@GUID + 1, @EVENT_INTRO, 0),
-    (@GUID + 2, @EVENT_INTRO, 0),
-    (@GUID + 3, @EVENT_INTRO, 0);
+    (@GUID + 1, @EVENT_INTRO, 0);
+
+-- --------------------------------------
+-- The Caretaker Disguise - Adventure Intro (creature 56685, EldanCaretaker.m3, model scale 0.6): the Caretaker's
+-- hologram inside the ship, at Dawson's spot. The script removes it when Dawson comes out (phase 1).
+-- --------------------------------------
+SET @GUID = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`);
+INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`) VALUES
+    (@GUID + 1, 10, 56685, @WORLD, 0, -2527.15, -869.1575, -1241.51, -0.3093, 0, 0, 24983, 0, 219, 219);
+
+INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
+    (@GUID + 1, @EVENT_INTRO, 0);
 
 -- --------------------------------------
 -- Vice-Marshal Dawson - Mission Briefer - Hycrest Adventure (creature 18365)
 -- Intro objective 2113 TalkTo (TargetGroup 7183) and 2155 TimedWin 20 s.
--- Position: on the drop ship's deck, loc 50021 (yaw -0.3093 from its quaternion). Retail: he comes out of a door
--- where the Caretaker's hologram was and briefs the players standing in the ship.
+-- Position: Dawson's spot inside the ship (offset of 50021 from the set origin), yaw -0.3093. Retail: he comes out
+-- of a door where the Caretaker's hologram was; phase 1 of the intro event, set by the script after the Caretaker's
+-- messages.
 -- DisplayInfo: Creature2 display group 28260 has 46 variants (25459 first); 25459 is a guess.
 -- OutfitInfo 8039 (outfit group 8734). Faction 219 as in Creature2.
 -- --------------------------------------
 SET @GUID = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`);
 INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`) VALUES
-    (@GUID + 1, 0, 18365, @WORLD, 0, -2544.45, -819.59, -1087.75, -0.3093, 0, 0, 25459, 8039, 219, 219);
+    (@GUID + 1, 0, 18365, @WORLD, 0, -2527.15, -869.1575, -1241.51, -0.3093, 0, 0, 25459, 8039, 219, 219);
 
 INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
-    (@GUID + 1, @EVENT_INTRO, 0);
+    (@GUID + 1, @EVENT_INTRO, 1);
 
 INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
     (@GUID + 1, 10, 15);
@@ -119,20 +125,19 @@ INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
 -- Exit Simulation - Adventure - Exits Instance (creature 36869), the green portal in the orchard
 -- Creation type 14 (InstancePortal), InstancePortal 33 "Exit Simulation" (type 3), model
 -- PRP_Quest_Adventure_Door_01.m3 (display 30429). Main event (419).
--- Position: measured in game (27 Sep 2026). Leaving through it isn't scripted yet and needs a return
+-- Position: measured in game (27 Sep 2026); rotated 90 degrees from the measured -0.36 (try -1.93 if it faces the
+-- wrong way). Leaving through it isn't scripted yet and needs a return
 -- location for instances without a match (HYCREST.md gap 11).
 -- --------------------------------------
 SET @GUID = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`);
 INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`) VALUES
-    (@GUID + 1, 14, 36869, @WORLD, 0, -2560.2874, -928.04047, -1196.5481, -0.3596077, 0, 0, 30429, 0, 219, 219);
+    (@GUID + 1, 14, 36869, @WORLD, 0, -2560.2874, -928.04047, -1196.5481, 1.21, 0, 0, 30429, 0, 219, 219);
 
 INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
     (@GUID + 1, @EVENT_MAIN, 0);
 
 -- --------------------------------------
 -- Not included yet (need positions or confirmation):
---   70557 GC217 - Hycrest Adventure Intro - Set Ship: the drop ship (see task "Drop ship" in HYCREST.md);
---   try it at the ship points 49984/50008/50009/50021/50022 before adding it here.
 --   70556 Flying Ship, 70555 Camera: intro cinematic pieces; position unknown.
 --   53455 The Caretaker: "Hycrest Adventure Hub Flavor - Thayd", so the Thayd hub, not world 1149.
 -- --------------------------------------
