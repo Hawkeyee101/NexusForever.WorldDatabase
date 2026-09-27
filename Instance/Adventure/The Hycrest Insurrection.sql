@@ -43,13 +43,18 @@ INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
 -- The Caretaker Disguise - Adventure Intro (creature 56685, EldanCaretaker.m3, model scale 0.6): the Caretaker's
 -- hologram inside the ship, at Dawson's spot. The script removes it when Dawson comes out (phase 1).
 -- Position: measured in game (27 Sep 2026), in front of the door with the red light strip, facing into the room.
+-- Spawned as NonPlayer (type 0), not Simple (Creature2 says 10): a Simple entity doesn't animate. Retail put the
+-- Caretaker's look on an NPC with spell 63212 (Disguise 56685 + display name "The Caretaker").
 -- --------------------------------------
 SET @GUID = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`);
 INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`) VALUES
-    (@GUID + 1, 10, 56685, @WORLD, 0, -2521.1797, -873.81055, -1244.1765, -3.1174135, 0, 0, 24983, 0, 219, 219);
+    (@GUID + 1, 0, 56685, @WORLD, 0, -2521.1797, -873.81055, -1244.1765, -3.1174135, 0, 0, 24983, 0, 219, 219);
 
 INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
     (@GUID + 1, @EVENT_INTRO, 0);
+
+INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
+    (@GUID + 1, 10, 15);
 
 -- --------------------------------------
 -- Vice-Marshal Dawson - Mission Briefer - Hycrest Adventure (creature 18365)
@@ -129,13 +134,13 @@ INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
 -- Exit Simulation - Adventure - Exits Instance (creature 36869), the green portal in the orchard
 -- Creation type 14 (InstancePortal), InstancePortal 33 "Exit Simulation" (type 3), model
 -- PRP_Quest_Adventure_Door_01.m3 (display 30429). Main event (419).
--- Position: measured in game (27 Sep 2026); rotated 90 degrees from the measured -0.36 (try -1.93 if it faces the
--- wrong way). Leaving through it isn't scripted yet and needs a return
+-- Position: measured in game (27 Sep 2026). Rotation: measured -0.36; 1.21 (90 degrees) still faced the wrong way,
+-- so -1.93 (the other 90 degrees). Leaving through it isn't scripted yet and needs a return
 -- location for instances without a match (HYCREST.md gap 11).
 -- --------------------------------------
 SET @GUID = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`);
 INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`) VALUES
-    (@GUID + 1, 14, 36869, @WORLD, 0, -2560.2874, -928.04047, -1196.5481, 1.21, 0, 0, 30429, 0, 219, 219);
+    (@GUID + 1, 14, 36869, @WORLD, 0, -2560.2874, -928.04047, -1196.5481, -1.93, 0, 0, 30429, 0, 219, 219);
 
 INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
     (@GUID + 1, @EVENT_MAIN, 0);
