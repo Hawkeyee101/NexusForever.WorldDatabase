@@ -25,8 +25,8 @@ INSERT INTO map_entrance (mapId, team, worldLocationId) VALUE
 -- the intro ship's interior set, spawned as a Platform (Type 11) so players can stand inside it. (27 Sep 2026: the
 -- Dominion Dropship 17722 put players on its roof; it's also a Dominion ship, not the Black Hoods'.)
 -- Confirmed in game 27 Sep 2026: the interior (dark room, door with the red light strip, crates, stairs) matches the
--- retail videos. The interior floor is 1.38 m above this spawn position (measured Y -872.3211). The door and the
--- walkway are part of the model (no separate entities); the script plays their animation when the briefing ends.
+-- retail videos. The interior floor is at Y -873.76 (measured at four spots). Two folded walkways are built into the
+-- model, one on each side; in retail only the right one (+X) extends and is the exit. No separate door entities.
 -- Position: hovering 17 m in front of the Abandoned Barn doorway (measured -2520.6, -929.1575, -1223.0962), deck
 -- 60 m above the ground; identity rotation so the retail interior offsets around the set origin 49984 stay valid
 -- (player spots 50008/50009/50022, Dawson 50021). Keep in sync with HycrestShipLayout.cs.
@@ -42,12 +42,11 @@ INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
 -- --------------------------------------
 -- The Caretaker Disguise - Adventure Intro (creature 56685, EldanCaretaker.m3, model scale 0.6): the Caretaker's
 -- hologram inside the ship, at Dawson's spot. The script removes it when Dawson comes out (phase 1).
--- Position: on the floor (Y -872.32, measured) in front of the door with the red light strip; X/Z are the estimate
--- from retail loc 50021 (Dawson's spot), not measured yet.
+-- Position: measured in game (27 Sep 2026), in front of the door with the red light strip, facing into the room.
 -- --------------------------------------
 SET @GUID = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`);
 INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`) VALUES
-    (@GUID + 1, 10, 56685, @WORLD, 0, -2527.15, -872.32, -1241.51, -0.3093, 0, 0, 24983, 0, 219, 219);
+    (@GUID + 1, 10, 56685, @WORLD, 0, -2521.1797, -873.81055, -1244.1765, -3.1174135, 0, 0, 24983, 0, 219, 219);
 
 INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
     (@GUID + 1, @EVENT_INTRO, 0);
@@ -55,15 +54,15 @@ INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
 -- --------------------------------------
 -- Vice-Marshal Dawson - Mission Briefer - Hycrest Adventure (creature 18365)
 -- Intro objective 2113 TalkTo (TargetGroup 7183) and 2155 TimedWin 20 s.
--- Position: in front of the door with the red light strip, where the hologram stood: floor height measured
--- (Y -872.32), X/Z estimated from retail loc 50021 (offset from the set origin 49984), yaw -0.3093. Retail: he comes
--- out of that door; phase 1 of the intro event, set by the script after the Caretaker's messages.
+-- Position: measured in game (27 Sep 2026), next to the hologram's spot in front of the door with the red light
+-- strip. Retail: he comes out of that door; phase 1 of the intro event, set by the script after the Caretaker's
+-- messages.
 -- DisplayInfo: Creature2 display group 28260 has 46 variants (25459 first); 25459 is a guess.
 -- OutfitInfo 8039 (outfit group 8734). Faction 219 as in Creature2.
 -- --------------------------------------
 SET @GUID = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`);
 INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`) VALUES
-    (@GUID + 1, 0, 18365, @WORLD, 0, -2527.15, -872.32, -1241.51, -0.3093, 0, 0, 25459, 8039, 219, 219);
+    (@GUID + 1, 0, 18365, @WORLD, 0, -2524.8179, -873.7381, -1243.8883, -2.81273, 0, 0, 25459, 8039, 219, 219);
 
 INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
     (@GUID + 1, @EVENT_INTRO, 1);
