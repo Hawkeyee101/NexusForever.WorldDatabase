@@ -26,37 +26,49 @@ INSERT INTO map_entrance (mapId, team, worldLocationId) VALUE
 -- door with the red light strip, crates) and walkable. The model always spawns with both doorways open and its ramps
 -- out; retail closed the doorways with the door entities below. States (the script drives them like DoorEntity):
 -- State1 hovering (engines shake), State2 "jump away" (departure).
--- Position: turned -90 degrees (RX -1.5708) so the right ramp points north; its lower end is above the spot in front of
--- the Abandoned Barn (-2520.6306, -929.33386, -1229.9689, measured), the floor 60 m above that ground (Y -869.33;
--- retail was ~90 m) so players jump from the ramp and glide down. Offsets measured on summoned
+-- Position: spawns at the start point (above -2543.603, -921.8223, -1151.4386, measured; north of the barn) and flies in
+-- with the players on board (script) to its hover point (-2537.821, -865.644, -1245.569): turned -90 degrees
+-- (RX -1.5708) so the right ramp points north, its lower end above the spot in front of the Abandoned Barn
+-- (-2520.6306, -929.33386, -1229.9689, measured), the floor 60 m above that ground (retail was ~90 m) so players jump
+-- from the ramp and glide down. Offsets measured on summoned
 -- copies; keep in sync with HycrestShipLayout.cs. (70557, the GC217 Set Ship, is the cinematic's interior stage and
 -- is no longer used.)
 -- Intro event (418) phase 0; the script sends it away once everyone has left it.
 -- --------------------------------------
 SET @GUID = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`);
 INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`) VALUES
-    (@GUID + 1, 11, 17722, @WORLD, 0, -2537.821, -865.644, -1245.569, -1.5708, 0, 0, 23787, 0, 219, 219);
+    (@GUID + 1, 11, 17722, @WORLD, 0, -2543.603, -865.644, -1151.4386, -1.5708, 0, 0, 23787, 0, 219, 219);
 
 INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
     (@GUID + 1, @EVENT_INTRO, 0);
 
 -- --------------------------------------
--- Door entities: Dominion Transport Door - Right / Left - Platform - Hycrest Adventure (18338, 28509; displays 23788 /
--- 26374) closed the ship's always-open doorways in retail. Not spawned for now (testing whether the ship's own states
--- close its doors). If used: both Platforms at (-2524.541, -868.924, -1245.439), RX -1.5708; 28509 covers the exit.
+-- Dominion Transport Door - Right / Left - Platform - Hycrest Adventure (creatures 18338, 28509;
+-- PRP_Ship_Imperium_Transport_Door_000/001.m3, displays 23788 / 26374), Platforms like in Creature2. Retail used them
+-- to close the ship's always-open doorways: State0 closed, State1 open. Both stand at one point on the ship's centre
+-- line (13.28 m forward, 3.28 m below the ship's position, measured), turned like the ship, and fly in with it.
+-- 28509 covers the exit doorway (right ramp): the script closes both on arrival and opens 28509 after the briefing.
 -- --------------------------------------
+SET @GUID = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`);
+INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`) VALUES
+    (@GUID + 1, 11, 18338, @WORLD, 0, -2530.323, -868.924, -1151.3086, -1.5708, 0, 0, 23788, 0, 219, 219),
+    (@GUID + 2, 11, 28509, @WORLD, 0, -2530.323, -868.924, -1151.3086, -1.5708, 0, 0, 26374, 0, 219, 219);
+
+INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
+    (@GUID + 1, @EVENT_INTRO, 0),
+    (@GUID + 2, @EVENT_INTRO, 0);
 
 -- --------------------------------------
 -- The Caretaker Disguise - Adventure Intro (creature 56685, EldanCaretaker.m3, model scale 0.6): the Caretaker's
 -- hologram inside the ship, at Dawson's spot. The script removes it when Dawson comes out (phase 1).
 -- Position: measured in game (27 Sep 2026) in the ship, in front of the door with the red light strip, facing into
--- the room (offsets turned with the ship).
+-- the room (offsets turned with the ship); spawns with the ship at its start point and flies in with it.
 -- Spawned as NonPlayer (type 0), not Simple (Creature2 says 10): a Simple entity doesn't animate. Retail put the
 -- Caretaker's look on an NPC with spell 63212 (Disguise 56685 + display name "The Caretaker").
 -- --------------------------------------
 SET @GUID = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`);
 INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`) VALUES
-    (@GUID + 1, 0, 56685, @WORLD, 0, -2520.181, -869.334, -1245.839, 1.6108, 0, 0, 24983, 0, 219, 219);
+    (@GUID + 1, 0, 56685, @WORLD, 0, -2525.963, -869.334, -1151.7086, 1.6108, 0, 0, 24983, 0, 219, 219);
 
 INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
     (@GUID + 1, @EVENT_INTRO, 0);
