@@ -135,12 +135,12 @@ INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
 -- Creation type 14 (InstancePortal), InstancePortal 33 "Exit Simulation" (type 3), model
 -- PRP_Quest_Adventure_Door_01.m3 (display 30429). Main event (419).
 -- Position: measured in game (27 Sep 2026). Rotation: measured -0.36; 1.21 and -1.93 faced the wrong way;
--- -1.93 needs another ~80 degrees counter-clockwise, so -0.53 (2.95 if the direction is the other way). Leaving through it isn't scripted yet and needs a return
+-- -1.93 needs another ~80 degrees counter-clockwise, then ~10 degrees clockwise: -0.70. Leaving through it isn't scripted yet and needs a return
 -- location for instances without a match (HYCREST.md gap 11).
 -- --------------------------------------
 SET @GUID = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`);
 INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`) VALUES
-    (@GUID + 1, 14, 36869, @WORLD, 0, -2560.2874, -928.04047, -1196.5481, -0.53, 0, 0, 30429, 0, 219, 219);
+    (@GUID + 1, 14, 36869, @WORLD, 0, -2560.2874, -928.04047, -1196.5481, -0.70, 0, 0, 30429, 0, 219, 219);
 
 INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
     (@GUID + 1, @EVENT_MAIN, 0);
