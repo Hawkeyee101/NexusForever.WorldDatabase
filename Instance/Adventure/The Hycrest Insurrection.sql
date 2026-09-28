@@ -237,7 +237,6 @@ INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, 
     (@GUID + 4, 0, 51026, @WORLD, 0, -2473.3782, -929.24347, -1582.0039, -3.1268535, 0, 0, 29558, 0, 1452, 1452), -- Predator Drone, guards Millithea
     (@GUID + 5, 0, 17772, @WORLD, 0, -2377.9238, -929.3451, -1641.9752, -2.9476466, 0, 0, 29997, 8066, 219, 219), -- Prema Arcwulff (seated)
     (@GUID + 6, 0, 18509, @WORLD, 0, -2366.8215, -929.4628, -1631.9248, 2.957307, 0, 0, 23091, 0, 1452, 1452), -- Shatterforce Responsebot, guards Prema
-    (@GUID + 8, 0, 17856, @WORLD, 0, -2403.6204, -924.5514, -1201.0248, 1.1545627, 0, 0, 30968, 8192, 1452, 1452), -- Dominion Scout, stationary
     (@GUID + 9, 0, 17856, @WORLD, 0, -2441.1294, -922.4717, -1393.5099, 2.0313685, 0, 0, 30970, 8192, 1452, 1452), -- Dominion Scout, stationary
     (@GUID + 10, 0, 17856, @WORLD, 0, -2444.2786, -927.7158, -1515.9824, 1.7310688, 0, 0, 30972, 8192, 1452, 1452), -- Dominion Scout, stationary
     (@GUID + 11, 0, 17856, @WORLD, 0, -2452.7524, -928.83093, -1555.9928, 1.8536189, 0, 0, 30967, 8192, 1452, 1452), -- Dominion Scout, patrol (script)
@@ -256,7 +255,6 @@ INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
     (@GUID + 4, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 5, @EVENT_FARMERS_DAUGHTER, 1), -- Prema and her guard appear once Millithea is freed
     (@GUID + 6, @EVENT_FARMERS_DAUGHTER, 1),
-    (@GUID + 8, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 9, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 10, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 11, @EVENT_FARMERS_DAUGHTER, 0),
@@ -275,7 +273,6 @@ INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
     (@GUID + 4, 10, 15),
     (@GUID + 5, 10, 15),
     (@GUID + 6, 10, 15),
-    (@GUID + 8, 10, 15),
     (@GUID + 9, 10, 15),
     (@GUID + 10, 10, 15),
     (@GUID + 11, 10, 15),
