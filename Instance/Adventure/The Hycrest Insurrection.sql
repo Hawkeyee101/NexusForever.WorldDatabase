@@ -219,10 +219,11 @@ INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, 
     (@GUID + 11, 0, 17856, @WORLD, 0, -2452.7524, -928.83093, -1555.9928, 1.8536189, 0, 0, 30967, 8192, 1452, 1452), -- Dominion Scout, patrol (script)
     (@GUID + 12, 0, 17856, @WORLD, 0, -2456.0398, -928.94116, -1630.2463, 0.9024365, 0, 0, 30968, 8192, 1452, 1452), -- Dominion Scout, stationary
     (@GUID + 13, 0, 17856, @WORLD, 0, -2381.129, -923.09406, -1698.4329, -3.117571, 0, 0, 30970, 8192, 1452, 1452), -- Dominion Scout, patrol (script)
-    (@GUID + 15, 0, 17763, @WORLD, 0, -2503.1116, -926.0301, -1345.4647, 0.0, 0, 0, 23754, 0, 1452, 1452), -- Automated Machine Gun - Spotlight Target (lane moved by the script)
+    (@GUID + 15, 0, 17763, @WORLD, 0, -2521.6794, -927.764, -1365.4867, 0.0, 0, 0, 23754, 0, 1452, 1452), -- Automated Machine Gun - Spotlight Target (lane moved by the script)
     (@GUID + 16, 0, 17763, @WORLD, 0, -2468.567, -929.0733, -1593.2743, 0.0, 0, 0, 23754, 0, 1452, 1452), -- Automated Machine Gun - Spotlight Target (lane moved by the script)
     (@GUID + 17, 0, 17763, @WORLD, 0, -2490.1282, -920.8113, -1672.5258, 0.0, 0, 0, 23754, 0, 1452, 1452), -- Automated Machine Gun - Spotlight Target (lane moved by the script)
-    (@GUID + 18, 0, 17763, @WORLD, 0, -2402.416, -928.3815, -1673.6968, 0.0, 0, 0, 23754, 0, 1452, 1452); -- Automated Machine Gun - Spotlight Target (lane moved by the script)
+    (@GUID + 18, 0, 17763, @WORLD, 0, -2402.416, -928.3815, -1673.6968, 0.0, 0, 0, 23754, 0, 1452, 1452), -- Automated Machine Gun - Spotlight Target (lane moved by the script)
+    (@GUID + 19, 0, 17856, @WORLD, 0, -2513.0195, -927.45575, -1393.5985, -2.598026, 0, 0, 30972, 8192, 1452, 1452); -- Dominion Scout, stationary (by the first spotlight, test 28 Sep)
 
 INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
     (@GUID + 1, @EVENT_FARMERS_DAUGHTER, 0),
@@ -241,7 +242,8 @@ INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
     (@GUID + 15, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 16, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 17, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 18, @EVENT_FARMERS_DAUGHTER, 0);
+    (@GUID + 18, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 19, @EVENT_FARMERS_DAUGHTER, 0);
 
 INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
     (@GUID + 1, 10, 15),
@@ -260,4 +262,5 @@ INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
     (@GUID + 15, 10, 15),
     (@GUID + 16, 10, 15),
     (@GUID + 17, 10, 15),
-    (@GUID + 18, 10, 15);
+    (@GUID + 18, 10, 15),
+    (@GUID + 19, 10, 15);
