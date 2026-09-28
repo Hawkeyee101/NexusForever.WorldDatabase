@@ -34,13 +34,21 @@ INSERT INTO map_entrance (mapId, team, worldLocationId) VALUE
 -- copies; keep in sync with HycrestShipLayout.cs. (70557, the GC217 Set Ship, is the cinematic's interior stage and
 -- is no longer used.)
 -- Intro event (418) phase 0; the script sends it away once everyone has left it.
+-- Type: Platform (11, as Creature2). Tried SimpleCollidable (32) on 28 Sep 2026 (Rāwaho's tip): inconclusive, the player
+-- fell at load (also the first direct entry on the deck) and when it started moving. At the start point it faces its
+-- flight direction (RX 0, nose south); the
+-- script flies it forward to the hover point and turns it right to RX -1.5708 with the players, doors and hologram as
+-- its platform passengers.
 -- --------------------------------------
 SET @GUID = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`);
 INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`) VALUES
-    (@GUID + 1, 11, 17722, @WORLD, 0, -2543.603, -865.644, -1151.4386, -1.5708, 0, 0, 23787, 0, 219, 219);
+    (@GUID + 1, 11, 17722, @WORLD, 0, -2543.603, -865.644, -1151.4386, 0, 0, 0, 23787, 0, 219, 219);
 
 INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
     (@GUID + 1, @EVENT_INTRO, 0);
+
+-- (The retail green glow on the ship was tried with glowing unit copies of the ship and doors, 28 Sep 2026: a copy
+-- exactly on a model doesn't show over it. Left out for now; only the players glow.)
 
 -- --------------------------------------
 -- Dominion Transport Door - Right / Left - Platform - Hycrest Adventure (creatures 18338, 28509;
@@ -51,8 +59,8 @@ INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
 -- --------------------------------------
 SET @GUID = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`);
 INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`) VALUES
-    (@GUID + 1, 11, 18338, @WORLD, 0, -2530.323, -868.924, -1151.3086, -1.5708, 0, 0, 23788, 0, 219, 219),
-    (@GUID + 2, 11, 28509, @WORLD, 0, -2530.323, -868.924, -1151.3086, -1.5708, 0, 0, 26374, 0, 219, 219);
+    (@GUID + 1, 11, 18338, @WORLD, 0, -2543.473, -868.924, -1164.7186, 0, 0, 0, 23788, 0, 219, 219),
+    (@GUID + 2, 11, 28509, @WORLD, 0, -2543.473, -868.924, -1164.7186, 0, 0, 0, 26374, 0, 219, 219);
 
 INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
     (@GUID + 1, @EVENT_INTRO, 0),
@@ -68,7 +76,7 @@ INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
 -- --------------------------------------
 SET @GUID = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`);
 INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`) VALUES
-    (@GUID + 1, 0, 56685, @WORLD, 0, -2525.963, -869.334, -1151.7086, 1.6108, 0, 0, 24983, 0, 219, 219);
+    (@GUID + 1, 0, 56685, @WORLD, 0, -2543.8731, -869.334, -1169.0786, -3.1016, 0, 0, 24983, 0, 219, 219);
 
 INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
     (@GUID + 1, @EVENT_INTRO, 0);
@@ -171,3 +179,72 @@ INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
 --   ~900 m long for the fly-in cinematic.)
 --   53455 The Caretaker: "Hycrest Adventure Hub Flavor - Thayd", so the Thayd hub, not world 1149.
 -- --------------------------------------
+
+-- --------------------------------------
+-- The Farmer's Daughter (public event 420), layout A
+-- Positions measured in game against retail videos. The script sits Tarquim, Millithea and Prema down, moves the
+-- patrolling scouts and the spotlight targets, and frees the captives once their guards are dead. Retail has a
+-- second layout (Millithea elsewhere), not added yet.
+-- --------------------------------------
+SET @EVENT_FARMERS_DAUGHTER = 420;
+DELETE FROM `entity_event` WHERE `eventId` = @EVENT_FARMERS_DAUGHTER;
+SET @GUID = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`);
+INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`) VALUES
+    (@GUID + 1, 0, 17773, @WORLD, 0, -2479.2297, -928.3108, -1208.6279, 1.143748, 0, 0, 29998, 8062, 219, 219), -- Tarquim Arcwulff (seated)
+    (@GUID + 2, 0, 49490, @WORLD, 0, -2472.5518, -929.2157, -1577.3994, -3.0135684, 0, 0, 30004, 8066, 219, 219), -- Millithea (seated), layout A
+    (@GUID + 3, 0, 51026, @WORLD, 0, -2472.1323, -929.5942, -1569.7185, 0.0020537376, 0, 0, 29558, 0, 1452, 1452), -- Predator Drone, guards Millithea
+    (@GUID + 4, 0, 51026, @WORLD, 0, -2473.3782, -929.24347, -1582.0039, -3.1268535, 0, 0, 29558, 0, 1452, 1452), -- Predator Drone, guards Millithea
+    (@GUID + 5, 0, 17772, @WORLD, 0, -2381.2803, -929.2172, -1631.513, -1.4886488, 0, 0, 29997, 8066, 219, 219), -- Prema Arcwulff (seated)
+    (@GUID + 6, 0, 18509, @WORLD, 0, -2377.9238, -929.3451, -1641.9752, -2.9476466, 0, 0, 23091, 0, 1452, 1452), -- Shatterforce Responsebot, guards Prema
+    (@GUID + 7, 0, 17856, @WORLD, 0, -2451.276, -927.9198, -1214.2766, -0.97930264, 0, 0, 30967, 8192, 1452, 1452), -- Dominion Scout, patrol by Tarquim (script)
+    (@GUID + 8, 0, 17856, @WORLD, 0, -2403.6204, -924.5514, -1201.0248, 1.1545627, 0, 0, 30968, 8192, 1452, 1452), -- Dominion Scout, stationary
+    (@GUID + 9, 0, 17856, @WORLD, 0, -2441.1294, -922.4717, -1393.5099, 2.0313685, 0, 0, 30970, 8192, 1452, 1452), -- Dominion Scout, stationary
+    (@GUID + 10, 0, 17856, @WORLD, 0, -2444.2786, -927.7158, -1515.9824, 1.7310688, 0, 0, 30972, 8192, 1452, 1452), -- Dominion Scout, stationary
+    (@GUID + 11, 0, 17856, @WORLD, 0, -2452.7524, -928.83093, -1555.9928, 1.8536189, 0, 0, 30967, 8192, 1452, 1452), -- Dominion Scout, patrol (script)
+    (@GUID + 12, 0, 17856, @WORLD, 0, -2456.0398, -928.94116, -1630.2463, 0.9024365, 0, 0, 30968, 8192, 1452, 1452), -- Dominion Scout, stationary
+    (@GUID + 13, 0, 17856, @WORLD, 0, -2381.129, -923.09406, -1698.4329, -3.117571, 0, 0, 30970, 8192, 1452, 1452), -- Dominion Scout, patrol (script)
+    (@GUID + 14, 0, 17823, @WORLD, 0, -2413.2078, -930.581, -1587.4441, 2.938289, 0, 0, 26107, 9005, 1452, 1452), -- Dominion Recon Specialist, stationary for now (alarm mechanic later)
+    (@GUID + 15, 0, 17763, @WORLD, 0, -2503.1116, -926.0301, -1345.4647, 0.0, 0, 0, 23754, 0, 219, 219), -- Automated Machine Gun - Spotlight Target (lane moved by the script)
+    (@GUID + 16, 0, 17763, @WORLD, 0, -2468.567, -929.0733, -1593.2743, 0.0, 0, 0, 23754, 0, 219, 219), -- Automated Machine Gun - Spotlight Target (lane moved by the script)
+    (@GUID + 17, 0, 17763, @WORLD, 0, -2490.1282, -920.8113, -1672.5258, 0.0, 0, 0, 23754, 0, 219, 219), -- Automated Machine Gun - Spotlight Target (lane moved by the script)
+    (@GUID + 18, 0, 17763, @WORLD, 0, -2402.416, -928.3815, -1673.6968, 0.0, 0, 0, 23754, 0, 219, 219); -- Automated Machine Gun - Spotlight Target (lane moved by the script)
+
+INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
+    (@GUID + 1, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 2, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 3, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 4, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 5, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 6, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 7, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 8, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 9, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 10, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 11, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 12, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 13, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 14, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 15, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 16, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 17, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 18, @EVENT_FARMERS_DAUGHTER, 0);
+
+INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
+    (@GUID + 1, 10, 15),
+    (@GUID + 2, 10, 15),
+    (@GUID + 3, 10, 15),
+    (@GUID + 4, 10, 15),
+    (@GUID + 5, 10, 15),
+    (@GUID + 6, 10, 15),
+    (@GUID + 7, 10, 15),
+    (@GUID + 8, 10, 15),
+    (@GUID + 9, 10, 15),
+    (@GUID + 10, 10, 15),
+    (@GUID + 11, 10, 15),
+    (@GUID + 12, 10, 15),
+    (@GUID + 13, 10, 15),
+    (@GUID + 14, 10, 15),
+    (@GUID + 15, 10, 15),
+    (@GUID + 16, 10, 15),
+    (@GUID + 17, 10, 15),
+    (@GUID + 18, 10, 15);
