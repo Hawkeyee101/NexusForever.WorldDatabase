@@ -181,6 +181,19 @@ INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
 -- --------------------------------------
 
 -- --------------------------------------
+-- Barn Door - Platform (51064, PRP_Door_Generic_Garage_000.m3, display 29764) in the Abandoned Barn's door slot.
+-- Position measured in game (28 Sep 2026, standing in the slot; facing = the player's, may need turning). The main
+-- script keeps it open (State1) while players arrive, closes it (State0) for the briefing and the vote, and opens it
+-- when the mission starts.
+-- --------------------------------------
+SET @GUID = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`);
+INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`) VALUES
+    (@GUID + 1, 11, 51064, @WORLD, 0, -2521.343, -925.2442, -1208.2617, 3.1038597, 0, 0, 29764, 0, 219, 219);
+
+INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
+    (@GUID + 1, @EVENT_MAIN, 0);
+
+-- --------------------------------------
 -- The Farmer's Daughter (public event 420), layout A
 -- Positions measured in game against retail videos. The script sits Tarquim, Millithea and Prema down, moves the
 -- patrolling scouts and the spotlight targets, and frees the captives once their guards are dead. One captive at a
