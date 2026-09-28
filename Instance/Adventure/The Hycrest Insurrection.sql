@@ -779,7 +779,7 @@ INSERT INTO `entity_spline` (`id`, `splineId`, `mode`, `speed`, `fx`, `fy`, `fz`
     (@GUID + 40, 4500, 1, 2, 0, 0, 0),  -- spline 4500, 59 m, open, BackAndForth
     (@GUID + 41, 4501, 1, 2, 0, 0, 0),  -- spline 4501, 86 m, open, BackAndForth
     (@GUID + 42, 4502, 1, 2, 0, 0, 0),  -- spline 4502, 108 m, open, BackAndForth
-    (@GUID + 43, 4503, 1, 2, 0, 0, 0),  -- spline 4503, 72 m, open, BackAndForth
+    (@GUID + 43, 4503, 1, 2, 0, 0, 0),  -- KEEP (29 Sep 2026: patrol by Tarquim) spline 4503, 72 m, open, BackAndForth
     (@GUID + 45, 4505, 1, 2, 0, 0, 0),  -- spline 4505, 97 m, open, BackAndForth
     (@GUID + 46, 4506, 1, 2, 0, 0, 0),  -- spline 4506, 58 m, open, BackAndForth
     (@GUID + 47, 4508, 1, 2, 0, 0, 0),  -- spline 4508, 359 m, open, BackAndForth
