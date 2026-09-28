@@ -917,3 +917,9 @@ INSERT INTO `entity_spline` (`id`, `splineId`, `mode`, `speed`, `fx`, `fy`, `fz`
     (@GUID + 151, 16036, 1, 2, 0, 0, 0),  -- spline 16036, 46 m, open, BackAndForth
     (@GUID + 152, 16047, 1, 2, 0, 0, 0),  -- spline 16047, 157 m, open, BackAndForth
     (@GUID + 153, 20094, 1, 2, 0, 0, 0);  -- spline 20094, 9 m, open, BackAndForth
+
+-- --------------------------------------
+-- TEMP (29 Sep 2026): all Dominion Scouts friendly (faction 219) to watch the patrol routes and see where units
+-- are missing. Remove this statement (and re-import) to make them hostile again.
+-- --------------------------------------
+UPDATE `entity` SET `Faction1` = 219, `Faction2` = 219 WHERE `World` = @WORLD AND `Creature` = 17856;
