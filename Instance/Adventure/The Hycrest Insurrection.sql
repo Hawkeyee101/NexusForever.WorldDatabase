@@ -439,10 +439,3 @@ INSERT INTO `entity_spline` (`id`, `splineId`, `mode`, `speed`, `fx`, `fy`, `fz`
     (@GUID + 141, 15939, 1, 2, 0, 0, 0),  -- spline 15939, 210 m, open, BackAndForth
     (@GUID + 142, 16021, 1, 2, 0, 0, 0),  -- spline 16021, 9 m, open, BackAndForth
     (@GUID + 152, 16047, 1, 2, 0, 0, 0);  -- spline 16047, 157 m, open, BackAndForth
-
--- --------------------------------------
--- TEMP (29 Sep 2026): every Dominion unit of world 1149 friendly (faction 219, from the hostile adventure faction
--- 1452) to measure layout B of The Farmer's Daughter; the spotlights can't hurt while friendly. Remove this statement
--- (and re-import) to make them hostile again.
--- --------------------------------------
-UPDATE `entity` SET `Faction1` = 219, `Faction2` = 219 WHERE `World` = @WORLD AND `Faction1` = 1452;
