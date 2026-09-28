@@ -182,20 +182,21 @@ INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
 
 -- --------------------------------------
 -- Barn Door - Platform (51064, PRP_Door_Generic_Garage_000.m3, display 29764) in the Abandoned Barn's door slot.
--- Position measured in game (28 Sep 2026, standing in the slot; facing = the player's, may need turning). The main
--- script keeps it open (State1) while players arrive, closes it (State0) for the briefing and the vote, and opens it
--- when the mission starts.
+-- Position measured in game (28 Sep 2026, standing in the slot; facing = the player's, may need turning). Retail: the
+-- door just appears when the barn closes and disappears when it opens, no animation. Main event phase 20, set by the
+-- script when everyone is inside for the briefing; removed once the voted mission has everything on the map.
 -- --------------------------------------
 SET @GUID = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`);
 INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`) VALUES
     (@GUID + 1, 11, 51064, @WORLD, 0, -2521.343, -925.2442, -1208.2617, 3.1038597, 0, 0, 29764, 0, 219, 219);
 
 INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
-    (@GUID + 1, @EVENT_MAIN, 0);
+    (@GUID + 1, @EVENT_MAIN, 20);
 
 -- --------------------------------------
 -- Sinnatus's Barn (hideout, regroup 1775 after The Farmer's Daughter). Measured in game (28 Sep 2026).
--- Barn Door (51064): always there (419 phase 0), open; closed when the regroup there completes, open for the mission.
+-- Barn Door (51064): 419 phase 21, spawned (closed) when the regroup there completes, removed once the next mission
+-- has everything on the map.
 -- Hideout NPCs: main event 419 phase 11, set by the script when the regroup at Sinnatus's Barn starts. Ayita sits (the
 -- script sits every Ayita).
 -- --------------------------------------
@@ -207,7 +208,7 @@ INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, 
     (@GUID + 4, 0, 17777, @WORLD, 0, -2392.0635, -926.2801, -1525.2726, -0.05123353, 0, 0, 23711, 8196, 219, 219);  -- Lysion Sinnatus
 
 INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
-    (@GUID + 1, @EVENT_MAIN, 0),
+    (@GUID + 1, @EVENT_MAIN, 21),
     (@GUID + 2, @EVENT_MAIN, 11),
     (@GUID + 3, @EVENT_MAIN, 11),
     (@GUID + 4, @EVENT_MAIN, 11);
