@@ -183,8 +183,10 @@ INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
 -- --------------------------------------
 -- The Farmer's Daughter (public event 420), layout A
 -- Positions measured in game against retail videos. The script sits Tarquim, Millithea and Prema down, moves the
--- patrolling scouts and the spotlight targets, and frees the captives once their guards are dead. Retail has a
--- second layout (Millithea elsewhere), not added yet.
+-- patrolling scouts and the spotlight targets, and frees the captives once their guards are dead. One captive at a
+-- time: Prema and the Responsebot are phase 1, set once Millithea is freed. The spotlight targets use the hostile
+-- adventure faction so their machine gun fire hits players. Retail has a second layout (Millithea elsewhere), not
+-- added yet.
 -- --------------------------------------
 SET @EVENT_FARMERS_DAUGHTER = 420;
 DELETE FROM `entity_event` WHERE `eventId` = @EVENT_FARMERS_DAUGHTER;
@@ -204,18 +206,18 @@ INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, 
     (@GUID + 12, 0, 17856, @WORLD, 0, -2456.0398, -928.94116, -1630.2463, 0.9024365, 0, 0, 30968, 8192, 1452, 1452), -- Dominion Scout, stationary
     (@GUID + 13, 0, 17856, @WORLD, 0, -2381.129, -923.09406, -1698.4329, -3.117571, 0, 0, 30970, 8192, 1452, 1452), -- Dominion Scout, patrol (script)
     (@GUID + 14, 0, 17823, @WORLD, 0, -2413.2078, -930.581, -1587.4441, 2.938289, 0, 0, 26107, 9005, 1452, 1452), -- Dominion Recon Specialist, stationary for now (alarm mechanic later)
-    (@GUID + 15, 0, 17763, @WORLD, 0, -2503.1116, -926.0301, -1345.4647, 0.0, 0, 0, 23754, 0, 219, 219), -- Automated Machine Gun - Spotlight Target (lane moved by the script)
-    (@GUID + 16, 0, 17763, @WORLD, 0, -2468.567, -929.0733, -1593.2743, 0.0, 0, 0, 23754, 0, 219, 219), -- Automated Machine Gun - Spotlight Target (lane moved by the script)
-    (@GUID + 17, 0, 17763, @WORLD, 0, -2490.1282, -920.8113, -1672.5258, 0.0, 0, 0, 23754, 0, 219, 219), -- Automated Machine Gun - Spotlight Target (lane moved by the script)
-    (@GUID + 18, 0, 17763, @WORLD, 0, -2402.416, -928.3815, -1673.6968, 0.0, 0, 0, 23754, 0, 219, 219); -- Automated Machine Gun - Spotlight Target (lane moved by the script)
+    (@GUID + 15, 0, 17763, @WORLD, 0, -2503.1116, -926.0301, -1345.4647, 0.0, 0, 0, 23754, 0, 1452, 1452), -- Automated Machine Gun - Spotlight Target (lane moved by the script)
+    (@GUID + 16, 0, 17763, @WORLD, 0, -2468.567, -929.0733, -1593.2743, 0.0, 0, 0, 23754, 0, 1452, 1452), -- Automated Machine Gun - Spotlight Target (lane moved by the script)
+    (@GUID + 17, 0, 17763, @WORLD, 0, -2490.1282, -920.8113, -1672.5258, 0.0, 0, 0, 23754, 0, 1452, 1452), -- Automated Machine Gun - Spotlight Target (lane moved by the script)
+    (@GUID + 18, 0, 17763, @WORLD, 0, -2402.416, -928.3815, -1673.6968, 0.0, 0, 0, 23754, 0, 1452, 1452); -- Automated Machine Gun - Spotlight Target (lane moved by the script)
 
 INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
     (@GUID + 1, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 2, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 3, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 4, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 5, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 6, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 5, @EVENT_FARMERS_DAUGHTER, 1), -- Prema and her guard appear once Millithea is freed
+    (@GUID + 6, @EVENT_FARMERS_DAUGHTER, 1),
     (@GUID + 7, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 8, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 9, @EVENT_FARMERS_DAUGHTER, 0),
