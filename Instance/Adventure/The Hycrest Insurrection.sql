@@ -296,10 +296,7 @@ INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, 
     (@GUID + 87, 0, 17856, @WORLD, 0, -2763.6306, -918.3665, -1475.9076, -0.591146, 0, 0, 30972, 8192, 1452, 1452),
     (@GUID + 97, 0, 17856, @WORLD, 0, -2567.9734, -929.3442, -1332.0280, -2.450444, 0, 0, 30968, 8192, 1452, 1452),
     (@GUID + 101, 0, 17856, @WORLD, 0, -2338.2908, -921.9292, -1329.7443, 3.019637, 0, 0, 30968, 8192, 1452, 1452),
-    (@GUID + 110, 0, 17856, @WORLD, 0, -2281.9224, -926.8220, -1564.5543, -1.364491, 0, 0, 30970, 8192, 1452, 1452),
-    (@GUID + 112, 0, 17856, @WORLD, 0, -2306.3313, -929.8511, -1593.2247, 3.034396, 0, 0, 30967, 8192, 1452, 1452),
     (@GUID + 113, 0, 17856, @WORLD, 0, -2291.5520, -928.0159, -1611.5833, 2.699071, 0, 0, 30968, 8192, 1452, 1452),
-    (@GUID + 114, 0, 17856, @WORLD, 0, -2265.8428, -929.0908, -1601.1726, 3.042562, 0, 0, 30970, 8192, 1452, 1452),
     (@GUID + 115, 0, 17856, @WORLD, 0, -2446.7356, -928.9658, -1627.0905, 1.404914, 0, 0, 30972, 8192, 1452, 1452),
     (@GUID + 121, 0, 17856, @WORLD, 0, -2303.1631, -923.5451, -1343.1506, -3.141593, 0, 0, 30968, 8192, 1452, 1452),
     (@GUID + 123, 0, 17856, @WORLD, 0, -2397.8594, -924.7783, -1223.0437, -3.141593, 0, 0, 30972, 8192, 1452, 1452),
@@ -336,10 +333,7 @@ INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
     (@GUID + 87, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 97, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 101, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 110, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 112, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 113, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 114, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 115, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 121, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 123, @EVENT_FARMERS_DAUGHTER, 0),
@@ -376,10 +370,7 @@ INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
     (@GUID + 87, 10, 15),
     (@GUID + 97, 10, 15),
     (@GUID + 101, 10, 15),
-    (@GUID + 110, 10, 15),
-    (@GUID + 112, 10, 15),
     (@GUID + 113, 10, 15),
-    (@GUID + 114, 10, 15),
     (@GUID + 115, 10, 15),
     (@GUID + 121, 10, 15),
     (@GUID + 123, 10, 15),
@@ -416,10 +407,7 @@ INSERT INTO `entity_spline` (`id`, `splineId`, `mode`, `speed`, `fx`, `fy`, `fz`
     (@GUID + 87, 7389, 1, 2, 0, 0, 0),  -- spline 7389, 123 m, open, BackAndForth
     (@GUID + 97, 7934, 1, 2, 0, 0, 0),  -- spline 7934, 111 m, open, BackAndForth
     (@GUID + 101, 7940, 1, 2, 0, 0, 0),  -- spline 7940, 128 m, open, BackAndForth
-    (@GUID + 110, 7950, 1, 2, 0, 0, 0),  -- spline 7950, 135 m, open, BackAndForth
-    (@GUID + 112, 7954, 1, 2, 0, 0, 0),  -- spline 7954, 125 m, open, BackAndForth
     (@GUID + 113, 7956, 1, 2, 0, 0, 0),  -- spline 7956, 120 m, open, BackAndForth
-    (@GUID + 114, 7959, 1, 2, 0, 0, 0),  -- spline 7959, 80 m, open, BackAndForth
     (@GUID + 115, 7960, 1, 2, 0, 0, 0),  -- spline 7960, 93 m, open, BackAndForth
     (@GUID + 121, 14698, 1, 2, 0, 0, 0),  -- spline 14698, 79 m, open, BackAndForth
     (@GUID + 123, 14702, 1, 2, 0, 0, 0),  -- spline 14702, 86 m, open, BackAndForth
