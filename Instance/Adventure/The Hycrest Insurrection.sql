@@ -219,13 +219,15 @@ INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
     (@GUID + 4, 10, 15);
 
 -- --------------------------------------
--- The Farmer's Daughter (public event 420), layout A
--- Positions measured in game against retail videos. The script sits Tarquim, Millithea and Prema down, moves the
--- patrolling scouts and the spotlight targets, and frees the captives once their guards are dead. One captive at a
--- time: Prema and the Responsebot are phase 1, set once Millithea is freed. The spotlight targets use the hostile
--- adventure faction so their machine gun fire hits players. The Recon Specialist isn't spawned here: the script calls
--- one when players cross the field north of Millithea (alarm). Retail has a second layout (Millithea elsewhere), not
--- added yet.
+-- The Farmer's Daughter (public event 420), layouts A and B
+-- Positions measured in game against retail videos. Retail places Millithea (with her 2 Predator Drones) and Prema
+-- (with the Shatterforce Responsebot) at one of two spots per run; everything else is shared. The script picks the
+-- layout at random when the mission starts and sets its phase:
+--   phase 0      shared: Tarquim, the spotlight targets (hostile adventure faction so their gun fire hits players)
+--   phase 10/11  Millithea and her drones, layout A / B
+--   phase 20/21  Prema and the Responsebot, layout A / B, set once Millithea is freed (one captive at a time)
+-- The script sits Tarquim, Millithea and Prema down, moves the spotlight targets and frees the captives once their
+-- guards are dead. The Recon Specialist isn't spawned here: the script calls one (alarm).
 -- --------------------------------------
 SET @EVENT_FARMERS_DAUGHTER = 420;
 DELETE FROM `entity_event` WHERE `eventId` = @EVENT_FARMERS_DAUGHTER;
@@ -233,26 +235,36 @@ SET @GUID = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`);
 INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`) VALUES
     (@GUID + 1, 0, 17773, @WORLD, 0, -2479.2297, -928.3108, -1208.6279, 1.143748, 0, 0, 29998, 8062, 219, 219), -- Tarquim Arcwulff (seated)
     (@GUID + 2, 0, 49490, @WORLD, 0, -2472.5518, -929.2157, -1577.3994, -3.0135684, 0, 0, 30004, 8066, 219, 219), -- Millithea (seated), layout A
-    (@GUID + 3, 0, 51026, @WORLD, 0, -2472.1323, -929.5942, -1569.7185, 0.0020537376, 0, 0, 29558, 0, 1452, 1452), -- Predator Drone, guards Millithea
-    (@GUID + 4, 0, 51026, @WORLD, 0, -2473.3782, -929.24347, -1582.0039, -3.1268535, 0, 0, 29558, 0, 1452, 1452), -- Predator Drone, guards Millithea
-    (@GUID + 5, 0, 17772, @WORLD, 0, -2377.9238, -929.3451, -1641.9752, -2.9476466, 0, 0, 29997, 8066, 219, 219), -- Prema Arcwulff (seated)
-    (@GUID + 6, 0, 18509, @WORLD, 0, -2366.8215, -929.4628, -1631.9248, 2.957307, 0, 0, 23091, 0, 1452, 1452), -- Shatterforce Responsebot, guards Prema
+    (@GUID + 3, 0, 51026, @WORLD, 0, -2472.1323, -929.5942, -1569.7185, 0.0020537376, 0, 0, 29558, 0, 1452, 1452), -- Predator Drone, guards Millithea, layout A
+    (@GUID + 4, 0, 51026, @WORLD, 0, -2473.3782, -929.24347, -1582.0039, -3.1268535, 0, 0, 29558, 0, 1452, 1452), -- Predator Drone, guards Millithea, layout A
+    (@GUID + 5, 0, 17772, @WORLD, 0, -2377.9238, -929.3451, -1641.9752, -2.9476466, 0, 0, 29997, 8066, 219, 219), -- Prema Arcwulff (seated), layout A
+    (@GUID + 6, 0, 18509, @WORLD, 0, -2366.8215, -929.4628, -1631.9248, 2.957307, 0, 0, 23091, 0, 1452, 1452), -- Shatterforce Responsebot, guards Prema, layout A
     (@GUID + 15, 0, 17763, @WORLD, 0, -2484.1101, -927.7783, -1283.1149, 0.0, 0, 0, 23754, 0, 1452, 1452), -- Automated Machine Gun - Spotlight Target (lane moved by the script)
     (@GUID + 16, 0, 17763, @WORLD, 0, -2468.567, -929.0733, -1593.2743, 0.0, 0, 0, 23754, 0, 1452, 1452), -- Automated Machine Gun - Spotlight Target (lane moved by the script)
     (@GUID + 17, 0, 17763, @WORLD, 0, -2490.1282, -920.8113, -1672.5258, 0.0, 0, 0, 23754, 0, 1452, 1452), -- Automated Machine Gun - Spotlight Target (lane moved by the script)
-    (@GUID + 18, 0, 17763, @WORLD, 0, -2402.416, -928.3815, -1673.6968, 0.0, 0, 0, 23754, 0, 1452, 1452); -- Automated Machine Gun - Spotlight Target (lane moved by the script)
+    (@GUID + 18, 0, 17763, @WORLD, 0, -2402.416, -928.3815, -1673.6968, 0.0, 0, 0, 23754, 0, 1452, 1452), -- Automated Machine Gun - Spotlight Target (lane moved by the script)
+    (@GUID + 20, 0, 49490, @WORLD, 0, -2289.1301, -924.9354, -1500.1172, -3.0564866, 0, 0, 30004, 8066, 219, 219), -- Millithea (seated), layout B
+    (@GUID + 21, 0, 51026, @WORLD, 0, -2287.9934, -925.20447, -1493.8815, 0.10366, 0, 0, 29558, 0, 1452, 1452), -- Predator Drone, guards Millithea, layout B
+    (@GUID + 22, 0, 51026, @WORLD, 0, -2290.4626, -924.68036, -1506.18, -2.9744594, 0, 0, 29558, 0, 1452, 1452), -- Predator Drone, guards Millithea, layout B
+    (@GUID + 23, 0, 17772, @WORLD, 0, -2273.572, -925.9564, -1674.7275, -3.0431898, 0, 0, 29997, 8066, 219, 219), -- Prema Arcwulff (seated), layout B
+    (@GUID + 24, 0, 18509, @WORLD, 0, -2263.7344, -926.26117, -1670.4274, 1.4157736, 0, 0, 23091, 0, 1452, 1452); -- Shatterforce Responsebot, guards Prema, layout B
 
 INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
     (@GUID + 1, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 2, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 3, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 4, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 5, @EVENT_FARMERS_DAUGHTER, 1), -- Prema and her guard appear once Millithea is freed
-    (@GUID + 6, @EVENT_FARMERS_DAUGHTER, 1),
+    (@GUID + 2, @EVENT_FARMERS_DAUGHTER, 10),
+    (@GUID + 3, @EVENT_FARMERS_DAUGHTER, 10),
+    (@GUID + 4, @EVENT_FARMERS_DAUGHTER, 10),
+    (@GUID + 5, @EVENT_FARMERS_DAUGHTER, 20),
+    (@GUID + 6, @EVENT_FARMERS_DAUGHTER, 20),
     (@GUID + 15, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 16, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 17, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 18, @EVENT_FARMERS_DAUGHTER, 0);
+    (@GUID + 18, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 20, @EVENT_FARMERS_DAUGHTER, 11),
+    (@GUID + 21, @EVENT_FARMERS_DAUGHTER, 11),
+    (@GUID + 22, @EVENT_FARMERS_DAUGHTER, 11),
+    (@GUID + 23, @EVENT_FARMERS_DAUGHTER, 21),
+    (@GUID + 24, @EVENT_FARMERS_DAUGHTER, 21);
 
 INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
     (@GUID + 1, 10, 15),
@@ -264,7 +276,12 @@ INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
     (@GUID + 15, 10, 15),
     (@GUID + 16, 10, 15),
     (@GUID + 17, 10, 15),
-    (@GUID + 18, 10, 15);
+    (@GUID + 18, 10, 15),
+    (@GUID + 20, 10, 15),
+    (@GUID + 21, 10, 15),
+    (@GUID + 22, 10, 15),
+    (@GUID + 23, 10, 15),
+    (@GUID + 24, 10, 15);
 
 -- --------------------------------------
 -- TEST (28 Sep 2026): one Dominion Scout on every ground-level spline (thinned since; Dominion Soldiers 17857 in
