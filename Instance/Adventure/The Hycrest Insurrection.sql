@@ -275,53 +275,27 @@ INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
 -- --------------------------------------
 SET @GUID = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`);
 INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`) VALUES
-    (@GUID + 12, 0, 17856, @WORLD, 0, -2222.0601, -929.3502, -1305.3048, -0.282276, 0, 0, 30967, 8192, 1452, 1452),
     (@GUID + 13, 0, 17856, @WORLD, 0, -2190.3650, -927.5854, -1306.1884, 1.954583, 0, 0, 30968, 8192, 1452, 1452),
     (@GUID + 14, 0, 17856, @WORLD, 0, -2248.6379, -928.7823, -1453.7770, -2.621533, 0, 0, 30970, 8192, 1452, 1452),
-    (@GUID + 15, 0, 17856, @WORLD, 0, -2304.8542, -924.8077, -1425.5417, -1.669520, 0, 0, 30972, 8192, 1452, 1452),
     (@GUID + 16, 0, 17856, @WORLD, 0, -2247.3259, -927.9666, -1411.9745, -2.120057, 0, 0, 30967, 8192, 1452, 1452),
-    (@GUID + 17, 0, 17856, @WORLD, 0, -2213.4800, -926.3884, -1400.7168, 0.185485, 0, 0, 30968, 8192, 1452, 1452),
-    (@GUID + 18, 0, 17856, @WORLD, 0, -2211.7227, -926.1721, -1459.0662, -2.386970, 0, 0, 30970, 8192, 1452, 1452),
-    (@GUID + 19, 0, 17856, @WORLD, 0, -2228.9526, -926.1727, -1502.5939, 0.065676, 0, 0, 30972, 8192, 1452, 1452),
-    (@GUID + 20, 0, 17856, @WORLD, 0, -2362.9236, -922.8668, -1438.7014, -2.448422, 0, 0, 30967, 8192, 1452, 1452),
     (@GUID + 21, 0, 17856, @WORLD, 0, -2349.3638, -925.0932, -1257.0768, 3.137776, 0, 0, 30968, 8192, 1452, 1452),
-    (@GUID + 22, 0, 17856, @WORLD, 0, -2370.3982, -924.1212, -1231.8225, 1.554596, 0, 0, 30970, 8192, 1452, 1452),
     (@GUID + 23, 0, 17856, @WORLD, 0, -2317.5564, -920.9146, -1198.8372, -0.762864, 0, 0, 30972, 8192, 1452, 1452),
-    (@GUID + 26, 0, 17856, @WORLD, 0, -2389.3823, -926.2544, -1602.6337, 0.755579, 0, 0, 30970, 8192, 1452, 1452),
-    (@GUID + 27, 0, 17856, @WORLD, 0, -2342.2275, -925.9800, -1664.8235, -2.703460, 0, 0, 30972, 8192, 1452, 1452),
     (@GUID + 29, 0, 17856, @WORLD, 0, -2424.6421, -923.9310, -1678.0225, -2.844436, 0, 0, 30968, 8192, 1452, 1452),
     (@GUID + 31, 0, 17856, @WORLD, 0, -2465.5366, -922.3412, -1679.4854, -1.127098, 0, 0, 30972, 8192, 1452, 1452),
-    (@GUID + 32, 0, 17856, @WORLD, 0, -2245.1428, -923.4831, -1686.0023, 1.424139, 0, 0, 30967, 8192, 1452, 1452),
-    (@GUID + 33, 0, 17856, @WORLD, 0, -2298.8872, -926.5031, -1643.8555, -0.110741, 0, 0, 30968, 8192, 1452, 1452),
     (@GUID + 35, 0, 17856, @WORLD, 0, -2334.7390, -900.7168, -1794.2461, -2.443586, 0, 0, 30972, 8192, 1452, 1452),
     (@GUID + 38, 0, 17856, @WORLD, 0, -2605.7717, -928.0572, -1385.5016, 0.173525, 0, 0, 30970, 8192, 1452, 1452),
     (@GUID + 39, 0, 17856, @WORLD, 0, -2568.8479, -928.4366, -1500.6844, -3.018491, 0, 0, 30972, 8192, 1452, 1452),
-    (@GUID + 41, 0, 17856, @WORLD, 0, -2558.9175, -929.5172, -1462.0400, -2.308193, 0, 0, 30968, 8192, 1452, 1452),
-    (@GUID + 42, 0, 17856, @WORLD, 0, -2607.3535, -928.1109, -1333.2006, -0.626409, 0, 0, 30970, 8192, 1452, 1452),
     (@GUID + 43, 0, 17856, @WORLD, 0, -2460.0657, -928.0908, -1210.6251, -3.141593, 0, 0, 30972, 8192, 1452, 1452),
     (@GUID + 45, 0, 17856, @WORLD, 0, -2571.2788, -927.8309, -1280.9978, 2.884346, 0, 0, 30968, 8192, 1452, 1452),
-    (@GUID + 46, 0, 17856, @WORLD, 0, -2441.4407, -926.6258, -1246.5859, -2.487520, 0, 0, 30970, 8192, 1452, 1452),
     (@GUID + 47, 0, 17856, @WORLD, 0, -2584.8467, -916.3095, -1633.9220, -3.141593, 0, 0, 30972, 8192, 1452, 1452),
-    (@GUID + 52, 0, 17856, @WORLD, 0, -2270.5310, -925.9852, -1677.5615, -2.578750, 0, 0, 30967, 8192, 1452, 1452),
-    (@GUID + 54, 0, 17856, @WORLD, 0, -2340.0100, -927.4662, -1639.3276, -2.119758, 0, 0, 30970, 8192, 1452, 1452),
-    (@GUID + 55, 0, 17856, @WORLD, 0, -2259.2122, -920.8197, -1698.1327, -2.214874, 0, 0, 30972, 8192, 1452, 1452),
-    (@GUID + 56, 0, 17856, @WORLD, 0, -2264.7549, -928.4187, -1645.6061, 2.142671, 0, 0, 30967, 8192, 1452, 1452),
     (@GUID + 58, 0, 17856, @WORLD, 0, -2320.6182, -923.3251, -1696.9077, 2.933191, 0, 0, 30970, 8192, 1452, 1452),
-    (@GUID + 61, 0, 17856, @WORLD, 0, -2296.1021, -926.1059, -1642.6744, -2.865060, 0, 0, 30968, 8192, 1452, 1452),
     (@GUID + 64, 0, 17856, @WORLD, 0, -2290.7002, -921.8855, -1194.0387, 0.145026, 0, 0, 30967, 8192, 1452, 1452),
-    (@GUID + 72, 0, 17856, @WORLD, 0, -2320.0916, -930.4386, -1585.7894, 0.089041, 0, 0, 30967, 8192, 1452, 1452),
     (@GUID + 75, 0, 17856, @WORLD, 0, -2366.7043, -923.9154, -1288.3143, -1.080193, 0, 0, 30972, 8192, 1452, 1452),
     (@GUID + 81, 0, 17856, @WORLD, 0, -2311.4377, -923.2948, -1508.1396, -3.021916, 0, 0, 30968, 8192, 1452, 1452),
     (@GUID + 87, 0, 17856, @WORLD, 0, -2763.6306, -918.3665, -1475.9076, -0.591146, 0, 0, 30972, 8192, 1452, 1452),
-    (@GUID + 95, 0, 17856, @WORLD, 0, -2555.8213, -929.7270, -1309.2010, -3.141593, 0, 0, 30972, 8192, 1452, 1452),
-    (@GUID + 96, 0, 17856, @WORLD, 0, -2568.2146, -927.5577, -1309.6948, -1.663037, 0, 0, 30967, 8192, 1452, 1452),
     (@GUID + 97, 0, 17856, @WORLD, 0, -2567.9734, -929.3442, -1332.0280, -2.450444, 0, 0, 30968, 8192, 1452, 1452),
-    (@GUID + 98, 0, 17856, @WORLD, 0, -2541.2742, -929.7158, -1348.7952, 1.528343, 0, 0, 30970, 8192, 1452, 1452),
     (@GUID + 101, 0, 17856, @WORLD, 0, -2338.2908, -921.9292, -1329.7443, 3.019637, 0, 0, 30968, 8192, 1452, 1452),
-    (@GUID + 102, 0, 17856, @WORLD, 0, -2328.8589, -921.8908, -1350.3374, 1.610235, 0, 0, 30970, 8192, 1452, 1452),
-    (@GUID + 103, 0, 17856, @WORLD, 0, -2312.8135, -922.8083, -1349.0508, 1.249199, 0, 0, 30972, 8192, 1452, 1452),
     (@GUID + 110, 0, 17856, @WORLD, 0, -2281.9224, -926.8220, -1564.5543, -1.364491, 0, 0, 30970, 8192, 1452, 1452),
-    (@GUID + 111, 0, 17856, @WORLD, 0, -2294.1289, -926.6111, -1562.7520, -1.616916, 0, 0, 30972, 8192, 1452, 1452),
     (@GUID + 112, 0, 17856, @WORLD, 0, -2306.3313, -929.8511, -1593.2247, 3.034396, 0, 0, 30967, 8192, 1452, 1452),
     (@GUID + 113, 0, 17856, @WORLD, 0, -2291.5520, -928.0159, -1611.5833, 2.699071, 0, 0, 30968, 8192, 1452, 1452),
     (@GUID + 114, 0, 17856, @WORLD, 0, -2265.8428, -929.0908, -1601.1726, 3.042562, 0, 0, 30970, 8192, 1452, 1452),
@@ -338,62 +312,30 @@ INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, 
     (@GUID + 137, 0, 17856, @WORLD, 0, -2570.7659, -910.2632, -1680.2649, -3.141593, 0, 0, 30968, 8192, 1452, 1452),
     (@GUID + 141, 0, 17856, @WORLD, 0, -2328.2107, -923.8275, -1203.8024, -3.141593, 0, 0, 30968, 8192, 1452, 1452),
     (@GUID + 142, 0, 17856, @WORLD, 0, -2317.1416, -868.3557, -1878.6327, -3.141593, 0, 0, 30970, 8192, 1452, 1452),
-    (@GUID + 143, 0, 17856, @WORLD, 0, -2411.3540, -922.6606, -1437.7656, -3.141593, 0, 0, 30972, 8192, 1452, 1452),
-    (@GUID + 147, 0, 17856, @WORLD, 0, -2383.7368, -919.6680, -1407.2397, -3.141593, 0, 0, 30972, 8192, 1452, 1452),
-    (@GUID + 148, 0, 17856, @WORLD, 0, -2366.8652, -918.8406, -1387.7743, -3.141593, 0, 0, 30967, 8192, 1452, 1452),
-    (@GUID + 149, 0, 17856, @WORLD, 0, -2345.0400, -919.1053, -1374.0790, -3.141593, 0, 0, 30968, 8192, 1452, 1452),
-    (@GUID + 150, 0, 17856, @WORLD, 0, -2304.6929, -922.8972, -1376.9624, -3.141593, 0, 0, 30970, 8192, 1452, 1452),
-    (@GUID + 151, 0, 17856, @WORLD, 0, -2273.0698, -926.1221, -1409.3198, -3.141593, 0, 0, 30972, 8192, 1452, 1452),
     (@GUID + 152, 0, 17856, @WORLD, 0, -2298.7070, -925.7532, -1437.3081, -3.141593, 0, 0, 30967, 8192, 1452, 1452);
 
 INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
-    (@GUID + 12, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 13, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 14, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 15, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 16, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 17, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 18, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 19, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 20, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 21, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 22, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 23, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 26, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 27, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 29, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 31, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 32, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 33, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 35, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 38, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 39, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 41, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 42, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 43, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 45, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 46, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 47, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 52, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 54, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 55, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 56, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 58, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 61, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 64, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 72, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 75, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 81, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 87, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 95, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 96, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 97, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 98, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 101, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 102, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 103, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 110, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 111, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 112, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 113, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 114, @EVENT_FARMERS_DAUGHTER, 0),
@@ -410,62 +352,30 @@ INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
     (@GUID + 137, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 141, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 142, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 143, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 147, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 148, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 149, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 150, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 151, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 152, @EVENT_FARMERS_DAUGHTER, 0);
 
 INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
-    (@GUID + 12, 10, 15),
     (@GUID + 13, 10, 15),
     (@GUID + 14, 10, 15),
-    (@GUID + 15, 10, 15),
     (@GUID + 16, 10, 15),
-    (@GUID + 17, 10, 15),
-    (@GUID + 18, 10, 15),
-    (@GUID + 19, 10, 15),
-    (@GUID + 20, 10, 15),
     (@GUID + 21, 10, 15),
-    (@GUID + 22, 10, 15),
     (@GUID + 23, 10, 15),
-    (@GUID + 26, 10, 15),
-    (@GUID + 27, 10, 15),
     (@GUID + 29, 10, 15),
     (@GUID + 31, 10, 15),
-    (@GUID + 32, 10, 15),
-    (@GUID + 33, 10, 15),
     (@GUID + 35, 10, 15),
     (@GUID + 38, 10, 15),
     (@GUID + 39, 10, 15),
-    (@GUID + 41, 10, 15),
-    (@GUID + 42, 10, 15),
     (@GUID + 43, 10, 15),
     (@GUID + 45, 10, 15),
-    (@GUID + 46, 10, 15),
     (@GUID + 47, 10, 15),
-    (@GUID + 52, 10, 15),
-    (@GUID + 54, 10, 15),
-    (@GUID + 55, 10, 15),
-    (@GUID + 56, 10, 15),
     (@GUID + 58, 10, 15),
-    (@GUID + 61, 10, 15),
     (@GUID + 64, 10, 15),
-    (@GUID + 72, 10, 15),
     (@GUID + 75, 10, 15),
     (@GUID + 81, 10, 15),
     (@GUID + 87, 10, 15),
-    (@GUID + 95, 10, 15),
-    (@GUID + 96, 10, 15),
     (@GUID + 97, 10, 15),
-    (@GUID + 98, 10, 15),
     (@GUID + 101, 10, 15),
-    (@GUID + 102, 10, 15),
-    (@GUID + 103, 10, 15),
     (@GUID + 110, 10, 15),
-    (@GUID + 111, 10, 15),
     (@GUID + 112, 10, 15),
     (@GUID + 113, 10, 15),
     (@GUID + 114, 10, 15),
@@ -482,62 +392,30 @@ INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
     (@GUID + 137, 10, 15),
     (@GUID + 141, 10, 15),
     (@GUID + 142, 10, 15),
-    (@GUID + 143, 10, 15),
-    (@GUID + 147, 10, 15),
-    (@GUID + 148, 10, 15),
-    (@GUID + 149, 10, 15),
-    (@GUID + 150, 10, 15),
-    (@GUID + 151, 10, 15),
     (@GUID + 152, 10, 15);
 
 INSERT INTO `entity_spline` (`id`, `splineId`, `mode`, `speed`, `fx`, `fy`, `fz`) VALUES
-    (@GUID + 12, 4472, 1, 2, 0, 0, 0),  -- spline 4472, 59 m, open, BackAndForth
     (@GUID + 13, 4473, 1, 2, 0, 0, 0),  -- spline 4473, 116 m, open, BackAndForth
     (@GUID + 14, 4474, 1, 2, 0, 0, 0),  -- spline 4474, 197 m, open, BackAndForth
-    (@GUID + 15, 4475, 1, 2, 0, 0, 0),  -- spline 4475, 117 m, open, BackAndForth
     (@GUID + 16, 4476, 2, 2, 0, 0, 0),  -- spline 4476, 102 m, closed loop, Cyclic
-    (@GUID + 17, 4477, 1, 2, 0, 0, 0),  -- spline 4477, 118 m, open, BackAndForth
-    (@GUID + 18, 4478, 2, 2, 0, 0, 0),  -- spline 4478, 71 m, closed loop, Cyclic
-    (@GUID + 19, 4479, 1, 2, 0, 0, 0),  -- spline 4479, 64 m, open, BackAndForth
-    (@GUID + 20, 4480, 1, 2, 0, 0, 0),  -- spline 4480, 97 m, open, BackAndForth
     (@GUID + 21, 4481, 1, 2, 0, 0, 0),  -- spline 4481, 66 m, open, BackAndForth
-    (@GUID + 22, 4482, 1, 2, 0, 0, 0),  -- spline 4482, 40 m, open, BackAndForth
     (@GUID + 23, 4483, 1, 2, 0, 0, 0),  -- spline 4483, 87 m, open, BackAndForth
-    (@GUID + 26, 4486, 2, 2, 0, 0, 0),  -- spline 4486, 88 m, closed loop, Cyclic
-    (@GUID + 27, 4487, 2, 2, 0, 0, 0),  -- spline 4487, 85 m, closed loop, Cyclic
     (@GUID + 29, 4489, 2, 2, 0, 0, 0),  -- spline 4489, 127 m, closed loop, Cyclic
     (@GUID + 31, 4491, 1, 2, 0, 0, 0),  -- spline 4491, 140 m, open, BackAndForth
-    (@GUID + 32, 4492, 1, 2, 0, 0, 0),  -- spline 4492, 86 m, open, BackAndForth
-    (@GUID + 33, 4493, 2, 2, 0, 0, 0),  -- spline 4493, 80 m, closed loop, Cyclic
     (@GUID + 35, 4495, 1, 2, 0, 0, 0),  -- spline 4495, 119 m, open, BackAndForth
     (@GUID + 38, 4498, 1, 2, 0, 0, 0),  -- spline 4498, 75 m, open, BackAndForth
     (@GUID + 39, 4499, 1, 2, 0, 0, 0),  -- spline 4499, 69 m, open, BackAndForth
-    (@GUID + 41, 4501, 1, 2, 0, 0, 0),  -- spline 4501, 86 m, open, BackAndForth
-    (@GUID + 42, 4502, 1, 2, 0, 0, 0),  -- spline 4502, 108 m, open, BackAndForth
     (@GUID + 43, 4503, 1, 2, 0, 0, 0),  -- KEEP (29 Sep 2026: patrol by Tarquim) spline 4503, 72 m, open, BackAndForth
     (@GUID + 45, 4505, 1, 2, 0, 0, 0),  -- spline 4505, 97 m, open, BackAndForth
-    (@GUID + 46, 4506, 1, 2, 0, 0, 0),  -- spline 4506, 58 m, open, BackAndForth
     (@GUID + 47, 4508, 1, 2, 0, 0, 0),  -- spline 4508, 359 m, open, BackAndForth
-    (@GUID + 52, 4589, 1, 2, 0, 0, 0),  -- spline 4589, 64 m, open, BackAndForth
-    (@GUID + 54, 4591, 1, 2, 0, 0, 0),  -- spline 4591, 91 m, open, BackAndForth
-    (@GUID + 55, 4592, 1, 2, 0, 0, 0),  -- spline 4592, 75 m, open, BackAndForth
-    (@GUID + 56, 4593, 1, 2, 0, 0, 0),  -- spline 4593, 67 m, open, BackAndForth
     (@GUID + 58, 4595, 1, 2, 0, 0, 0),  -- spline 4595, 108 m, open, BackAndForth
-    (@GUID + 61, 4598, 1, 2, 0, 0, 0),  -- spline 4598, 74 m, open, BackAndForth
     (@GUID + 64, 4668, 1, 2, 0, 0, 0),  -- spline 4668, 430 m, open, BackAndForth
-    (@GUID + 72, 4676, 1, 2, 0, 0, 0),  -- spline 4676, 94 m, open, BackAndForth
     (@GUID + 75, 4679, 1, 2, 0, 0, 0),  -- spline 4679, 505 m, open, BackAndForth
     (@GUID + 81, 6107, 1, 2, 0, 0, 0),  -- spline 6107, 315 m, open, BackAndForth
     (@GUID + 87, 7389, 1, 2, 0, 0, 0),  -- spline 7389, 123 m, open, BackAndForth
-    (@GUID + 95, 7932, 1, 2, 0, 0, 0),  -- spline 7932, 96 m, open, BackAndForth
-    (@GUID + 96, 7933, 2, 2, 0, 0, 0),  -- spline 7933, 91 m, closed loop, Cyclic
     (@GUID + 97, 7934, 1, 2, 0, 0, 0),  -- spline 7934, 111 m, open, BackAndForth
-    (@GUID + 98, 7935, 1, 2, 0, 0, 0),  -- spline 7935, 110 m, open, BackAndForth
     (@GUID + 101, 7940, 1, 2, 0, 0, 0),  -- spline 7940, 128 m, open, BackAndForth
-    (@GUID + 102, 7941, 1, 2, 0, 0, 0),  -- spline 7941, 99 m, open, BackAndForth
-    (@GUID + 103, 7942, 1, 2, 0, 0, 0),  -- spline 7942, 111 m, open, BackAndForth
     (@GUID + 110, 7950, 1, 2, 0, 0, 0),  -- spline 7950, 135 m, open, BackAndForth
-    (@GUID + 111, 7952, 1, 2, 0, 0, 0),  -- spline 7952, 126 m, open, BackAndForth
     (@GUID + 112, 7954, 1, 2, 0, 0, 0),  -- spline 7954, 125 m, open, BackAndForth
     (@GUID + 113, 7956, 1, 2, 0, 0, 0),  -- spline 7956, 120 m, open, BackAndForth
     (@GUID + 114, 7959, 1, 2, 0, 0, 0),  -- spline 7959, 80 m, open, BackAndForth
@@ -554,10 +432,4 @@ INSERT INTO `entity_spline` (`id`, `splineId`, `mode`, `speed`, `fx`, `fy`, `fz`
     (@GUID + 137, 15012, 1, 2, 0, 0, 0),  -- spline 15012, 408 m, open, BackAndForth
     (@GUID + 141, 15939, 1, 2, 0, 0, 0),  -- spline 15939, 210 m, open, BackAndForth
     (@GUID + 142, 16021, 1, 2, 0, 0, 0),  -- spline 16021, 9 m, open, BackAndForth
-    (@GUID + 143, 16026, 1, 2, 0, 0, 0),  -- spline 16026, 80 m, open, BackAndForth
-    (@GUID + 147, 16032, 1, 2, 0, 0, 0),  -- spline 16032, 52 m, open, BackAndForth
-    (@GUID + 148, 16033, 1, 2, 0, 0, 0),  -- spline 16033, 45 m, open, BackAndForth
-    (@GUID + 149, 16034, 1, 2, 0, 0, 0),  -- spline 16034, 41 m, open, BackAndForth
-    (@GUID + 150, 16035, 1, 2, 0, 0, 0),  -- spline 16035, 41 m, open, BackAndForth
-    (@GUID + 151, 16036, 1, 2, 0, 0, 0),  -- spline 16036, 46 m, open, BackAndForth
     (@GUID + 152, 16047, 1, 2, 0, 0, 0);  -- spline 16047, 157 m, open, BackAndForth
