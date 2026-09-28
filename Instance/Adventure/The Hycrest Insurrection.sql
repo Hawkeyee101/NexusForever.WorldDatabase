@@ -336,7 +336,6 @@ INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, 
     (@GUID + 41, 0, 17856, @WORLD, 0, -2558.9175, -929.5172, -1462.0400, -2.308193, 0, 0, 30968, 8192, 1452, 1452),
     (@GUID + 42, 0, 17856, @WORLD, 0, -2607.3535, -928.1109, -1333.2006, -0.626409, 0, 0, 30970, 8192, 1452, 1452),
     (@GUID + 43, 0, 17856, @WORLD, 0, -2460.0657, -928.0908, -1210.6251, -3.141593, 0, 0, 30972, 8192, 1452, 1452),
-    (@GUID + 44, 0, 17856, @WORLD, 0, -2476.4290, -917.0416, -1134.1749, -1.536344, 0, 0, 30967, 8192, 1452, 1452),
     (@GUID + 45, 0, 17856, @WORLD, 0, -2571.2788, -927.8309, -1280.9978, 2.884346, 0, 0, 30968, 8192, 1452, 1452),
     (@GUID + 46, 0, 17856, @WORLD, 0, -2441.4407, -926.6258, -1246.5859, -2.487520, 0, 0, 30970, 8192, 1452, 1452),
     (@GUID + 47, 0, 17856, @WORLD, 0, -2584.8467, -916.3095, -1633.9220, -3.141593, 0, 0, 30972, 8192, 1452, 1452),
@@ -485,7 +484,6 @@ INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
     (@GUID + 41, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 42, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 43, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 44, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 45, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 46, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 47, @EVENT_FARMERS_DAUGHTER, 0),
@@ -634,7 +632,6 @@ INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
     (@GUID + 41, 10, 15),
     (@GUID + 42, 10, 15),
     (@GUID + 43, 10, 15),
-    (@GUID + 44, 10, 15),
     (@GUID + 45, 10, 15),
     (@GUID + 46, 10, 15),
     (@GUID + 47, 10, 15),
@@ -783,7 +780,6 @@ INSERT INTO `entity_spline` (`id`, `splineId`, `mode`, `speed`, `fx`, `fy`, `fz`
     (@GUID + 41, 4501, 1, 2, 0, 0, 0),  -- spline 4501, 86 m, open, BackAndForth
     (@GUID + 42, 4502, 1, 2, 0, 0, 0),  -- spline 4502, 108 m, open, BackAndForth
     (@GUID + 43, 4503, 1, 2, 0, 0, 0),  -- spline 4503, 72 m, open, BackAndForth
-    (@GUID + 44, 4504, 1, 2, 0, 0, 0),  -- spline 4504, 54 m, open, BackAndForth
     (@GUID + 45, 4505, 1, 2, 0, 0, 0),  -- spline 4505, 97 m, open, BackAndForth
     (@GUID + 46, 4506, 1, 2, 0, 0, 0),  -- spline 4506, 58 m, open, BackAndForth
     (@GUID + 47, 4508, 1, 2, 0, 0, 0),  -- spline 4508, 359 m, open, BackAndForth
