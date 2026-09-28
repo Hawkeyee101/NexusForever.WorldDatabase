@@ -203,16 +203,19 @@ SET @GUID = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`);
 INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`) VALUES
     (@GUID + 1, 11, 51064, @WORLD, 0, -2389.7212, -925.71704, -1511.0367, -0.052370787, 0, 0, 29764, 0, 219, 219), -- Barn Door
     (@GUID + 2, 0, 48032, @WORLD, 0, -2389.76, -923.57166, -1527.8925, 1.5483615, 0, 0, 29552, 9521, 219, 219),   -- Ayita Sinnatus (seated)
-    (@GUID + 3, 0, 17778, @WORLD, 0, -2393.0771, -926.28, -1529.4785, -2.8363886, 0, 0, 23710, 8195, 219, 219);   -- Vesna Taranoft (standing)
+    (@GUID + 3, 0, 17778, @WORLD, 0, -2393.0771, -926.28, -1529.4785, -2.8363886, 0, 0, 23710, 8195, 219, 219),   -- Vesna Taranoft (standing)
+    (@GUID + 4, 0, 17777, @WORLD, 0, -2392.0635, -926.2801, -1525.2726, -0.05123353, 0, 0, 23711, 8196, 219, 219);  -- Lysion Sinnatus
 
 INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
     (@GUID + 1, @EVENT_MAIN, 0),
     (@GUID + 2, @EVENT_MAIN, 11),
-    (@GUID + 3, @EVENT_MAIN, 11);
+    (@GUID + 3, @EVENT_MAIN, 11),
+    (@GUID + 4, @EVENT_MAIN, 11);
 
 INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
     (@GUID + 2, 10, 15),
-    (@GUID + 3, 10, 15);
+    (@GUID + 3, 10, 15),
+    (@GUID + 4, 10, 15);
 
 -- --------------------------------------
 -- The Farmer's Daughter (public event 420), layout A
