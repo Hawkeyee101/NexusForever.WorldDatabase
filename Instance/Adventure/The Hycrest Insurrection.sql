@@ -194,6 +194,27 @@ INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
     (@GUID + 1, @EVENT_MAIN, 0);
 
 -- --------------------------------------
+-- Sinnatus's Barn (hideout, regroup 1775 after The Farmer's Daughter). Measured in game (28 Sep 2026).
+-- Barn Door (51064): always there (419 phase 0), open; closed when the regroup there completes, open for the mission.
+-- Hideout NPCs: main event 419 phase 11, set by the script when the regroup at Sinnatus's Barn starts. Ayita sits (the
+-- script sits every Ayita).
+-- --------------------------------------
+SET @GUID = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`);
+INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`) VALUES
+    (@GUID + 1, 11, 51064, @WORLD, 0, -2389.7212, -925.71704, -1511.0367, -0.052370787, 0, 0, 29764, 0, 219, 219), -- Barn Door
+    (@GUID + 2, 0, 48032, @WORLD, 0, -2389.76, -923.57166, -1527.8925, 1.5483615, 0, 0, 29552, 9521, 219, 219),   -- Ayita Sinnatus (seated)
+    (@GUID + 3, 0, 17778, @WORLD, 0, -2393.0771, -926.28, -1529.4785, -2.8363886, 0, 0, 23710, 8195, 219, 219);   -- Vesna Taranoft (standing)
+
+INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
+    (@GUID + 1, @EVENT_MAIN, 0),
+    (@GUID + 2, @EVENT_MAIN, 11),
+    (@GUID + 3, @EVENT_MAIN, 11);
+
+INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
+    (@GUID + 2, 10, 15),
+    (@GUID + 3, 10, 15);
+
+-- --------------------------------------
 -- The Farmer's Daughter (public event 420), layout A
 -- Positions measured in game against retail videos. The script sits Tarquim, Millithea and Prema down, moves the
 -- patrolling scouts and the spotlight targets, and frees the captives once their guards are dead. One captive at a
