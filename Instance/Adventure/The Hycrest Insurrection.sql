@@ -247,7 +247,9 @@ INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, 
     (@GUID + 21, 0, 51026, @WORLD, 0, -2287.9934, -925.20447, -1493.8815, 0.10366, 0, 0, 29558, 0, 1452, 1452), -- Predator Drone, guards Millithea, layout B
     (@GUID + 22, 0, 51026, @WORLD, 0, -2290.4626, -924.68036, -1506.18, -2.9744594, 0, 0, 29558, 0, 1452, 1452), -- Predator Drone, guards Millithea, layout B
     (@GUID + 23, 0, 17772, @WORLD, 0, -2273.572, -925.9564, -1674.7275, -3.0431898, 0, 0, 29997, 8066, 219, 219), -- Prema Arcwulff (seated), layout B
-    (@GUID + 24, 0, 18509, @WORLD, 0, -2263.7344, -926.26117, -1670.4274, 1.4157736, 0, 0, 23091, 0, 1452, 1452); -- Shatterforce Responsebot, guards Prema, layout B
+    (@GUID + 24, 0, 18509, @WORLD, 0, -2263.7344, -926.26117, -1670.4274, 1.4157736, 0, 0, 23091, 0, 1452, 1452), -- Shatterforce Responsebot, guards Prema, layout B
+    (@GUID + 25, 0, 17856, @WORLD, 0, -2442.6165, -922.5818, -1395.274, 1.9820464, 0, 0, 30970, 8192, 1452, 1452), -- Dominion Scout (standing; Teun 30 Sep 2026)
+    (@GUID + 26, 0, 17856, @WORLD, 0, -2510.9734, -927.3226, -1396.573, -2.7728248, 0, 0, 30970, 8192, 1452, 1452); -- Dominion Scout (standing; Teun 30 Sep 2026)
 
 INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
     (@GUID + 1, @EVENT_FARMERS_DAUGHTER, 0),
@@ -264,7 +266,9 @@ INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
     (@GUID + 21, @EVENT_FARMERS_DAUGHTER, 11),
     (@GUID + 22, @EVENT_FARMERS_DAUGHTER, 11),
     (@GUID + 23, @EVENT_FARMERS_DAUGHTER, 21),
-    (@GUID + 24, @EVENT_FARMERS_DAUGHTER, 21);
+    (@GUID + 24, @EVENT_FARMERS_DAUGHTER, 21),
+    (@GUID + 25, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 26, @EVENT_FARMERS_DAUGHTER, 0);
 
 INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
     (@GUID + 1, 10, 15),
@@ -281,7 +285,9 @@ INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
     (@GUID + 21, 10, 15),
     (@GUID + 22, 10, 15),
     (@GUID + 23, 10, 15),
-    (@GUID + 24, 10, 15);
+    (@GUID + 24, 10, 15),
+    (@GUID + 25, 10, 15),
+    (@GUID + 26, 10, 15);
 
 -- --------------------------------------
 -- The Great Escape (public event 423, tier 2 Merciful)
@@ -291,6 +297,7 @@ INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
 --   Thatchers  Highfeather Ranch   (house point 45851, gate 45919)
 --   Bells      Bell Farmhouse      (house point 45850, gate 45920); the son's and mother's spots aren't confirmed
 --   Millers    Sinnatus farmstead  (house point 45852, gate 45921)
+-- The families are on the friendly faction 219 (the table's 762 showed them neutral, so players could kill them).
 -- The gate enemies aren't spawned here: the script spawns each wave. Ambient units (scientists, shocktroopers,
 -- soldiers, the gatekeeper with farmers queueing) belong to the mission too, so they go when the barn closes.
 -- --------------------------------------
@@ -298,18 +305,18 @@ SET @EVENT_GREAT_ESCAPE = 423;
 DELETE FROM `entity_event` WHERE `eventId` = @EVENT_GREAT_ESCAPE;
 SET @GUID = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`);
 INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`) VALUES
-    (@GUID + 1, 0, 17884, @WORLD, 0, -2398.8267, -924.85706, -1222.151, 0.09961319, 0, 0, 30000, 7911, 762, 762), -- Edwerd Thatcher (father), Highfeather Ranch
-    (@GUID + 2, 0, 17886, @WORLD, 0, -2395.7376, -924.72784, -1221.8727, -1.4160091, 0, 0, 30002, 7913, 762, 762), -- Claudia Thatcher (mother)
-    (@GUID + 3, 0, 17887, @WORLD, 0, -2403.4873, -924.9542, -1223.2471, 1.2871325, 0, 0, 30003, 7916, 762, 762), -- Aria Thatcher (daughter)
-    (@GUID + 4, 0, 17885, @WORLD, 0, -2400.4517, -924.8873, -1218.1425, 1.2011821, 0, 0, 30001, 7908, 762, 762), -- Tomus Thatcher (son), middle of the house
-    (@GUID + 5, 0, 50931, @WORLD, 0, -2266.391, -924.798, -1330.352, -2.9681294, 0, 0, 30005, 7911, 762, 762), -- Arvid Bell (father), Bell Farmhouse
-    (@GUID + 6, 0, 50933, @WORLD, 0, -2261.375, -924.7973, -1325.6388, -2.7981944, 0, 0, 30007, 7913, 762, 762), -- Lydia Bell (mother), NOT confirmed by video (bench)
-    (@GUID + 7, 0, 50934, @WORLD, 0, -2261.5747, -924.71954, -1336.1624, -0.58140683, 0, 0, 30008, 7916, 762, 762), -- Juliette Bell (daughter)
-    (@GUID + 8, 0, 50932, @WORLD, 0, -2256.9976, -924.7973, -1328.7004, 1.0045226, 0, 0, 30006, 7908, 762, 762), -- Flyer Bell (son), NOT confirmed by video (bench)
-    (@GUID + 9, 0, 50935, @WORLD, 0, -2336.6677, -927.243, -1498.4899, -2.199556, 0, 0, 30009, 7911, 762, 762), -- Rickard Miller (father), Sinnatus farmstead
-    (@GUID + 10, 0, 50937, @WORLD, 0, -2346.1968, -927.13983, -1498.582, 1.8375285, 0, 0, 30010, 7913, 762, 762), -- Beth Miller (mother)
-    (@GUID + 11, 0, 50938, @WORLD, 0, -2340.2576, -927.23505, -1503.3683, 2.9273736, 0, 0, 30012, 7916, 762, 762), -- Risa Miller (daughter)
-    (@GUID + 12, 0, 50936, @WORLD, 0, -2340.1245, -927.24457, -1501.6921, 2.6109703, 0, 0, 30011, 7915, 762, 762), -- Janus Miller (daughter)
+    (@GUID + 1, 0, 17884, @WORLD, 0, -2398.8267, -924.85706, -1222.151, 0.09961319, 0, 0, 30000, 7911, 219, 219), -- Edwerd Thatcher (father), Highfeather Ranch
+    (@GUID + 2, 0, 17886, @WORLD, 0, -2395.7376, -924.72784, -1221.8727, -1.4160091, 0, 0, 30002, 7913, 219, 219), -- Claudia Thatcher (mother)
+    (@GUID + 3, 0, 17887, @WORLD, 0, -2403.4873, -924.9542, -1223.2471, 1.2871325, 0, 0, 30003, 7916, 219, 219), -- Aria Thatcher (daughter)
+    (@GUID + 4, 0, 17885, @WORLD, 0, -2400.4517, -924.8873, -1218.1425, 1.2011821, 0, 0, 30001, 7908, 219, 219), -- Tomus Thatcher (son), middle of the house
+    (@GUID + 5, 0, 50931, @WORLD, 0, -2266.391, -924.798, -1330.352, -2.9681294, 0, 0, 30005, 7911, 219, 219), -- Arvid Bell (father), Bell Farmhouse
+    (@GUID + 6, 0, 50933, @WORLD, 0, -2261.375, -924.7973, -1325.6388, -2.7981944, 0, 0, 30007, 7913, 219, 219), -- Lydia Bell (mother), NOT confirmed by video (bench)
+    (@GUID + 7, 0, 50934, @WORLD, 0, -2261.5747, -924.71954, -1336.1624, -0.58140683, 0, 0, 30008, 7916, 219, 219), -- Juliette Bell (daughter)
+    (@GUID + 8, 0, 50932, @WORLD, 0, -2256.9976, -924.7973, -1328.7004, 1.0045226, 0, 0, 30006, 7908, 219, 219), -- Flyer Bell (son), NOT confirmed by video (bench)
+    (@GUID + 9, 0, 50935, @WORLD, 0, -2336.6677, -927.243, -1498.4899, -2.199556, 0, 0, 30009, 7911, 219, 219), -- Rickard Miller (father), Sinnatus farmstead
+    (@GUID + 10, 0, 50937, @WORLD, 0, -2346.1968, -927.13983, -1498.582, 1.8375285, 0, 0, 30010, 7913, 219, 219), -- Beth Miller (mother)
+    (@GUID + 11, 0, 50938, @WORLD, 0, -2340.2576, -927.23505, -1503.3683, 2.9273736, 0, 0, 30012, 7916, 219, 219), -- Risa Miller (daughter)
+    (@GUID + 12, 0, 50936, @WORLD, 0, -2340.1245, -927.24457, -1501.6921, 2.6109703, 0, 0, 30011, 7915, 219, 219), -- Janus Miller (daughter)
     -- ambient units (retail video, 30 Sep 2026; not all of retail's, positions to be checked later)
     (@GUID + 20, 0, 17824, @WORLD, 0, -2347.3083, -929.7686, -1541.5844, -1.2061456, 0, 0, 25682, 9057, 1452, 1452), -- Dominion Scientist (standing; route 4596 is 7 m away, candidate)
     (@GUID + 21, 0, 17824, @WORLD, 0, -2322.1584, -921.8918, -1409.0945, 2.310243, 0, 0, 25682, 9057, 1452, 1452), -- Dominion Scientist (standing)
@@ -319,7 +326,7 @@ INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, 
     (@GUID + 25, 0, 17858, @WORLD, 0, -2300.0723, -923.34235, -1395.1648, 0.056319, 0, 0, 26045, 8194, 1452, 1452), -- Dominion Shocktrooper (standing)
     (@GUID + 26, 0, 17857, @WORLD, 0, -2382.9202, -922.79724, -1300.4427, 2.7416103, 0, 0, 30354, 8189, 1452, 1452), -- Dominion Soldier (standing)
     (@GUID + 27, 0, 17857, @WORLD, 0, -2372.9287, -922.4568, -1302.0913, -0.04861784, 0, 0, 30354, 8189, 1452, 1452), -- Dominion Soldier (standing)
-    (@GUID + 28, 0, 17857, @WORLD, 0, -2382.1763, -922.7308, -1299.7877, -1.6286813, 0, 0, 30354, 8189, 1452, 1452), -- Dominion Soldier (standing; 0.8 m from the first one, check)
+    (@GUID + 28, 0, 17857, @WORLD, 0, -2361.7585, -922.8954, -1299.5675, 2.7107098, 0, 0, 30354, 8189, 1452, 1452), -- Dominion Soldier (standing; replaces one that stood 0.8 m from another)
     (@GUID + 29, 0, 26853, @WORLD, 0, -2342.8333, -922.79865, -1223.9741, -1.1521286, 0, 0, 26045, 8194, 1236, 1236), -- Dominion Gatekeeper (neutral; bubble lines 465729-465733, script)
     (@GUID + 30, 0, 17736, @WORLD, 0, -2338.875, -923.7056, -1224.9783, 1.5392759, 0, 0, 26092, 8058, 219, 219), -- Hycrest Citizen, talking to the gatekeeper (model NOT verified as the original, stand-in)
     (@GUID + 31, 0, 17733, @WORLD, 0, -2336.2754, -923.8124, -1230.2643, 3.066614, 0, 0, 25682, 8066, 219, 219), -- Hycrest Citizen, waiting in line (model NOT verified as the original, stand-in)
