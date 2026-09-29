@@ -284,6 +284,102 @@ INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
     (@GUID + 24, 10, 15);
 
 -- --------------------------------------
+-- The Great Escape (public event 423, tier 2 Merciful)
+-- Three families wait in their houses (measured in game against retail videos, 29-30 Sep 2026; see
+-- docs research/great-escape.md). Walking into a house starts that family: the script walks them to their gate
+-- (Spline2 14702/14704/14706), spawns the Dominion waves there, then walks them out (14703/14705/14707) and removes them.
+--   Thatchers  Highfeather Ranch   (house point 45851, gate 45919)
+--   Bells      Bell Farmhouse      (house point 45850, gate 45920); the son's and mother's spots aren't confirmed
+--   Millers    Sinnatus farmstead  (house point 45852, gate 45921)
+-- The gate enemies aren't spawned here: the script spawns each wave. Ambient units (scientists, shocktroopers,
+-- soldiers, the gatekeeper with farmers queueing) belong to the mission too, so they go when the barn closes.
+-- --------------------------------------
+SET @EVENT_GREAT_ESCAPE = 423;
+DELETE FROM `entity_event` WHERE `eventId` = @EVENT_GREAT_ESCAPE;
+SET @GUID = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`);
+INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`) VALUES
+    (@GUID + 1, 0, 17884, @WORLD, 0, -2398.8267, -924.85706, -1222.151, 0.09961319, 0, 0, 30000, 7911, 762, 762), -- Edwerd Thatcher (father), Highfeather Ranch
+    (@GUID + 2, 0, 17886, @WORLD, 0, -2395.7376, -924.72784, -1221.8727, -1.4160091, 0, 0, 30002, 7913, 762, 762), -- Claudia Thatcher (mother)
+    (@GUID + 3, 0, 17887, @WORLD, 0, -2403.4873, -924.9542, -1223.2471, 1.2871325, 0, 0, 30003, 7916, 762, 762), -- Aria Thatcher (daughter)
+    (@GUID + 4, 0, 17885, @WORLD, 0, -2400.4517, -924.8873, -1218.1425, 1.2011821, 0, 0, 30001, 7908, 762, 762), -- Tomus Thatcher (son), middle of the house
+    (@GUID + 5, 0, 50931, @WORLD, 0, -2266.391, -924.798, -1330.352, -2.9681294, 0, 0, 30005, 7911, 762, 762), -- Arvid Bell (father), Bell Farmhouse
+    (@GUID + 6, 0, 50933, @WORLD, 0, -2261.375, -924.7973, -1325.6388, -2.7981944, 0, 0, 30007, 7913, 762, 762), -- Lydia Bell (mother), NOT confirmed by video (bench)
+    (@GUID + 7, 0, 50934, @WORLD, 0, -2261.5747, -924.71954, -1336.1624, -0.58140683, 0, 0, 30008, 7916, 762, 762), -- Juliette Bell (daughter)
+    (@GUID + 8, 0, 50932, @WORLD, 0, -2256.9976, -924.7973, -1328.7004, 1.0045226, 0, 0, 30006, 7908, 762, 762), -- Flyer Bell (son), NOT confirmed by video (bench)
+    (@GUID + 9, 0, 50935, @WORLD, 0, -2336.6677, -927.243, -1498.4899, -2.199556, 0, 0, 30009, 7911, 762, 762), -- Rickard Miller (father), Sinnatus farmstead
+    (@GUID + 10, 0, 50937, @WORLD, 0, -2346.1968, -927.13983, -1498.582, 1.8375285, 0, 0, 30010, 7913, 762, 762), -- Beth Miller (mother)
+    (@GUID + 11, 0, 50938, @WORLD, 0, -2340.2576, -927.23505, -1503.3683, 2.9273736, 0, 0, 30012, 7916, 762, 762), -- Risa Miller (daughter)
+    (@GUID + 12, 0, 50936, @WORLD, 0, -2340.1245, -927.24457, -1501.6921, 2.6109703, 0, 0, 30011, 7915, 762, 762), -- Janus Miller (daughter)
+    -- ambient units (retail video, 30 Sep 2026; not all of retail's, positions to be checked later)
+    (@GUID + 20, 0, 17824, @WORLD, 0, -2347.3083, -929.7686, -1541.5844, -1.2061456, 0, 0, 25682, 9057, 1452, 1452), -- Dominion Scientist (standing; route 4596 is 7 m away, candidate)
+    (@GUID + 21, 0, 17824, @WORLD, 0, -2322.1584, -921.8918, -1409.0945, 2.310243, 0, 0, 25682, 9057, 1452, 1452), -- Dominion Scientist (standing)
+    (@GUID + 22, 0, 17824, @WORLD, 0, -2247.8723, -926.0753, -1352.887, -2.2875571, 0, 0, 25682, 9057, 1452, 1452), -- Dominion Scientist (standing), near the Bell Farmhouse
+    (@GUID + 23, 0, 17858, @WORLD, 0, -2299.716, -923.5784, -1399.9445, 3.0914814, 0, 0, 26045, 8194, 1452, 1452), -- Dominion Shocktrooper (standing; name hard to read in the video)
+    (@GUID + 24, 0, 17858, @WORLD, 0, -2295.9546, -923.6976, -1397.8584, 1.7281969, 0, 0, 26045, 8194, 1452, 1452), -- Dominion Shocktrooper (standing)
+    (@GUID + 25, 0, 17858, @WORLD, 0, -2300.0723, -923.34235, -1395.1648, 0.056319, 0, 0, 26045, 8194, 1452, 1452), -- Dominion Shocktrooper (standing)
+    (@GUID + 26, 0, 17857, @WORLD, 0, -2382.9202, -922.79724, -1300.4427, 2.7416103, 0, 0, 30354, 8189, 1452, 1452), -- Dominion Soldier (standing)
+    (@GUID + 27, 0, 17857, @WORLD, 0, -2372.9287, -922.4568, -1302.0913, -0.04861784, 0, 0, 30354, 8189, 1452, 1452), -- Dominion Soldier (standing)
+    (@GUID + 28, 0, 17857, @WORLD, 0, -2382.1763, -922.7308, -1299.7877, -1.6286813, 0, 0, 30354, 8189, 1452, 1452), -- Dominion Soldier (standing; 0.8 m from the first one, check)
+    (@GUID + 29, 0, 26853, @WORLD, 0, -2342.8333, -922.79865, -1223.9741, -1.1521286, 0, 0, 26045, 8194, 1236, 1236), -- Dominion Gatekeeper (neutral; bubble lines 465729-465733, script)
+    (@GUID + 30, 0, 17736, @WORLD, 0, -2338.875, -923.7056, -1224.9783, 1.5392759, 0, 0, 26092, 8058, 219, 219), -- Hycrest Citizen, talking to the gatekeeper (model NOT verified as the original, stand-in)
+    (@GUID + 31, 0, 17733, @WORLD, 0, -2336.2754, -923.8124, -1230.2643, 3.066614, 0, 0, 25682, 8066, 219, 219), -- Hycrest Citizen, waiting in line (model NOT verified as the original, stand-in)
+    (@GUID + 32, 0, 17737, @WORLD, 0, -2336.0195, -923.8308, -1234.7668, 3.066614, 0, 0, 26094, 8059, 219, 219); -- Hycrest Citizen, waiting in line (model NOT verified as the original, stand-in)
+
+INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
+    (@GUID + 1, @EVENT_GREAT_ESCAPE, 0),
+    (@GUID + 2, @EVENT_GREAT_ESCAPE, 0),
+    (@GUID + 3, @EVENT_GREAT_ESCAPE, 0),
+    (@GUID + 4, @EVENT_GREAT_ESCAPE, 0),
+    (@GUID + 5, @EVENT_GREAT_ESCAPE, 0),
+    (@GUID + 6, @EVENT_GREAT_ESCAPE, 0),
+    (@GUID + 7, @EVENT_GREAT_ESCAPE, 0),
+    (@GUID + 8, @EVENT_GREAT_ESCAPE, 0),
+    (@GUID + 9, @EVENT_GREAT_ESCAPE, 0),
+    (@GUID + 10, @EVENT_GREAT_ESCAPE, 0),
+    (@GUID + 11, @EVENT_GREAT_ESCAPE, 0),
+    (@GUID + 12, @EVENT_GREAT_ESCAPE, 0),
+    (@GUID + 20, @EVENT_GREAT_ESCAPE, 0),
+    (@GUID + 21, @EVENT_GREAT_ESCAPE, 0),
+    (@GUID + 22, @EVENT_GREAT_ESCAPE, 0),
+    (@GUID + 23, @EVENT_GREAT_ESCAPE, 0),
+    (@GUID + 24, @EVENT_GREAT_ESCAPE, 0),
+    (@GUID + 25, @EVENT_GREAT_ESCAPE, 0),
+    (@GUID + 26, @EVENT_GREAT_ESCAPE, 0),
+    (@GUID + 27, @EVENT_GREAT_ESCAPE, 0),
+    (@GUID + 28, @EVENT_GREAT_ESCAPE, 0),
+    (@GUID + 29, @EVENT_GREAT_ESCAPE, 0),
+    (@GUID + 30, @EVENT_GREAT_ESCAPE, 0),
+    (@GUID + 31, @EVENT_GREAT_ESCAPE, 0),
+    (@GUID + 32, @EVENT_GREAT_ESCAPE, 0);
+
+INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
+    (@GUID + 1, 10, 15),
+    (@GUID + 2, 10, 15),
+    (@GUID + 3, 10, 15),
+    (@GUID + 4, 10, 15),
+    (@GUID + 5, 10, 15),
+    (@GUID + 6, 10, 15),
+    (@GUID + 7, 10, 15),
+    (@GUID + 8, 10, 15),
+    (@GUID + 9, 10, 15),
+    (@GUID + 10, 10, 15),
+    (@GUID + 11, 10, 15),
+    (@GUID + 12, 10, 15),
+    (@GUID + 20, 10, 15),
+    (@GUID + 21, 10, 15),
+    (@GUID + 22, 10, 15),
+    (@GUID + 23, 10, 15),
+    (@GUID + 24, 10, 15),
+    (@GUID + 25, 10, 15),
+    (@GUID + 26, 10, 15),
+    (@GUID + 27, 10, 15),
+    (@GUID + 28, 10, 15),
+    (@GUID + 29, 10, 15),
+    (@GUID + 30, 10, 15),
+    (@GUID + 31, 10, 15),
+    (@GUID + 32, 10, 15);
+
+-- --------------------------------------
 -- TEST / PRELIMINARY (28-29 Sep 2026): Dominion units on retail's own patrol routes, to fill the map. NOT sorted yet:
 -- which of these belong to which mission, and which routes are really spotlight lanes, still has to be checked against
 -- the retail videos (parked). How the set was made:
