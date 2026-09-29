@@ -323,9 +323,6 @@ INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, 
     (@GUID + 115, 0, 17856, @WORLD, 0, -2446.7356, -928.9658, -1627.0905, 1.404914, 0, 0, 30972, 8192, 1452, 1452),
     (@GUID + 121, 0, 17856, @WORLD, 0, -2303.1631, -923.5451, -1343.1506, -3.141593, 0, 0, 30968, 8192, 1452, 1452),
     (@GUID + 123, 0, 17856, @WORLD, 0, -2397.8594, -924.7783, -1223.0437, -3.141593, 0, 0, 30972, 8192, 1452, 1452),
-    (@GUID + 124, 0, 17857, @WORLD, 0, -2355.2041, -921.1218, -1200.0283, -3.141593, 0, 0, 31078, 8189, 1452, 1452),  -- Dominion Soldier (checkpoint/detention)
-    (@GUID + 126, 0, 17857, @WORLD, 0, -2226.1965, -929.3102, -1263.6118, -3.141593, 0, 0, 30354, 8189, 1452, 1452),  -- Dominion Soldier (checkpoint/detention)
-    (@GUID + 127, 0, 17856, @WORLD, 0, -2348.1311, -927.8448, -1486.1561, -3.141593, 0, 0, 30972, 8192, 1452, 1452),
     (@GUID + 128, 0, 17856, @WORLD, 0, -2240.9167, -929.3137, -1480.4342, -3.141593, 0, 0, 30967, 8192, 1452, 1452),
     (@GUID + 129, 0, 17857, @WORLD, 0, -2674.6252, -881.0894, -1782.1669, -3.141593, 0, 0, 30791, 8189, 1452, 1452),  -- Dominion Soldier (checkpoint/detention)
     (@GUID + 131, 0, 17857, @WORLD, 0, -2350.2651, -922.2487, -1202.3861, -3.141593, 0, 0, 27550, 8189, 1452, 1452),  -- Dominion Soldier (checkpoint/detention)
@@ -360,9 +357,6 @@ INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
     (@GUID + 115, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 121, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 123, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 124, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 126, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 127, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 128, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 129, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 131, @EVENT_FARMERS_DAUGHTER, 0),
@@ -397,9 +391,6 @@ INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
     (@GUID + 115, 10, 15),
     (@GUID + 121, 10, 15),
     (@GUID + 123, 10, 15),
-    (@GUID + 124, 10, 15),
-    (@GUID + 126, 10, 15),
-    (@GUID + 127, 10, 15),
     (@GUID + 128, 10, 15),
     (@GUID + 129, 10, 15),
     (@GUID + 131, 10, 15),
@@ -434,9 +425,6 @@ INSERT INTO `entity_spline` (`id`, `splineId`, `mode`, `speed`, `fx`, `fy`, `fz`
     (@GUID + 115, 7960, 1, 2, 0, 0, 0),  -- spline 7960, 93 m, open, BackAndForth
     (@GUID + 121, 14698, 1, 2, 0, 0, 0),  -- spline 14698, 79 m, open, BackAndForth
     (@GUID + 123, 14702, 1, 2, 0, 0, 0),  -- spline 14702, 86 m, open, BackAndForth
-    (@GUID + 124, 14703, 1, 2, 0, 0, 0),  -- spline 14703, 89 m, open, BackAndForth
-    (@GUID + 126, 14705, 1, 2, 0, 0, 0),  -- spline 14705, 144 m, open, BackAndForth
-    (@GUID + 127, 14706, 1, 2, 0, 0, 0),  -- spline 14706, 119 m, open, BackAndForth
     (@GUID + 128, 14707, 1, 2, 0, 0, 0),  -- spline 14707, 158 m, open, BackAndForth
     (@GUID + 129, 14748, 1, 2, 0, 0, 0),  -- spline 14748, 244 m, open, BackAndForth
     (@GUID + 131, 14818, 1, 2, 0, 0, 0),  -- spline 14818, 69 m, open, BackAndForth
