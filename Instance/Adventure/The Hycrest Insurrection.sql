@@ -284,12 +284,18 @@ INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
     (@GUID + 24, 10, 15);
 
 -- --------------------------------------
--- TEST (28 Sep 2026): one Dominion Scout on every ground-level spline (thinned since; Dominion Soldiers 17857 in
--- Checkpoint Gamma and the Detention Center) of world 1149 (Spline2, type 1:
--- 153 splines; closed loops walked Cyclic, open paths BackAndForth, 2 m/s), to see which retail patrol routes
--- to keep and which to replace (spotlights and such). The server walks them itself (entity_spline + SplineAI). On the
--- Farmer's Daughter (event 420 phase 0), so they stay until the hideout's barn closes. Remove this block (or rows) when
--- done. Generated from the tables; 18 airborne splines and the 7 linear scripted walks left out.
+-- TEST / PRELIMINARY (28-29 Sep 2026): Dominion units on retail's own patrol routes, to fill the map. NOT sorted yet:
+-- which of these belong to which mission, and which routes are really spotlight lanes, still has to be checked against
+-- the retail videos (parked). How the set was made:
+--   1. one Dominion Scout on every ground-level spline of world 1149 (Spline2 type 1; closed loops walked Cyclic, open
+--      paths BackAndForth, 2 m/s; the server walks them itself: entity_spline + SplineAI); 18 airborne splines and the
+--      7 linear scripted walks left out;
+--   2. removed: paths within 40 m of a hideout, crowded clusters, Hycrest City and Spinner's Grotto (later missions'
+--      areas), then at most 2 within 80 m of each other (path midpoints, longest routes and KEEP rows first), plus the
+--      ones picked out in game (floating, walking into barns, on a spotlight route);
+--   3. Checkpoint Gamma and the Detention Center (not this mission's areas) keep more, as Dominion Soldiers (17857).
+-- KEEP rows are confirmed routes. On the Farmer's Daughter (event 420 phase 0), so they stay until the hideout's barn
+-- closes. Removed spline ids are in the git history.
 -- --------------------------------------
 SET @GUID = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`);
 INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`) VALUES
