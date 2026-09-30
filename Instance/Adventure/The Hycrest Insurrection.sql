@@ -150,7 +150,7 @@ INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
 -- --------------------------------------
 SET @GUID = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`);
 INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`) VALUES
-    (@GUID + 1, 0, 17777, @WORLD, 0, -2524.9238, -925.81537, -1189.5778, 1.4186237, 0, 0, 23711, 8196, 219, 219);
+    (@GUID + 1, 0, 17777, @WORLD, 0, -2521.0, -925.81537, -1192.0, 1.4186237, 0, 0, 23711, 8196, 219, 219); -- moved 30 Sep 2026: 8 archived Jabbithole sightings at (-2521, -1192), 4.6 m from the video-measured spot
 
 INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
     (@GUID + 1, @EVENT_MAIN, 0);
@@ -224,8 +224,11 @@ INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
 -- (with the Shatterforce Responsebot) at one of two spots per run; everything else is shared. The script picks the
 -- layout at random when the mission starts and sets its phase:
 --   phase 0      shared: Tarquim, the spotlight targets (hostile adventure faction so their gun fire hits players)
---   phase 10/11  Millithea and her drones, layout A / B
---   phase 20/21  Prema and the Responsebot, layout A / B, set once Millithea is freed (one captive at a time)
+--   phase 10/11/12  Millithea and her drones, layout A / B / C
+--   phase 20/21/22  Prema and the Responsebot, layout A / B / C, set once Millithea is freed (one captive at a time)
+-- Layout C and the spotlight loops come from retail data: archived Jabbithole NPC pages (player-collected positions,
+-- 30 Sep 2026, docs research/jabbithole-findings.md). Spotlights patrol table loop splines around all three captive
+-- areas (A 7960-7964, B 7950/7952/7954/7956/7959, C 4652 + 7932-7935), whichever layout is picked.
 -- The script sits Tarquim, Millithea and Prema down, moves the spotlight targets and frees the captives once their
 -- guards are dead. The Recon Specialist isn't spawned here: the script calls one (alarm).
 -- --------------------------------------
@@ -240,16 +243,32 @@ INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, 
     (@GUID + 5, 0, 17772, @WORLD, 0, -2377.9238, -929.3451, -1641.9752, -2.9476466, 0, 0, 29997, 8066, 219, 219), -- Prema Arcwulff (seated), layout A
     (@GUID + 6, 0, 18509, @WORLD, 0, -2366.8215, -929.4628, -1631.9248, 2.957307, 0, 0, 23091, 0, 1452, 1452), -- Shatterforce Responsebot, guards Prema, layout A
     (@GUID + 15, 0, 17763, @WORLD, 0, -2484.1101, -927.7783, -1283.1149, 0.0, 0, 0, 23754, 0, 1452, 1452), -- Automated Machine Gun - Spotlight Target (lane moved by the script)
-    (@GUID + 16, 0, 17763, @WORLD, 0, -2468.567, -929.0733, -1593.2743, 0.0, 0, 0, 23754, 0, 1452, 1452), -- Automated Machine Gun - Spotlight Target (lane moved by the script)
-    (@GUID + 17, 0, 17763, @WORLD, 0, -2490.1282, -920.8113, -1672.5258, 0.0, 0, 0, 23754, 0, 1452, 1452), -- Automated Machine Gun - Spotlight Target (lane moved by the script)
-    (@GUID + 18, 0, 17763, @WORLD, 0, -2402.416, -928.3815, -1673.6968, 0.0, 0, 0, 23754, 0, 1452, 1452), -- Automated Machine Gun - Spotlight Target (lane moved by the script)
     (@GUID + 20, 0, 49490, @WORLD, 0, -2289.1301, -924.9354, -1500.1172, -3.0564866, 0, 0, 30004, 8066, 219, 219), -- Millithea (seated), layout B
     (@GUID + 21, 0, 51026, @WORLD, 0, -2287.9934, -925.20447, -1493.8815, 0.10366, 0, 0, 29558, 0, 1452, 1452), -- Predator Drone, guards Millithea, layout B
     (@GUID + 22, 0, 51026, @WORLD, 0, -2290.4626, -924.68036, -1506.18, -2.9744594, 0, 0, 29558, 0, 1452, 1452), -- Predator Drone, guards Millithea, layout B
     (@GUID + 23, 0, 17772, @WORLD, 0, -2273.572, -925.9564, -1674.7275, -3.0431898, 0, 0, 29997, 8066, 219, 219), -- Prema Arcwulff (seated), layout B
     (@GUID + 24, 0, 18509, @WORLD, 0, -2263.7344, -926.26117, -1670.4274, 1.4157736, 0, 0, 23091, 0, 1452, 1452), -- Shatterforce Responsebot, guards Prema, layout B
     (@GUID + 25, 0, 17856, @WORLD, 0, -2442.6165, -922.5818, -1395.274, 1.9820464, 0, 0, 30970, 8192, 1452, 1452), -- Dominion Scout (standing; Teun 30 Sep 2026)
-    (@GUID + 26, 0, 17856, @WORLD, 0, -2510.9734, -927.3226, -1396.573, -2.7728248, 0, 0, 30970, 8192, 1452, 1452); -- Dominion Scout (standing; Teun 30 Sep 2026)
+    (@GUID + 26, 0, 17856, @WORLD, 0, -2510.9734, -927.3226, -1396.573, -2.7728248, 0, 0, 30970, 8192, 1452, 1452), -- Dominion Scout (standing; Teun 30 Sep 2026)
+    (@GUID + 27, 0, 49490, @WORLD, 0, -2479.4, -923.5, -1375.1, -3.03, 0, 0, 30004, 8066, 219, 219), -- Millithea (seated), layout C (WorldLocation2 39382; Jabbithole)
+    (@GUID + 28, 0, 51026, @WORLD, 0, -2480.0, -924.0, -1366.0, 0.0, 0, 0, 29558, 0, 1452, 1452), -- Predator Drone, guards Millithea, layout C (Jabbithole cluster)
+    (@GUID + 29, 0, 51026, @WORLD, 0, -2479.0, -923.5, -1384.0, -3.13, 0, 0, 29558, 0, 1452, 1452), -- Predator Drone, guards Millithea, layout C (mirrored like A/B)
+    (@GUID + 30, 0, 17772, @WORLD, 0, -2515.0, -930.75, -1519.0, -3.0, 0, 0, 29997, 8066, 219, 219), -- Prema Arcwulff (seated), layout C (Jabbithole cluster; marker 38650)
+    (@GUID + 31, 0, 18509, @WORLD, 0, -2507.0, -931.0, -1510.0, 0.73, 0, 0, 23091, 0, 1452, 1452), -- Shatterforce Responsebot, guards Prema, layout C (Jabbithole cluster)
+    (@GUID + 33, 0, 17763, @WORLD, 0, -2446.7356, -928.9658, -1627.0905, 0.0, 0, 0, 23754, 0, 1452, 1452), -- Automated Machine Gun - Spotlight Target, loop spline 7960 (A area; Jabbithole)
+    (@GUID + 34, 0, 17763, @WORLD, 0, -2473.8643, -927.8594, -1631.8379, 0.0, 0, 0, 23754, 0, 1452, 1452), -- Automated Machine Gun - Spotlight Target, loop spline 7961 (A area; Jabbithole)
+    (@GUID + 35, 0, 17763, @WORLD, 0, -2467.0847, -926.3747, -1651.0111, 0.0, 0, 0, 23754, 0, 1452, 1452), -- Automated Machine Gun - Spotlight Target, loop spline 7962 (A area; Jabbithole)
+    (@GUID + 36, 0, 17763, @WORLD, 0, -2459.2249, -924.0008, -1670.4136, 0.0, 0, 0, 23754, 0, 1452, 1452), -- Automated Machine Gun - Spotlight Target, loop spline 7963 (A area; Jabbithole)
+    (@GUID + 37, 0, 17763, @WORLD, 0, -2425.9185, -927.3434, -1658.906, 0.0, 0, 0, 23754, 0, 1452, 1452), -- Automated Machine Gun - Spotlight Target, loop spline 7964 (A area; Jabbithole)
+    (@GUID + 38, 0, 17763, @WORLD, 0, -2281.9224, -926.822, -1564.5543, 0.0, 0, 0, 23754, 0, 1452, 1452), -- Automated Machine Gun - Spotlight Target, loop spline 7950 (B area; Jabbithole)
+    (@GUID + 39, 0, 17763, @WORLD, 0, -2294.1289, -926.6111, -1562.752, 0.0, 0, 0, 23754, 0, 1452, 1452), -- Automated Machine Gun - Spotlight Target, loop spline 7952 (B area; Jabbithole)
+    (@GUID + 40, 0, 17763, @WORLD, 0, -2306.3313, -929.8511, -1593.2247, 0.0, 0, 0, 23754, 0, 1452, 1452), -- Automated Machine Gun - Spotlight Target, loop spline 7954 (B area; Jabbithole)
+    (@GUID + 41, 0, 17763, @WORLD, 0, -2291.552, -928.0159, -1611.5833, 0.0, 0, 0, 23754, 0, 1452, 1452), -- Automated Machine Gun - Spotlight Target, loop spline 7956 (B area; Jabbithole)
+    (@GUID + 42, 0, 17763, @WORLD, 0, -2265.8428, -929.0908, -1601.1726, 0.0, 0, 0, 23754, 0, 1452, 1452), -- Automated Machine Gun - Spotlight Target, loop spline 7959 (B area; Jabbithole)
+    (@GUID + 43, 0, 17763, @WORLD, 0, -2555.8213, -929.727, -1309.201, 0.0, 0, 0, 23754, 0, 1452, 1452), -- Automated Machine Gun - Spotlight Target, loop spline 7932 (C area; Jabbithole)
+    (@GUID + 44, 0, 17763, @WORLD, 0, -2568.2146, -927.5577, -1309.6948, 0.0, 0, 0, 23754, 0, 1452, 1452), -- Automated Machine Gun - Spotlight Target, loop spline 7933 (C area; Jabbithole)
+    (@GUID + 45, 0, 17763, @WORLD, 0, -2567.9734, -929.3442, -1332.028, 0.0, 0, 0, 23754, 0, 1452, 1452), -- Automated Machine Gun - Spotlight Target, loop spline 7934 (C area; Jabbithole)
+    (@GUID + 46, 0, 17763, @WORLD, 0, -2541.2742, -929.7158, -1348.7952, 0.0, 0, 0, 23754, 0, 1452, 1452); -- Automated Machine Gun - Spotlight Target, loop spline 7935 (C area; Jabbithole)
 
 INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
     (@GUID + 1, @EVENT_FARMERS_DAUGHTER, 0),
@@ -259,16 +278,32 @@ INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
     (@GUID + 5, @EVENT_FARMERS_DAUGHTER, 20),
     (@GUID + 6, @EVENT_FARMERS_DAUGHTER, 20),
     (@GUID + 15, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 16, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 17, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 18, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 20, @EVENT_FARMERS_DAUGHTER, 11),
     (@GUID + 21, @EVENT_FARMERS_DAUGHTER, 11),
     (@GUID + 22, @EVENT_FARMERS_DAUGHTER, 11),
     (@GUID + 23, @EVENT_FARMERS_DAUGHTER, 21),
     (@GUID + 24, @EVENT_FARMERS_DAUGHTER, 21),
     (@GUID + 25, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 26, @EVENT_FARMERS_DAUGHTER, 0);
+    (@GUID + 26, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 27, @EVENT_FARMERS_DAUGHTER, 12),
+    (@GUID + 28, @EVENT_FARMERS_DAUGHTER, 12),
+    (@GUID + 29, @EVENT_FARMERS_DAUGHTER, 12),
+    (@GUID + 30, @EVENT_FARMERS_DAUGHTER, 22),
+    (@GUID + 31, @EVENT_FARMERS_DAUGHTER, 22),
+    (@GUID + 33, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 34, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 35, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 36, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 37, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 38, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 39, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 40, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 41, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 42, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 43, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 44, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 45, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 46, @EVENT_FARMERS_DAUGHTER, 0);
 
 INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
     (@GUID + 1, 10, 15),
@@ -278,16 +313,32 @@ INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
     (@GUID + 5, 10, 15),
     (@GUID + 6, 10, 15),
     (@GUID + 15, 10, 15),
-    (@GUID + 16, 10, 15),
-    (@GUID + 17, 10, 15),
-    (@GUID + 18, 10, 15),
     (@GUID + 20, 10, 15),
     (@GUID + 21, 10, 15),
     (@GUID + 22, 10, 15),
     (@GUID + 23, 10, 15),
     (@GUID + 24, 10, 15),
     (@GUID + 25, 10, 15),
-    (@GUID + 26, 10, 15);
+    (@GUID + 26, 10, 15),
+    (@GUID + 27, 10, 15),
+    (@GUID + 28, 10, 15),
+    (@GUID + 29, 10, 15),
+    (@GUID + 30, 10, 15),
+    (@GUID + 31, 10, 15),
+    (@GUID + 33, 10, 15),
+    (@GUID + 34, 10, 15),
+    (@GUID + 35, 10, 15),
+    (@GUID + 36, 10, 15),
+    (@GUID + 37, 10, 15),
+    (@GUID + 38, 10, 15),
+    (@GUID + 39, 10, 15),
+    (@GUID + 40, 10, 15),
+    (@GUID + 41, 10, 15),
+    (@GUID + 42, 10, 15),
+    (@GUID + 43, 10, 15),
+    (@GUID + 44, 10, 15),
+    (@GUID + 45, 10, 15),
+    (@GUID + 46, 10, 15);
 
 -- --------------------------------------
 -- The Great Escape (public event 423, tier 2 Merciful)
@@ -397,142 +448,152 @@ INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
 --      areas), then at most 2 within 80 m of each other (path midpoints, longest routes and KEEP rows first), plus the
 --      ones picked out in game (floating, walking into barns, on a spotlight route);
 --   3. Checkpoint Gamma and the Detention Center (not this mission's areas) keep more, as Dominion Soldiers (17857).
+-- Scouts redone 30 Sep 2026 from retail data (archived Jabbithole sightings, docs research/jabbithole-findings.md):
+--   patrols on the short table splines with 2+ sightings on them, standing scouts at clusters of 2+ sightings;
+--   the KEEP patrol (by Tarquim) and Teun's two video-confirmed standing scouts (Farmer's Daughter block) stay;
+--   plus (option 1) a patrol on each short spline with a single sighting and a standing scout per group of 2-3
+--   single sightings within 25 m. Lone single sightings (19) not placed yet.
 -- KEEP rows are confirmed routes. On the Farmer's Daughter (event 420 phase 0), so they stay until the hideout's barn
 -- closes. Removed spline ids are in the git history.
 -- --------------------------------------
 SET @GUID = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`);
 INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`) VALUES
     (@GUID + 13, 0, 17857, @WORLD, 0, -2190.3650, -927.5854, -1306.1884, 1.954583, 0, 0, 30354, 8189, 1452, 1452),  -- Dominion Soldier (checkpoint/detention)
-    (@GUID + 14, 0, 17856, @WORLD, 0, -2248.6379, -928.7823, -1453.7770, -2.621533, 0, 0, 30970, 8192, 1452, 1452),
-    (@GUID + 16, 0, 17856, @WORLD, 0, -2247.3259, -927.9666, -1411.9745, -2.120057, 0, 0, 30967, 8192, 1452, 1452),
     (@GUID + 21, 0, 17857, @WORLD, 0, -2349.3638, -925.0932, -1257.0768, 3.137776, 0, 0, 30791, 8189, 1452, 1452),  -- Dominion Soldier (checkpoint/detention)
     (@GUID + 23, 0, 17857, @WORLD, 0, -2317.5564, -920.9146, -1198.8372, -0.762864, 0, 0, 27550, 8189, 1452, 1452),  -- Dominion Soldier (checkpoint/detention)
-    (@GUID + 29, 0, 17856, @WORLD, 0, -2424.6421, -923.9310, -1678.0225, -2.844436, 0, 0, 30968, 8192, 1452, 1452),
-    (@GUID + 31, 0, 17856, @WORLD, 0, -2465.5366, -922.3412, -1679.4854, -1.127098, 0, 0, 30972, 8192, 1452, 1452),
-    (@GUID + 35, 0, 17856, @WORLD, 0, -2334.7390, -900.7168, -1794.2461, -2.443586, 0, 0, 30972, 8192, 1452, 1452),
-    (@GUID + 38, 0, 17856, @WORLD, 0, -2605.7717, -928.0572, -1385.5016, 0.173525, 0, 0, 30970, 8192, 1452, 1452),
-    (@GUID + 39, 0, 17856, @WORLD, 0, -2568.8479, -928.4366, -1500.6844, -3.018491, 0, 0, 30972, 8192, 1452, 1452),
     (@GUID + 43, 0, 17856, @WORLD, 0, -2460.0657, -928.0908, -1210.6251, -3.141593, 0, 0, 30972, 8192, 1452, 1452),
-    (@GUID + 45, 0, 17856, @WORLD, 0, -2571.2788, -927.8309, -1280.9978, 2.884346, 0, 0, 30968, 8192, 1452, 1452),
-    (@GUID + 47, 0, 17856, @WORLD, 0, -2584.8467, -916.3095, -1633.9220, -3.141593, 0, 0, 30972, 8192, 1452, 1452),
-    (@GUID + 58, 0, 17856, @WORLD, 0, -2320.6182, -923.3251, -1696.9077, 2.933191, 0, 0, 30970, 8192, 1452, 1452),
-    (@GUID + 64, 0, 17856, @WORLD, 0, -2290.7002, -921.8855, -1194.0387, 0.145026, 0, 0, 30967, 8192, 1452, 1452),
-    (@GUID + 75, 0, 17856, @WORLD, 0, -2366.7043, -923.9154, -1288.3143, -1.080193, 0, 0, 30972, 8192, 1452, 1452),
-    (@GUID + 81, 0, 17856, @WORLD, 0, -2311.4377, -923.2948, -1508.1396, -3.021916, 0, 0, 30968, 8192, 1452, 1452),
-    (@GUID + 87, 0, 17856, @WORLD, 0, -2763.6306, -918.3665, -1475.9076, -0.591146, 0, 0, 30972, 8192, 1452, 1452),
-    (@GUID + 97, 0, 17856, @WORLD, 0, -2567.9734, -929.3442, -1332.0280, -2.450444, 0, 0, 30968, 8192, 1452, 1452),
-    (@GUID + 101, 0, 17856, @WORLD, 0, -2338.2908, -921.9292, -1329.7443, 3.019637, 0, 0, 30968, 8192, 1452, 1452),
-    (@GUID + 113, 0, 17856, @WORLD, 0, -2291.5520, -928.0159, -1611.5833, 2.699071, 0, 0, 30968, 8192, 1452, 1452),
-    (@GUID + 115, 0, 17856, @WORLD, 0, -2446.7356, -928.9658, -1627.0905, 1.404914, 0, 0, 30972, 8192, 1452, 1452),
-    (@GUID + 121, 0, 17856, @WORLD, 0, -2303.1631, -923.5451, -1343.1506, -3.141593, 0, 0, 30968, 8192, 1452, 1452),
-    (@GUID + 123, 0, 17856, @WORLD, 0, -2397.8594, -924.7783, -1223.0437, -3.141593, 0, 0, 30972, 8192, 1452, 1452),
-    (@GUID + 128, 0, 17856, @WORLD, 0, -2240.9167, -929.3137, -1480.4342, -3.141593, 0, 0, 30967, 8192, 1452, 1452),
     (@GUID + 129, 0, 17857, @WORLD, 0, -2674.6252, -881.0894, -1782.1669, -3.141593, 0, 0, 30791, 8189, 1452, 1452),  -- Dominion Soldier (checkpoint/detention)
     (@GUID + 131, 0, 17857, @WORLD, 0, -2350.2651, -922.2487, -1202.3861, -3.141593, 0, 0, 27550, 8189, 1452, 1452),  -- Dominion Soldier (checkpoint/detention)
     (@GUID + 132, 0, 17857, @WORLD, 0, -2350.6108, -922.8124, -1207.4022, -3.141593, 0, 0, 31078, 8189, 1452, 1452),  -- Dominion Soldier (checkpoint/detention)
-    (@GUID + 137, 0, 17856, @WORLD, 0, -2570.7659, -910.2632, -1680.2649, -3.141593, 0, 0, 30968, 8192, 1452, 1452),
     (@GUID + 141, 0, 17857, @WORLD, 0, -2328.2107, -923.8275, -1203.8024, -3.141593, 0, 0, 30354, 8189, 1452, 1452),  -- Dominion Soldier (checkpoint/detention)
-    (@GUID + 142, 0, 17856, @WORLD, 0, -2317.1416, -868.3557, -1878.6327, -3.141593, 0, 0, 30970, 8192, 1452, 1452),
-    (@GUID + 152, 0, 17856, @WORLD, 0, -2298.7070, -925.7532, -1437.3081, -3.141593, 0, 0, 30967, 8192, 1452, 1452);
+    (@GUID + 300, 0, 17856, @WORLD, 0, -2390.792, -926.2801, -1514.5188, 0, 0, 0, 30970, 8192, 1452, 1452), -- Dominion Scout, patrols spline 4692 (26 m; 2 Jabbithole sightings on it),
+    (@GUID + 301, 0, 17856, @WORLD, 0, -2303.1631, -923.5451, -1343.1506, 0, 0, 0, 30970, 8192, 1452, 1452), -- Dominion Scout, patrols spline 14698 (79 m; 2 Jabbithole sightings on it),
+    (@GUID + 302, 0, 17856, @WORLD, 0, -2389.3823, -926.2544, -1602.6337, 0, 0, 0, 30970, 8192, 1452, 1452), -- Dominion Scout, patrols spline 4486 (88 m; 2 Jabbithole sightings on it),
+    (@GUID + 303, 0, 17856, @WORLD, 0, -2418.3, -928.416666666667, -1635.7, -1.982, 0, 0, 30970, 8192, 1452, 1452), -- Dominion Scout (standing; retail cluster of 3 Jabbithole sightings),
+    (@GUID + 304, 0, 17856, @WORLD, 0, -2406.0, -930.0, -1566.0, 1.66, 0, 0, 30970, 8192, 1452, 1452), -- Dominion Scout (standing; retail cluster of 2 Jabbithole sightings),
+    (@GUID + 305, 0, 17856, @WORLD, 0, -2484.9, -925.75, -1303.0, -1.073, 0, 0, 30970, 8192, 1452, 1452), -- Dominion Scout (standing; retail cluster of 9 Jabbithole sightings),
+    (@GUID + 306, 0, 17856, @WORLD, 0, -2408.6, -925.8500000000004, -1507.4, 2.816, 0, 0, 30970, 8192, 1452, 1452), -- Dominion Scout (standing; retail cluster of 5 Jabbithole sightings),
+    (@GUID + 307, 0, 17856, @WORLD, 0, -2494.8, -927.0, -1299.8, -1.35, 0, 0, 30970, 8192, 1452, 1452), -- Dominion Scout (standing; retail cluster of 4 Jabbithole sightings),
+    (@GUID + 308, 0, 17856, @WORLD, 0, -2432.3, -925.5, -1281.7, -0.902, 0, 0, 30970, 8192, 1452, 1452), -- Dominion Scout (standing; retail cluster of 3 Jabbithole sightings),
+    (@GUID + 309, 0, 17856, @WORLD, 0, -2314.0, -900.0, -1789.0, -2.05, 0, 0, 30970, 8192, 1452, 1452), -- Dominion Scout (standing; retail cluster of 2 Jabbithole sightings),
+    (@GUID + 310, 0, 17856, @WORLD, 0, -2426.7, -910.1666666666679, -1727.0, -1.879, 0, 0, 30970, 8192, 1452, 1452), -- Dominion Scout (standing; retail cluster of 3 Jabbithole sightings),
+    (@GUID + 311, 0, 17856, @WORLD, 0, -2442.0, -915.75, -1707.0, -0.35, 0, 0, 30970, 8192, 1452, 1452), -- Dominion Scout (standing; retail cluster of 2 Jabbithole sightings),
+    (@GUID + 312, 0, 17856, @WORLD, 0, -2352.5, -924.0, -1293.5, -3.13, 0, 0, 30970, 8192, 1452, 1452), -- Dominion Scout (standing; retail cluster of 2 Jabbithole sightings),
+    (@GUID + 313, 0, 17856, @WORLD, 0, -2470.5, -923.5, -1378.5, 2.68, 0, 0, 30970, 8192, 1452, 1452), -- Dominion Scout (standing; retail cluster of 2 Jabbithole sightings),
+    (@GUID + 314, 0, 17856, @WORLD, 0, -2367.5, -918.625, -1370.0, -1.565, 0, 0, 30970, 8192, 1452, 1452), -- Dominion Scout (standing; retail cluster of 2 Jabbithole sightings),
+    (@GUID + 315, 0, 17856, @WORLD, 0, -2293.5, -926.0, -1276.5, -3.07, 0, 0, 30970, 8192, 1452, 1452), -- Dominion Scout (standing; retail cluster of 2 Jabbithole sightings),
+    (@GUID + 316, 0, 17856, @WORLD, 0, -2346.7, -902.1666666666661, -1793.7, 1.33, 0, 0, 30970, 8192, 1452, 1452), -- Dominion Scout (standing; retail cluster of 3 Jabbithole sightings),
+    (@GUID + 317, 0, 17856, @WORLD, 0, -2318.0, -916.25, -1753.0, 2.35, 0, 0, 30970, 8192, 1452, 1452), -- Dominion Scout (standing; retail cluster of 2 Jabbithole sightings);
+    (@GUID + 330, 0, 17856, @WORLD, 0, -2385.9255, -927.8702, -1667.951, 0, 0, 0, 30970, 8192, 1452, 1452), -- Dominion Scout, patrols spline 4594 (57 m; 1 Jabbithole sighting on it)
+    (@GUID + 331, 0, 17856, @WORLD, 0, -2358.303, -924.1985, -1462.0127, 0, 0, 0, 30970, 8192, 1452, 1452), -- Dominion Scout, patrols spline 4702 (45 m; 1 Jabbithole sighting on it)
+    (@GUID + 332, 0, 17856, @WORLD, 0, -2345.04, -919.1053, -1374.079, 0, 0, 0, 30970, 8192, 1452, 1452), -- Dominion Scout, patrols spline 16034 (41 m; 1 Jabbithole sighting on it)
+    (@GUID + 333, 0, 17856, @WORLD, 0, -2347.2664, -924.1139, -1461.1854, 0, 0, 0, 30970, 8192, 1452, 1452), -- Dominion Scout, patrols spline 16027 (36 m; 1 Jabbithole sighting on it)
+    (@GUID + 334, 0, 17856, @WORLD, 0, -2317.5564, -920.9146, -1198.8372, 0, 0, 0, 30970, 8192, 1452, 1452), -- Dominion Scout, patrols spline 4483 (84 m; 1 Jabbithole sighting on it)
+    (@GUID + 335, 0, 17856, @WORLD, 0, -2373.3, -924.0749999999998, -1279.7, -2.792, 0, 0, 30970, 8192, 1452, 1452), -- Dominion Scout (standing; 3 Jabbithole sightings within 25 m)
+    (@GUID + 336, 0, 17856, @WORLD, 0, -2468.0, -908.75, -1733.5, 0.665, 0, 0, 30970, 8192, 1452, 1452), -- Dominion Scout (standing; 2 Jabbithole sightings within 25 m)
+    (@GUID + 337, 0, 17856, @WORLD, 0, -2488.0, -928.0, -1279.0, 1.83, 0, 0, 30970, 8192, 1452, 1452), -- Dominion Scout (standing; 2 Jabbithole sightings within 25 m)
+    (@GUID + 338, 0, 17856, @WORLD, 0, -2484.5, -923.625, -1662.5, 2.46, 0, 0, 30970, 8192, 1452, 1452), -- Dominion Scout (standing; 2 Jabbithole sightings within 25 m)
+    (@GUID + 339, 0, 17856, @WORLD, 0, -2457.0, -929.5, -1570.5, -2.495, 0, 0, 30970, 8192, 1452, 1452), -- Dominion Scout (standing; 2 Jabbithole sightings within 25 m)
+    (@GUID + 340, 0, 17856, @WORLD, 0, -2427.0, -922.0, -1699.5, 1.675, 0, 0, 30970, 8192, 1452, 1452), -- Dominion Scout (standing; 2 Jabbithole sightings within 25 m)
+    (@GUID + 341, 0, 17856, @WORLD, 0, -2390.0, -920.125, -1321.5, -3.115, 0, 0, 30970, 8192, 1452, 1452), -- Dominion Scout (standing; 2 Jabbithole sightings within 25 m)
+    (@GUID + 342, 0, 17856, @WORLD, 0, -2386.0, -916.5, -1708.0, -2.84, 0, 0, 30970, 8192, 1452, 1452); -- Dominion Scout (standing; 2 Jabbithole sightings within 25 m)
 
 INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
     (@GUID + 13, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 14, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 16, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 21, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 23, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 29, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 31, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 35, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 38, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 39, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 43, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 45, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 47, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 58, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 64, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 75, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 81, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 87, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 97, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 101, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 113, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 115, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 121, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 123, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 128, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 129, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 131, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 132, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 137, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 141, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 142, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 152, @EVENT_FARMERS_DAUGHTER, 0);
+    (@GUID + 300, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 301, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 302, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 303, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 304, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 305, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 306, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 307, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 308, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 309, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 310, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 311, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 312, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 313, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 314, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 315, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 316, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 317, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 330, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 331, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 332, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 333, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 334, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 335, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 336, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 337, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 338, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 339, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 340, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 341, @EVENT_FARMERS_DAUGHTER, 0),
+    (@GUID + 342, @EVENT_FARMERS_DAUGHTER, 0);
 
 INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
     (@GUID + 13, 10, 15),
-    (@GUID + 14, 10, 15),
-    (@GUID + 16, 10, 15),
     (@GUID + 21, 10, 15),
     (@GUID + 23, 10, 15),
-    (@GUID + 29, 10, 15),
-    (@GUID + 31, 10, 15),
-    (@GUID + 35, 10, 15),
-    (@GUID + 38, 10, 15),
-    (@GUID + 39, 10, 15),
     (@GUID + 43, 10, 15),
-    (@GUID + 45, 10, 15),
-    (@GUID + 47, 10, 15),
-    (@GUID + 58, 10, 15),
-    (@GUID + 64, 10, 15),
-    (@GUID + 75, 10, 15),
-    (@GUID + 81, 10, 15),
-    (@GUID + 87, 10, 15),
-    (@GUID + 97, 10, 15),
-    (@GUID + 101, 10, 15),
-    (@GUID + 113, 10, 15),
-    (@GUID + 115, 10, 15),
-    (@GUID + 121, 10, 15),
-    (@GUID + 123, 10, 15),
-    (@GUID + 128, 10, 15),
     (@GUID + 129, 10, 15),
     (@GUID + 131, 10, 15),
     (@GUID + 132, 10, 15),
-    (@GUID + 137, 10, 15),
     (@GUID + 141, 10, 15),
-    (@GUID + 142, 10, 15),
-    (@GUID + 152, 10, 15);
+    (@GUID + 300, 10, 15),
+    (@GUID + 301, 10, 15),
+    (@GUID + 302, 10, 15),
+    (@GUID + 303, 10, 15),
+    (@GUID + 304, 10, 15),
+    (@GUID + 305, 10, 15),
+    (@GUID + 306, 10, 15),
+    (@GUID + 307, 10, 15),
+    (@GUID + 308, 10, 15),
+    (@GUID + 309, 10, 15),
+    (@GUID + 310, 10, 15),
+    (@GUID + 311, 10, 15),
+    (@GUID + 312, 10, 15),
+    (@GUID + 313, 10, 15),
+    (@GUID + 314, 10, 15),
+    (@GUID + 315, 10, 15),
+    (@GUID + 316, 10, 15),
+    (@GUID + 317, 10, 15),
+    (@GUID + 330, 10, 15),
+    (@GUID + 331, 10, 15),
+    (@GUID + 332, 10, 15),
+    (@GUID + 333, 10, 15),
+    (@GUID + 334, 10, 15),
+    (@GUID + 335, 10, 15),
+    (@GUID + 336, 10, 15),
+    (@GUID + 337, 10, 15),
+    (@GUID + 338, 10, 15),
+    (@GUID + 339, 10, 15),
+    (@GUID + 340, 10, 15),
+    (@GUID + 341, 10, 15),
+    (@GUID + 342, 10, 15);
 
 INSERT INTO `entity_spline` (`id`, `splineId`, `mode`, `speed`, `fx`, `fy`, `fz`) VALUES
     (@GUID + 13, 4473, 1, 2, 0, 0, 0),  -- spline 4473, 116 m, open, BackAndForth
-    (@GUID + 14, 4474, 1, 2, 0, 0, 0),  -- spline 4474, 197 m, open, BackAndForth
-    (@GUID + 16, 4476, 2, 2, 0, 0, 0),  -- spline 4476, 102 m, closed loop, Cyclic
     (@GUID + 21, 4481, 1, 2, 0, 0, 0),  -- spline 4481, 66 m, open, BackAndForth
     (@GUID + 23, 4483, 1, 2, 0, 0, 0),  -- spline 4483, 87 m, open, BackAndForth
-    (@GUID + 29, 4489, 2, 2, 0, 0, 0),  -- spline 4489, 127 m, closed loop, Cyclic
-    (@GUID + 31, 4491, 1, 2, 0, 0, 0),  -- spline 4491, 140 m, open, BackAndForth
-    (@GUID + 35, 4495, 1, 2, 0, 0, 0),  -- spline 4495, 119 m, open, BackAndForth
-    (@GUID + 38, 4498, 1, 2, 0, 0, 0),  -- spline 4498, 75 m, open, BackAndForth
-    (@GUID + 39, 4499, 1, 2, 0, 0, 0),  -- spline 4499, 69 m, open, BackAndForth
     (@GUID + 43, 4503, 1, 2, 0, 0, 0),  -- KEEP (29 Sep 2026: patrol by Tarquim) spline 4503, 72 m, open, BackAndForth
-    (@GUID + 45, 4505, 1, 2, 0, 0, 0),  -- spline 4505, 97 m, open, BackAndForth
-    (@GUID + 47, 4508, 1, 2, 0, 0, 0),  -- spline 4508, 359 m, open, BackAndForth
-    (@GUID + 58, 4595, 1, 2, 0, 0, 0),  -- spline 4595, 108 m, open, BackAndForth
-    (@GUID + 64, 4668, 1, 2, 0, 0, 0),  -- spline 4668, 430 m, open, BackAndForth
-    (@GUID + 75, 4679, 1, 2, 0, 0, 0),  -- spline 4679, 505 m, open, BackAndForth
-    (@GUID + 81, 6107, 1, 2, 0, 0, 0),  -- spline 6107, 315 m, open, BackAndForth
-    (@GUID + 87, 7389, 1, 2, 0, 0, 0),  -- spline 7389, 123 m, open, BackAndForth
-    (@GUID + 97, 7934, 1, 2, 0, 0, 0),  -- spline 7934, 111 m, open, BackAndForth
-    (@GUID + 101, 7940, 1, 2, 0, 0, 0),  -- spline 7940, 128 m, open, BackAndForth
-    (@GUID + 113, 7956, 1, 2, 0, 0, 0),  -- spline 7956, 120 m, open, BackAndForth
-    (@GUID + 115, 7960, 1, 2, 0, 0, 0),  -- spline 7960, 93 m, open, BackAndForth
-    (@GUID + 121, 14698, 1, 2, 0, 0, 0),  -- spline 14698, 79 m, open, BackAndForth
-    (@GUID + 123, 14702, 1, 2, 0, 0, 0),  -- spline 14702, 86 m, open, BackAndForth
-    (@GUID + 128, 14707, 1, 2, 0, 0, 0),  -- spline 14707, 158 m, open, BackAndForth
     (@GUID + 129, 14748, 1, 2, 0, 0, 0),  -- spline 14748, 244 m, open, BackAndForth
     (@GUID + 131, 14818, 1, 2, 0, 0, 0),  -- spline 14818, 69 m, open, BackAndForth
     (@GUID + 132, 14819, 1, 2, 0, 0, 0),  -- spline 14819, 194 m, open, BackAndForth
-    (@GUID + 137, 15012, 1, 2, 0, 0, 0),  -- spline 15012, 408 m, open, BackAndForth
     (@GUID + 141, 15939, 1, 2, 0, 0, 0),  -- spline 15939, 210 m, open, BackAndForth
-    (@GUID + 142, 16021, 1, 2, 0, 0, 0),  -- spline 16021, 9 m, open, BackAndForth
-    (@GUID + 152, 16047, 1, 2, 0, 0, 0);  -- spline 16047, 157 m, open, BackAndForth
+    (@GUID + 300, 4692, 1, 2, 0, 0, 0),  -- retail-based (Jabbithole) spline 4692, 26 m, open, BackAndForth,
+    (@GUID + 301, 14698, 1, 2, 0, 0, 0),  -- retail-based (Jabbithole) spline 14698, 79 m, open, BackAndForth,
+    (@GUID + 302, 4486, 2, 2, 0, 0, 0),  -- retail-based (Jabbithole) spline 4486, 88 m, closed loop, Cyclic;
+    (@GUID + 330, 4594, 1, 2, 0, 0, 0),  -- retail-based (Jabbithole) spline 4594, 57 m, open, BackAndForth
+    (@GUID + 331, 4702, 1, 2, 0, 0, 0),  -- retail-based (Jabbithole) spline 4702, 45 m, open, BackAndForth
+    (@GUID + 332, 16034, 1, 2, 0, 0, 0),  -- retail-based (Jabbithole) spline 16034, 41 m, open, BackAndForth
+    (@GUID + 333, 16027, 1, 2, 0, 0, 0),  -- retail-based (Jabbithole) spline 16027, 36 m, open, BackAndForth
+    (@GUID + 334, 4483, 1, 2, 0, 0, 0);  -- retail-based (Jabbithole) spline 4483, 84 m, open, BackAndForth
