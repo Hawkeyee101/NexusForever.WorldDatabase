@@ -242,7 +242,7 @@ INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, 
     (@GUID + 4, 0, 51026, @WORLD, 0, -2473.3782, -929.24347, -1582.0039, -3.1268535, 0, 0, 29558, 0, 1452, 1452), -- Predator Drone, guards Millithea, layout A
     (@GUID + 5, 0, 17772, @WORLD, 0, -2377.9238, -929.3451, -1641.9752, -2.9476466, 0, 0, 29997, 8066, 219, 219), -- Prema Arcwulff (seated), layout A
     (@GUID + 6, 0, 18509, @WORLD, 0, -2366.8215, -929.4628, -1631.9248, 2.957307, 0, 0, 23091, 0, 1452, 1452), -- Shatterforce Responsebot, guards Prema, layout A
-    (@GUID + 15, 0, 17763, @WORLD, 0, -2484.1101, -927.7783, -1283.1149, 0.0, 0, 0, 23754, 0, 1452, 1452), -- Automated Machine Gun - Spotlight Target (lane moved by the script)
+    (@GUID + 15, 0, 17763, @WORLD, 0, -2484.1101, -927.7783, -1283.1149, 0.0, 0, 0, 23754, 0, 1452, 1452), -- Automated Machine Gun - Spotlight Target, spline 4652 (the script moves it along)
     (@GUID + 20, 0, 49490, @WORLD, 0, -2289.1301, -924.9354, -1500.1172, -3.0564866, 0, 0, 30004, 8066, 219, 219), -- Millithea (seated), layout B
     (@GUID + 21, 0, 51026, @WORLD, 0, -2287.9934, -925.20447, -1493.8815, 0.10366, 0, 0, 29558, 0, 1452, 1452), -- Predator Drone, guards Millithea, layout B
     (@GUID + 22, 0, 51026, @WORLD, 0, -2290.4626, -924.68036, -1506.18, -2.9744594, 0, 0, 29558, 0, 1452, 1452), -- Predator Drone, guards Millithea, layout B
@@ -626,10 +626,20 @@ INSERT INTO `entity_spline` (`id`, `splineId`, `mode`, `speed`, `fx`, `fy`, `fz`
     FROM `entity_spline` sp JOIN `entity_event` ee ON ee.`id` = sp.`id`
     WHERE ee.`eventId` = 420 AND ee.`phase` = 0;
 
+-- removed for Breach of Protocol only (Teun, 1 Oct 2026): three scouts, and the spotlights around Millithea's layout A
+-- spot (loop splines 7960-7964); the Farmer's Daughter keeps them
+DELETE e FROM `entity` e JOIN `entity_event` ee ON ee.`id` = e.`id`
+    WHERE ee.`eventId` = @EVENT_BREACH AND (
+        (e.`creature` = 17856 AND ((ROUND(e.`x`) = -2318 AND ROUND(e.`z`) = -1753) OR (ROUND(e.`x`) = -2314 AND ROUND(e.`z`) = -1789)
+            OR (ABS(e.`x` + 2484.5) < 0.5 AND ABS(e.`z` + 1662.5) < 0.5)))
+        OR (e.`creature` = 17763 AND ((ROUND(e.`x`) = -2447 AND ROUND(e.`z`) = -1627) OR (ROUND(e.`x`) = -2474 AND ROUND(e.`z`) = -1632)
+            OR (ROUND(e.`x`) = -2467 AND ROUND(e.`z`) = -1651) OR (ROUND(e.`x`) = -2459 AND ROUND(e.`z`) = -1670)
+            OR (ROUND(e.`x`) = -2426 AND ROUND(e.`z`) = -1659))));
+
 -- this mission's own spawns
 SET @GUID = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`);
 INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`) VALUES
-    (@GUID + 1, 0, 56411, @WORLD, 0, -2399.3, -904.3, -1779.6, 0.0, 0, 0, 29552, 9521, 219, 219), -- Ayita Sinnatus (T3 Merciful), crying at the meeting point (WorldLocation2 13109; the script plays the pose)
+    (@GUID + 1, 0, 56411, @WORLD, 0, -2398.1826, -904.0895, -1778.5646, -2.255517, 0, 0, 29552, 9521, 219, 219), -- Ayita Sinnatus (T3 Merciful), crying at the meeting point (Teun's spot and facing; the script plays the pose)
     (@GUID + 2, 0, 17823, @WORLD, 0, -2493.1543, -925.1499, -1355.0402, -2.4632409, 0, 0, 26107, 9005, 1452, 1452), -- Dominion Recon Specialist (standing; video spot, 5 Jabbithole sightings within 2-8 m)
     (@GUID + 3, 0, 17856, @WORLD, 0, -2386.7214, -928.4118, -1499.6729, 1.5411009, 0, 0, 30970, 8192, 1452, 1452), -- Dominion Scout near Sinnatus's barn (Teun: these spawn in this mission)
     (@GUID + 4, 0, 17856, @WORLD, 0, -2408.6, -925.85, -1507.4, 2.816, 0, 0, 30970, 8192, 1452, 1452); -- Dominion Scout near Sinnatus's barn
@@ -647,29 +657,28 @@ INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
     (@GUID + 4, 10, 15);
 
 -- Arcwulff Farm hideout (regroup 1776, WorldLocation2 24811 at -2506.8, -918.5, -1683.2), main event phase 13: the story
--- NPCs plus Millithea, Prema and Tarquim, who leave when the door closes (script). Positions from Jabbithole sightings
--- (rounded, no height: the hideout point's height), to measure in game.
+-- NPCs plus Prema, who leaves when the door closes (script). Vesna, Ayita and Lysion measured in game (Teun, 1 Oct 2026);
+-- Prema placed in the builder (Teun, 1 Oct 2026; facing assumed). Tarquim and Millithea removed (Teun, 1 Oct
+-- 2026): in no video, no known spot.
+-- The farmhouse door (phase 22) closes when everyone is inside, like the barn doors.
 SET @GUID = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`);
 INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`) VALUES
-    (@GUID + 1, 0, 17778, @WORLD, 0, -2510.0, -918.5, -1680.0, -2.2, 0, 0, 23710, 8195, 219, 219), -- Vesna Taranoft
-    (@GUID + 2, 0, 48032, @WORLD, 0, -2506.0, -918.5, -1679.0, 3.1, 0, 0, 29552, 9521, 219, 219), -- Ayita Sinnatus
-    (@GUID + 3, 0, 17777, @WORLD, 0, -2500.0, -918.5, -1677.0, 2.5, 0, 0, 23711, 8196, 219, 219), -- Lysion Sinnatus
-    (@GUID + 4, 0, 17772, @WORLD, 0, -2505.0, -918.5, -1687.0, 0.0, 0, 0, 29997, 8066, 219, 219), -- Prema Arcwulff (guest)
-    (@GUID + 5, 0, 17773, @WORLD, 0, -2509.0, -918.5, -1686.0, 0.6, 0, 0, 29998, 8062, 219, 219), -- Tarquim Arcwulff (guest)
-    (@GUID + 6, 0, 49490, @WORLD, 0, -2502.0, -918.5, -1689.0, -0.6, 0, 0, 30004, 8066, 219, 219); -- Millithea (guest; seen in the video, no Jabbithole point)
+    (@GUID + 1, 0, 17778, @WORLD, 0, -2509.8306, -918.5332, -1679.204, -1.6983864, 0, 0, 23710, 8195, 219, 219), -- Vesna Taranoft (measured)
+    (@GUID + 2, 0, 48032, @WORLD, 0, -2505.4863, -918.4662, -1679.4321, 1.3933904, 0, 0, 29552, 9521, 219, 219), -- Ayita Sinnatus (measured)
+    (@GUID + 3, 0, 17777, @WORLD, 0, -2507.498, -918.5103, -1678.1605, -0.22770786, 0, 0, 23711, 8196, 219, 219), -- Lysion Sinnatus (measured)
+    (@GUID + 4, 0, 17772, @WORLD, 0, -2502.56, -918.54, -1685.11, 2.4568, 0, 0, 29997, 8066, 219, 219), -- Prema Arcwulff (guest; Teun's spot from the builder, facing the others: to check)
+    (@GUID + 5, 11, 51065, @WORLD, 0, -2498.641, -918.45, -1678.582, 0.7878313, 0, 0, 29765, 0, 219, 219); -- Farmhouse Door - Platform: type 11 (collision, like the barn doors), Teun's facing. Its anchor is its hinge (model 3.41 m wide) and the client sets the door on the collision under it, so the hinge must be on bare floor: along the door line from Teun's spot (-2499.811, -1677.2633) the opening runs from about -1.78 m, the door post stands at +1.55..+1.67 m and there is floor again from +1.68 to +1.94 m (Surveyor surface.py). Hinge at +1.76 m past the post: the door spans about -1.65..+1.76 m, centred on Teun's spot. The client ignores the given height and tilt (RY/RZ): the door stands on the floor under its hinge, so it is moved 10 cm into the room, where that floor is 13 cm lower (-918.45) (1 Oct 2026)
 
 INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
     (@GUID + 1, @EVENT_MAIN, 13),
     (@GUID + 2, @EVENT_MAIN, 13),
     (@GUID + 3, @EVENT_MAIN, 13),
     (@GUID + 4, @EVENT_MAIN, 13),
-    (@GUID + 5, @EVENT_MAIN, 13),
-    (@GUID + 6, @EVENT_MAIN, 13);
+    (@GUID + 5, @EVENT_MAIN, 22);
 
 INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
     (@GUID + 1, 10, 15),
     (@GUID + 2, 10, 15),
     (@GUID + 3, 10, 15),
     (@GUID + 4, 10, 15),
-    (@GUID + 5, 10, 15),
-    (@GUID + 6, 10, 15);
+    (@GUID + 5, 10, 15);
