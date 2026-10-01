@@ -372,24 +372,16 @@ INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, 
     (@GUID + 20, 0, 17824, @WORLD, 0, -2347.3083, -929.7686, -1541.5844, -1.2061456, 0, 0, 25682, 9057, 1452, 1452), -- Dominion Scientist (standing; route 4596 is 7 m away, candidate)
     (@GUID + 21, 0, 17824, @WORLD, 0, -2322.1584, -921.8918, -1409.0945, 2.310243, 0, 0, 25682, 9057, 1452, 1452), -- Dominion Scientist (standing)
     (@GUID + 22, 0, 17824, @WORLD, 0, -2247.8723, -926.0753, -1352.887, -2.2875571, 0, 0, 25682, 9057, 1452, 1452), -- Dominion Scientist (standing), near the Bell Farmhouse
-    (@GUID + 23, 0, 17857, @WORLD, 0, -2299.716, -923.5784, -1399.9445, 3.0914814, 0, 0, 30354, 8189, 1452, 1452), -- Dominion Soldier (standing; video spot, unit type from Jabbithole: soldiers were seen here, no shocktroopers)
-    (@GUID + 24, 0, 17857, @WORLD, 0, -2295.9546, -923.6976, -1397.8584, 1.7281969, 0, 0, 30354, 8189, 1452, 1452), -- Dominion Soldier (standing; video spot, unit type from Jabbithole: soldiers were seen here, no shocktroopers)
-    (@GUID + 25, 0, 17857, @WORLD, 0, -2300.0723, -923.34235, -1395.1648, 0.056319, 0, 0, 30354, 8189, 1452, 1452), -- Dominion Soldier (standing; video spot, unit type from Jabbithole: soldiers were seen here, no shocktroopers)
-    (@GUID + 26, 0, 17858, @WORLD, 0, -2382.9202, -922.79724, -1300.4427, 2.7416103, 0, 0, 26045, 8194, 1452, 1452), -- Dominion Shocktrooper (standing; video spot, unit type from Jabbithole: shocktroopers were seen here, no soldiers)
-    (@GUID + 27, 0, 17858, @WORLD, 0, -2372.9287, -922.4568, -1302.0913, -0.04861784, 0, 0, 26045, 8194, 1452, 1452), -- Dominion Shocktrooper (standing; video spot, unit type from Jabbithole: shocktroopers were seen here, no soldiers)
-    (@GUID + 28, 0, 17858, @WORLD, 0, -2361.7585, -922.8954, -1299.5675, 2.7107098, 0, 0, 26045, 8194, 1452, 1452), -- Dominion Shocktrooper (standing; video spot, unit type from Jabbithole: shocktroopers were seen here, no soldiers)
+    (@GUID + 23, 0, 17858, @WORLD, 0, -2299.716, -923.5784, -1399.9445, 3.0914814, 0, 0, 26045, 8194, 1452, 1452), -- Dominion Shocktrooper (standing; video, name hard to read)
+    (@GUID + 24, 0, 17858, @WORLD, 0, -2295.9546, -923.6976, -1397.8584, 1.7281969, 0, 0, 26045, 8194, 1452, 1452), -- Dominion Shocktrooper (standing)
+    (@GUID + 25, 0, 17858, @WORLD, 0, -2300.0723, -923.34235, -1395.1648, 0.056319, 0, 0, 26045, 8194, 1452, 1452), -- Dominion Shocktrooper (standing)
+    (@GUID + 26, 0, 17857, @WORLD, 0, -2382.9202, -922.79724, -1300.4427, 2.7416103, 0, 0, 30354, 8189, 1452, 1452), -- Dominion Soldier (standing)
+    (@GUID + 27, 0, 17857, @WORLD, 0, -2372.9287, -922.4568, -1302.0913, -0.04861784, 0, 0, 30354, 8189, 1452, 1452), -- Dominion Soldier (standing)
+    (@GUID + 28, 0, 17857, @WORLD, 0, -2361.7585, -922.8954, -1299.5675, 2.7107098, 0, 0, 30354, 8189, 1452, 1452), -- Dominion Soldier (standing)
     (@GUID + 29, 0, 26853, @WORLD, 0, -2342.8333, -922.79865, -1223.9741, -1.1521286, 0, 0, 26045, 8194, 1236, 1236), -- Dominion Gatekeeper (neutral; bubble lines 465729-465733, script)
     (@GUID + 30, 0, 48434, @WORLD, 0, -2338.875, -923.7056, -1224.9783, 1.5392759, 0, 0, 25459, 7913, 219, 219), -- Fleeing Farmer, talking to the gatekeeper (video spot; Jabbithole: Fleeing Farmers queue here)
     (@GUID + 31, 0, 50805, @WORLD, 0, -2336.2754, -923.8124, -1230.2643, 3.066614, 0, 0, 25682, 7917, 219, 219), -- Fleeing Farmer, waiting in line (video spot)
     (@GUID + 32, 0, 48434, @WORLD, 0, -2336.0195, -923.8308, -1234.7668, 3.066614, 0, 0, 23940, 7917, 219, 219), -- Fleeing Farmer, waiting in line (video spot)
-    (@GUID + 40, 0, 17824, @WORLD, 0, -2314, -922.5, -1229, 2.2, 0, 0, 25682, 9057, 1452, 1452), -- Dominion Scientist (standing; retail cluster of 6 Jabbithole sightings)
-    (@GUID + 41, 0, 17824, @WORLD, 0, -2317, -920.75, -1210, -1.1, 0, 0, 25682, 9057, 1452, 1452), -- Dominion Scientist (standing; retail cluster of 4 Jabbithole sightings)
-    (@GUID + 42, 0, 17858, @WORLD, 0, -2352, -921.75, -1311, 0.6, 0, 0, 26045, 8194, 1452, 1452), -- Dominion Shocktrooper (standing; retail cluster of 6 Jabbithole sightings)
-    (@GUID + 43, 0, 17858, @WORLD, 0, -2342, -926.0, -1280, -2.4, 0, 0, 26045, 8194, 1452, 1452), -- Dominion Shocktrooper (standing; retail cluster of 4 Jabbithole sightings)
-    (@GUID + 44, 0, 17858, @WORLD, 0, -2326, -926.0, -1271, 1.5, 0, 0, 26045, 8194, 1452, 1452), -- Dominion Shocktrooper (standing; retail cluster of 4 Jabbithole sightings)
-    (@GUID + 45, 0, 17858, @WORLD, 0, -2290, -926.0, -1273, -0.7, 0, 0, 26045, 8194, 1452, 1452), -- Dominion Shocktrooper (standing; retail cluster of 4 Jabbithole sightings)
-    (@GUID + 46, 0, 17857, @WORLD, 0, -2314, -926.5, -1293, 2.9, 0, 0, 30354, 8189, 1452, 1452), -- Dominion Soldier (standing; retail cluster of 15 Jabbithole sightings)
-    (@GUID + 47, 0, 17857, @WORLD, 0, -2287, -928.25, -1296, -1.9, 0, 0, 30354, 8189, 1452, 1452), -- Dominion Soldier (standing; retail cluster of 6 Jabbithole sightings)
     (@GUID + 48, 0, 50805, @WORLD, 0, -2335, -924.0, -1238.5, 3.066614, 0, 0, 25769, 7913, 219, 219), -- Fleeing Farmer, waiting in line (Jabbithole sightings)
     (@GUID + 49, 0, 48434, @WORLD, 0, -2334.5, -923.875, -1242.5, 3.066614, 0, 0, 25679, 7913, 219, 219), -- Fleeing Farmer, waiting in line (Jabbithole sightings)
     (@GUID + 50, 0, 50805, @WORLD, 0, -2330, -924.0, -1229.5, 3.066614, 0, 0, 25770, 7917, 219, 219), -- Fleeing Farmer, second line (Jabbithole sightings)
@@ -421,14 +413,6 @@ INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
     (@GUID + 30, @EVENT_GREAT_ESCAPE, 0),
     (@GUID + 31, @EVENT_GREAT_ESCAPE, 0),
     (@GUID + 32, @EVENT_GREAT_ESCAPE, 0),
-    (@GUID + 40, @EVENT_GREAT_ESCAPE, 0),
-    (@GUID + 41, @EVENT_GREAT_ESCAPE, 0),
-    (@GUID + 42, @EVENT_GREAT_ESCAPE, 0),
-    (@GUID + 43, @EVENT_GREAT_ESCAPE, 0),
-    (@GUID + 44, @EVENT_GREAT_ESCAPE, 0),
-    (@GUID + 45, @EVENT_GREAT_ESCAPE, 0),
-    (@GUID + 46, @EVENT_GREAT_ESCAPE, 0),
-    (@GUID + 47, @EVENT_GREAT_ESCAPE, 0),
     (@GUID + 48, @EVENT_GREAT_ESCAPE, 0),
     (@GUID + 49, @EVENT_GREAT_ESCAPE, 0),
     (@GUID + 50, @EVENT_GREAT_ESCAPE, 0),
@@ -460,14 +444,6 @@ INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
     (@GUID + 30, 10, 15),
     (@GUID + 31, 10, 15),
     (@GUID + 32, 10, 15),
-    (@GUID + 40, 10, 15),
-    (@GUID + 41, 10, 15),
-    (@GUID + 42, 10, 15),
-    (@GUID + 43, 10, 15),
-    (@GUID + 44, 10, 15),
-    (@GUID + 45, 10, 15),
-    (@GUID + 46, 10, 15),
-    (@GUID + 47, 10, 15),
     (@GUID + 48, 10, 15),
     (@GUID + 49, 10, 15),
     (@GUID + 50, 10, 15),
@@ -522,7 +498,6 @@ INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, 
     (@GUID + 332, 0, 17856, @WORLD, 0, -2345.04, -919.1053, -1374.079, 0, 0, 0, 30970, 8192, 1452, 1452), -- Dominion Scout, patrols spline 16034 (41 m; 1 Jabbithole sighting on it)
     (@GUID + 333, 0, 17856, @WORLD, 0, -2347.2664, -924.1139, -1461.1854, 0, 0, 0, 30970, 8192, 1452, 1452), -- Dominion Scout, patrols spline 16027 (36 m; 1 Jabbithole sighting on it)
     (@GUID + 334, 0, 17856, @WORLD, 0, -2317.5564, -920.9146, -1198.8372, 0, 0, 0, 30970, 8192, 1452, 1452), -- Dominion Scout, patrols spline 4483 (84 m; 1 Jabbithole sighting on it)
-    (@GUID + 335, 0, 17856, @WORLD, 0, -2373.3, -924.0749999999998, -1279.7, -2.792, 0, 0, 30970, 8192, 1452, 1452), -- Dominion Scout (standing; 3 Jabbithole sightings within 25 m)
     (@GUID + 336, 0, 17856, @WORLD, 0, -2468.0, -908.75, -1733.5, 0.665, 0, 0, 30970, 8192, 1452, 1452), -- Dominion Scout (standing; 2 Jabbithole sightings within 25 m)
     (@GUID + 337, 0, 17856, @WORLD, 0, -2488.0, -928.0, -1279.0, 1.83, 0, 0, 30970, 8192, 1452, 1452), -- Dominion Scout (standing; 2 Jabbithole sightings within 25 m)
     (@GUID + 338, 0, 17856, @WORLD, 0, -2484.5, -923.625, -1662.5, 2.46, 0, 0, 30970, 8192, 1452, 1452), -- Dominion Scout (standing; 2 Jabbithole sightings within 25 m)
@@ -560,7 +535,6 @@ INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
     (@GUID + 332, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 333, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 334, @EVENT_FARMERS_DAUGHTER, 0),
-    (@GUID + 335, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 336, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 337, @EVENT_FARMERS_DAUGHTER, 0),
     (@GUID + 338, @EVENT_FARMERS_DAUGHTER, 0),
@@ -598,7 +572,6 @@ INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
     (@GUID + 332, 10, 15),
     (@GUID + 333, 10, 15),
     (@GUID + 334, 10, 15),
-    (@GUID + 335, 10, 15),
     (@GUID + 336, 10, 15),
     (@GUID + 337, 10, 15),
     (@GUID + 338, 10, 15),
