@@ -595,3 +595,81 @@ INSERT INTO `entity_spline` (`id`, `splineId`, `mode`, `speed`, `fx`, `fy`, `fz`
     (@GUID + 332, 16034, 1, 2, 0, 0, 0),  -- retail-based (Jabbithole) spline 16034, 41 m, open, BackAndForth
     (@GUID + 333, 16027, 1, 2, 0, 0, 0),  -- retail-based (Jabbithole) spline 16027, 36 m, open, BackAndForth
     (@GUID + 334, 4483, 1, 2, 0, 0, 0);  -- retail-based (Jabbithole) spline 4483, 84 m, open, BackAndForth
+
+-- --------------------------------------
+-- Breach of Protocol (public event 426, tier 3 interlude, Merciful) and the Arcwulff Farm hideout after it
+-- Retail video (Teun, 1 Oct 2026) and archived Jabbithole positions, see docs research/breach-of-protocol.md. Night,
+-- the fields' Dominion units again: The Farmer's Daughter's scouts, spotlights and soldiers are COPIED here at import
+-- (INSERT ... SELECT below), so trimming them in the Farmer's Daughter blocks changes this mission too. The Ambushers
+-- and Arsenax Severus are spawned by the script.
+-- --------------------------------------
+SET @EVENT_BREACH = 426;
+DELETE FROM `entity_event` WHERE `eventId` = @EVENT_BREACH;
+
+-- copies of the Farmer's Daughter's shared field units (phase 0: scouts 17856, spotlights 17763, soldiers 17857)
+SET @OFF = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`) + 1 - (SELECT MIN(e.`id`) FROM `entity` e JOIN `entity_event` ee ON ee.`id` = e.`id`
+    WHERE ee.`eventId` = 420 AND ee.`phase` = 0 AND e.`creature` IN (17856, 17763, 17857));
+INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`)
+    SELECT e.`id` + @OFF, e.`type`, e.`creature`, e.`world`, e.`area`, e.`x`, e.`y`, e.`z`, e.`rx`, e.`ry`, e.`rz`, e.`displayInfo`, e.`outfitInfo`, e.`faction1`, e.`faction2`
+    FROM `entity` e JOIN `entity_event` ee ON ee.`id` = e.`id`
+    WHERE ee.`eventId` = 420 AND ee.`phase` = 0 AND e.`creature` IN (17856, 17763, 17857);
+INSERT INTO `entity_event` (`id`, `eventId`, `phase`)
+    SELECT ee.`id` + @OFF, @EVENT_BREACH, 0
+    FROM `entity_event` ee JOIN `entity` e ON e.`id` = ee.`id`
+    WHERE ee.`eventId` = 420 AND ee.`phase` = 0 AND e.`creature` IN (17856, 17763, 17857);
+INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`)
+    SELECT s.`id` + @OFF, s.`stat`, s.`value`
+    FROM `entity_stats` s JOIN `entity_event` ee ON ee.`id` = s.`id` JOIN `entity` e ON e.`id` = s.`id`
+    WHERE ee.`eventId` = 420 AND ee.`phase` = 0 AND e.`creature` IN (17856, 17763, 17857);
+INSERT INTO `entity_spline` (`id`, `splineId`, `mode`, `speed`, `fx`, `fy`, `fz`)
+    SELECT sp.`id` + @OFF, sp.`splineId`, sp.`mode`, sp.`speed`, sp.`fx`, sp.`fy`, sp.`fz`
+    FROM `entity_spline` sp JOIN `entity_event` ee ON ee.`id` = sp.`id`
+    WHERE ee.`eventId` = 420 AND ee.`phase` = 0;
+
+-- this mission's own spawns
+SET @GUID = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`);
+INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`) VALUES
+    (@GUID + 1, 0, 56411, @WORLD, 0, -2399.3, -904.3, -1779.6, 0.0, 0, 0, 29552, 9521, 219, 219), -- Ayita Sinnatus (T3 Merciful), crying at the meeting point (WorldLocation2 13109; the script plays the pose)
+    (@GUID + 2, 0, 17823, @WORLD, 0, -2493.1543, -925.1499, -1355.0402, -2.4632409, 0, 0, 26107, 9005, 1452, 1452), -- Dominion Recon Specialist (standing; video spot, 5 Jabbithole sightings within 2-8 m)
+    (@GUID + 3, 0, 17856, @WORLD, 0, -2386.7214, -928.4118, -1499.6729, 1.5411009, 0, 0, 30970, 8192, 1452, 1452), -- Dominion Scout near Sinnatus's barn (Teun: these spawn in this mission)
+    (@GUID + 4, 0, 17856, @WORLD, 0, -2408.6, -925.85, -1507.4, 2.816, 0, 0, 30970, 8192, 1452, 1452); -- Dominion Scout near Sinnatus's barn
+
+INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
+    (@GUID + 1, @EVENT_BREACH, 0),
+    (@GUID + 2, @EVENT_BREACH, 0),
+    (@GUID + 3, @EVENT_BREACH, 0),
+    (@GUID + 4, @EVENT_BREACH, 0);
+
+INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
+    (@GUID + 1, 10, 15),
+    (@GUID + 2, 10, 15),
+    (@GUID + 3, 10, 15),
+    (@GUID + 4, 10, 15);
+
+-- Arcwulff Farm hideout (regroup 1776, WorldLocation2 24811 at -2506.8, -918.5, -1683.2), main event phase 13: the story
+-- NPCs plus Millithea, Prema and Tarquim, who leave when the door closes (script). Positions from Jabbithole sightings
+-- (rounded, no height: the hideout point's height), to measure in game.
+SET @GUID = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`);
+INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`) VALUES
+    (@GUID + 1, 0, 17778, @WORLD, 0, -2510.0, -918.5, -1680.0, -2.2, 0, 0, 23710, 8195, 219, 219), -- Vesna Taranoft
+    (@GUID + 2, 0, 48032, @WORLD, 0, -2506.0, -918.5, -1679.0, 3.1, 0, 0, 29552, 9521, 219, 219), -- Ayita Sinnatus
+    (@GUID + 3, 0, 17777, @WORLD, 0, -2500.0, -918.5, -1677.0, 2.5, 0, 0, 23711, 8196, 219, 219), -- Lysion Sinnatus
+    (@GUID + 4, 0, 17772, @WORLD, 0, -2505.0, -918.5, -1687.0, 0.0, 0, 0, 29997, 8066, 219, 219), -- Prema Arcwulff (guest)
+    (@GUID + 5, 0, 17773, @WORLD, 0, -2509.0, -918.5, -1686.0, 0.6, 0, 0, 29998, 8062, 219, 219), -- Tarquim Arcwulff (guest)
+    (@GUID + 6, 0, 49490, @WORLD, 0, -2502.0, -918.5, -1689.0, -0.6, 0, 0, 30004, 8066, 219, 219); -- Millithea (guest; seen in the video, no Jabbithole point)
+
+INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
+    (@GUID + 1, @EVENT_MAIN, 13),
+    (@GUID + 2, @EVENT_MAIN, 13),
+    (@GUID + 3, @EVENT_MAIN, 13),
+    (@GUID + 4, @EVENT_MAIN, 13),
+    (@GUID + 5, @EVENT_MAIN, 13),
+    (@GUID + 6, @EVENT_MAIN, 13);
+
+INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
+    (@GUID + 1, 10, 15),
+    (@GUID + 2, 10, 15),
+    (@GUID + 3, 10, 15),
+    (@GUID + 4, 10, 15),
+    (@GUID + 5, 10, 15),
+    (@GUID + 6, 10, 15);
