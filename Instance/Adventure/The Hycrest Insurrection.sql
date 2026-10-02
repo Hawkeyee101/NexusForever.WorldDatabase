@@ -682,3 +682,87 @@ INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
     (@GUID + 3, 10, 15),
     (@GUID + 4, 10, 15),
     (@GUID + 5, 10, 15);
+
+-- Bell Farmhouse (regroup 1774, WorldLocation2 24810; Clearance's objective 2167 "Meet Ayita in the farmhouse", WorldLocation2
+-- 39450 at -2261.7, -924.8, -1330.2), main event phase 14: Ayita, standing and ready to talk (Teun, retail video: she
+-- comes in with a communicator, then starts All Aboard). Same building as Arcwulff Farm (STR_Building_Farmhouse_000, here
+-- at -2262.518, -925.143, -1330.732 yaw 2.9244, there at -2507.32, -918.88, -1684.14 yaw 0.2931): Ayita and the door
+-- (phase 23) were first the Arcwulff ones turned by 2.6313 about the building, then measured in game by Teun. The room
+-- light stays.
+SET @GUID = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`);
+INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`) VALUES
+    (@GUID + 1, 0, 48032, @WORLD, 0, -2257.8096, -924.79706, -1328.8905, 0.6007538, 0, 0, 29552, 9521, 219, 219), -- Ayita Sinnatus (measured in game, Teun, 1 Oct 2026)
+    (@GUID + 2, 11, 51065, @WORLD, 0, -2267.155, -924.652, -1339.545, -2.8152466, 0, 0, 29765, 0, 219, 219); -- Farmhouse Door - Platform: Teun's spot and facing in the doorway (-2265.4016, -1340.1392, 1 Oct 2026) is the door's centre; as at Arcwulff the hinge goes on bare floor past the door post, which stands at +1.70..+1.75 m along the door line (floor again from +1.8 m, surface.py): hinge at +1.85 m
+
+INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
+    (@GUID + 1, @EVENT_MAIN, 14),
+    (@GUID + 2, @EVENT_MAIN, 23);
+
+INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
+    (@GUID + 1, 10, 15),
+    (@GUID + 2, 10, 15);
+
+-- --------------------------------------
+-- Clearance (public event 429, tier 4 Merciful): the Dominion units (Teun, 1 Oct 2026, from the retail video). The
+-- Great Escape's units as they are there, but the group of three by the dormant bots (-2383..-2362, -1300) as
+-- shocktroopers (Jabbithole saw shocktroopers there, no soldiers). Plus the units from Jabbithole sighting clusters
+-- that were taken out of The Great Escape on 1 Oct 2026 (database commit c378c00): retail had them during Clearance.
+-- The queue (42 Fleeing Farmers), the dormant bots and the patrol of three shocktroopers on spline 4470 are spawned by
+-- ClearanceMissionScript. Enemies stay until the Bell Farmhouse door closes.
+-- --------------------------------------
+SET @EVENT_CLEARANCE = 429;
+DELETE FROM `entity_event` WHERE `eventId` = @EVENT_CLEARANCE;
+SET @GUID = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`);
+INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`) VALUES
+    -- as in The Great Escape
+    (@GUID + 1, 0, 17824, @WORLD, 0, -2347.3083, -929.7686, -1541.5844, -1.2061456, 0, 0, 25682, 9057, 1452, 1452), -- Dominion Scientist (standing)
+    (@GUID + 2, 0, 17824, @WORLD, 0, -2322.1584, -921.8918, -1409.0945, 2.310243, 0, 0, 25682, 9057, 1452, 1452), -- Dominion Scientist (standing)
+    (@GUID + 3, 0, 17824, @WORLD, 0, -2247.8723, -926.0753, -1352.887, -2.2875571, 0, 0, 25682, 9057, 1452, 1452), -- Dominion Scientist (standing), near the Bell Farmhouse
+    (@GUID + 4, 0, 17858, @WORLD, 0, -2299.716, -923.5784, -1399.9445, 3.0914814, 0, 0, 26045, 8194, 1452, 1452), -- Dominion Shocktrooper (standing)
+    (@GUID + 5, 0, 17858, @WORLD, 0, -2295.9546, -923.6976, -1397.8584, 1.7281969, 0, 0, 26045, 8194, 1452, 1452), -- Dominion Shocktrooper (standing)
+    (@GUID + 6, 0, 17858, @WORLD, 0, -2300.0723, -923.34235, -1395.1648, 0.056319, 0, 0, 26045, 8194, 1452, 1452), -- Dominion Shocktrooper (standing)
+    -- the group by the dormant bots: shocktroopers here (soldiers in The Great Escape)
+    (@GUID + 7, 0, 17858, @WORLD, 0, -2382.9202, -922.79724, -1300.4427, 2.7416103, 0, 0, 26045, 8194, 1452, 1452), -- Dominion Shocktrooper (standing)
+    (@GUID + 8, 0, 17858, @WORLD, 0, -2372.9287, -922.4568, -1302.0913, -0.04861784, 0, 0, 26045, 8194, 1452, 1452), -- Dominion Shocktrooper (standing)
+    (@GUID + 9, 0, 17858, @WORLD, 0, -2361.7585, -922.8954, -1299.5675, 2.7107098, 0, 0, 26045, 8194, 1452, 1452), -- Dominion Shocktrooper (standing)
+    -- the Jabbithole clusters (taken out of The Great Escape)
+    (@GUID + 10, 0, 17824, @WORLD, 0, -2314, -922.5, -1229, 2.2, 0, 0, 25682, 9057, 1452, 1452), -- Dominion Scientist (standing; cluster of 6 sightings)
+    (@GUID + 11, 0, 17824, @WORLD, 0, -2317, -920.75, -1210, -1.1, 0, 0, 25682, 9057, 1452, 1452), -- Dominion Scientist (standing; cluster of 4 sightings)
+    (@GUID + 12, 0, 17858, @WORLD, 0, -2352, -921.75, -1311, 0.6, 0, 0, 26045, 8194, 1452, 1452), -- Dominion Shocktrooper (standing; cluster of 6 sightings)
+    (@GUID + 13, 0, 17858, @WORLD, 0, -2342, -926.0, -1280, -2.4, 0, 0, 26045, 8194, 1452, 1452), -- Dominion Shocktrooper (standing; cluster of 4 sightings)
+    (@GUID + 14, 0, 17858, @WORLD, 0, -2326, -926.0, -1271, 1.5, 0, 0, 26045, 8194, 1452, 1452), -- Dominion Shocktrooper (standing; cluster of 4 sightings)
+    (@GUID + 15, 0, 17858, @WORLD, 0, -2290, -926.0, -1273, -0.7, 0, 0, 26045, 8194, 1452, 1452), -- Dominion Shocktrooper (standing; cluster of 4 sightings)
+    (@GUID + 16, 0, 17857, @WORLD, 0, -2314, -926.5, -1293, 2.9, 0, 0, 30354, 8189, 1452, 1452), -- Dominion Soldier (standing; cluster of 15 sightings)
+    (@GUID + 17, 0, 17857, @WORLD, 0, -2287, -928.25, -1296, -1.9, 0, 0, 30354, 8189, 1452, 1452), -- Dominion Soldier (standing; cluster of 6 sightings)
+    -- the gatekeeper at the queue's front, as in The Great Escape (neutral); the script has him send each cleared
+    -- farmer on (463923-463927)
+    (@GUID + 18, 0, 26853, @WORLD, 0, -2342.8333, -922.79865, -1223.9741, -1.1521286, 0, 0, 26045, 8194, 1236, 1236); -- Dominion Gatekeeper
+
+INSERT INTO `entity_event` (`id`, `eventId`, `phase`)
+    SELECT `Id`, @EVENT_CLEARANCE, 0 FROM `entity` WHERE `Id` BETWEEN @GUID + 1 AND @GUID + 18;
+
+INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`)
+    SELECT `Id`, 10, 15 FROM `entity` WHERE `Id` BETWEEN @GUID + 1 AND @GUID + 18;
+
+-- --------------------------------------
+-- The run's end scene in Hycrest church (WorldLocation2 45046), main event 419 (retail video, Teun, 1 Oct 2026): the
+-- Caretaker (the intro's hologram 56685) in phase 30; the exit portal behind him (phase 31) is still to come. Spots from the archived Jabbithole sightings (Caretaker -2274, -1867; Exit Simulation -2263,
+-- -1862); church floor -868.4 (Surveyor surface.py). Both face the players, who are teleported to (-2278.5, -1869).
+-- To measure in game.
+-- --------------------------------------
+SET @GUID = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`);
+INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`)
+    SELECT @GUID + 1, e.`Type`, 56685, @WORLD, 0, -2274.0, -868.42, -1867.0, 1.152, 0, 0, e.`DisplayInfo`, e.`OutfitInfo`, 219, 219
+    FROM `entity` e WHERE e.`World` = @WORLD AND e.`Creature` = 56685 LIMIT 1;
+-- The exit portal (36869, type 14), phase 31: measured in game (Teun, 2 Oct 2026) on the raised part of the church. The
+-- Jabbithole spot (-2263, -868.1, -1862) sat in that floor ("Target must be in line of sight").
+INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`) VALUES
+    (@GUID + 2, 14, 36869, @WORLD, 0, -2266.9873, -865.9202, -1864.4086, 1.2219985, 0, 0, 30429, 0, 219, 219);
+
+INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
+    (@GUID + 1, @EVENT_MAIN, 30),
+    (@GUID + 2, @EVENT_MAIN, 31);
+
+INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
+    (@GUID + 1, 10, 15),
+    (@GUID + 2, 10, 15);
