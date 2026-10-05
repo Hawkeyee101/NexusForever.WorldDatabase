@@ -766,3 +766,158 @@ INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
 INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
     (@GUID + 1, 10, 15),
     (@GUID + 2, 10, 15);
+
+-- --------------------------------------
+-- The Science of Revenge (public event 421, tier 1 Tactical)
+-- Research: docs research/science-of-revenge.md. Night, the fields' Dominion units again: The Farmer's Daughter's
+-- scouts, spotlights and soldiers are COPIED here at import (as Breach of Protocol does).
+--   phase 0  one Dominion Scientist (50465/50466) working on a Cornered Farmer (50473/50476) at each of the three
+--            assistant sites, WorldLocation2 13151 / 13114 / 13152 (archived Jabbithole sightings; facings face each
+--            other, not measured). The script makes the farmers cower and counts objective 202.
+--   phase 1  "Twitchy" Groo (23503) at 40368 (Sinnatus Farmstead; Jabbithole: 56 of 63 sightings within 2 m), set when
+--            202 completes; objective 1947 picks him up. Facing north, towards the fields (not measured).
+--   phase 0  a Dominion Recon Specialist near the first spotlight (Teun's retail video check, 3 Oct 2026: a fixed spawn,
+--            no alarm every few kills here); he calls reinforcements when fought.
+-- Heights from surface.py (terrain, no props there).
+-- --------------------------------------
+SET @EVENT_SCIENCE = 421;
+DELETE FROM `entity_event` WHERE `eventId` = @EVENT_SCIENCE;
+
+-- copies of the Farmer's Daughter's shared field units (phase 0: scouts 17856, spotlights 17763, soldiers 17857)
+SET @OFF = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`) + 1 - (SELECT MIN(e.`id`) FROM `entity` e JOIN `entity_event` ee ON ee.`id` = e.`id`
+    WHERE ee.`eventId` = 420 AND ee.`phase` = 0 AND e.`creature` IN (17856, 17763, 17857));
+INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`)
+    SELECT e.`id` + @OFF, e.`type`, e.`creature`, e.`world`, e.`area`, e.`x`, e.`y`, e.`z`, e.`rx`, e.`ry`, e.`rz`, e.`displayInfo`, e.`outfitInfo`, e.`faction1`, e.`faction2`
+    FROM `entity` e JOIN `entity_event` ee ON ee.`id` = e.`id`
+    WHERE ee.`eventId` = 420 AND ee.`phase` = 0 AND e.`creature` IN (17856, 17763, 17857);
+INSERT INTO `entity_event` (`id`, `eventId`, `phase`)
+    SELECT ee.`id` + @OFF, @EVENT_SCIENCE, 0
+    FROM `entity_event` ee JOIN `entity` e ON e.`id` = ee.`id`
+    WHERE ee.`eventId` = 420 AND ee.`phase` = 0 AND e.`creature` IN (17856, 17763, 17857);
+INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`)
+    SELECT s.`id` + @OFF, s.`stat`, s.`value`
+    FROM `entity_stats` s JOIN `entity_event` ee ON ee.`id` = s.`id` JOIN `entity` e ON e.`id` = s.`id`
+    WHERE ee.`eventId` = 420 AND ee.`phase` = 0 AND e.`creature` IN (17856, 17763, 17857);
+INSERT INTO `entity_spline` (`id`, `splineId`, `mode`, `speed`, `fx`, `fy`, `fz`)
+    SELECT sp.`id` + @OFF, sp.`splineId`, sp.`mode`, sp.`speed`, sp.`fx`, sp.`fy`, sp.`fz`
+    FROM `entity_spline` sp JOIN `entity_event` ee ON ee.`id` = sp.`id`
+    WHERE ee.`eventId` = 420 AND ee.`phase` = 0;
+
+-- removed for The Science of Revenge only (Teun, 3 Oct 2026): the scout standing 5 m from the scientist at site B
+-- (13114); the Farmer's Daughter keeps it
+DELETE e FROM `entity` e JOIN `entity_event` ee ON ee.`id` = e.`id`
+    WHERE ee.`eventId` = @EVENT_SCIENCE AND e.`creature` = 17856 AND ABS(e.`x` + 2442.6) < 0.5 AND ABS(e.`z` + 1395.3) < 0.5;
+
+-- this mission's own spawns
+SET @GUID = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`);
+INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`) VALUES
+    (@GUID + 1, 0, 50465, @WORLD, 0, -2381.6, -918.0, -1387.6, -0.8086, 0, 0, 25682, 8371, 1452, 1452), -- Dominion Scientist, site A (13151)
+    (@GUID + 2, 0, 50473, @WORLD, 0, -2379.4, -918.3, -1389.7, 2.3329, 0, 0, 25726, 7913, 219, 219), -- Cornered Farmer, site A
+    (@GUID + 3, 0, 50466, @WORLD, 0, -2448.0, -922.4, -1391.6, -0.5317, 0, 0, 26092, 8371, 1452, 1452), -- Dominion Scientist, site B (13114)
+    (@GUID + 4, 0, 50476, @WORLD, 0, -2446.0, -922.5, -1395.0, 2.6099, 0, 0, 25769, 7914, 219, 219), -- Cornered Farmer, site B
+    (@GUID + 5, 0, 50465, @WORLD, 0, -2386.6, -922.47, -1302.4, -2.3276, 0, 0, 26281, 8371, 1452, 1452), -- Dominion Scientist, site C (13152)
+    (@GUID + 6, 0, 50473, @WORLD, 0, -2383.0, -923.0, -1299.0, 0.814, 0, 0, 25730, 7916, 219, 219), -- Cornered Farmer, site C
+    (@GUID + 7, 0, 23503, @WORLD, 0, -2381.5, -924.0, -1463.0, -3.113, 0, 0, 25030, 8756, 1452, 1452), -- "Twitchy" Groo (40368)
+    (@GUID + 8, 0, 17823, @WORLD, 0, -2493.1543, -925.1499, -1355.0402, -2.4632409, 0, 0, 26107, 9005, 1452, 1452); -- Dominion Recon Specialist near the first spotlight (Teun's video: fixed spawn; Breach of Protocol's spot); calls reinforcements when fought (script)
+
+INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
+    (@GUID + 1, @EVENT_SCIENCE, 0),
+    (@GUID + 2, @EVENT_SCIENCE, 0),
+    (@GUID + 3, @EVENT_SCIENCE, 0),
+    (@GUID + 4, @EVENT_SCIENCE, 0),
+    (@GUID + 5, @EVENT_SCIENCE, 0),
+    (@GUID + 6, @EVENT_SCIENCE, 0),
+    (@GUID + 7, @EVENT_SCIENCE, 1),
+    (@GUID + 8, @EVENT_SCIENCE, 0);
+
+INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
+    (@GUID + 1, 10, 15),
+    (@GUID + 2, 10, 15),
+    (@GUID + 3, 10, 15),
+    (@GUID + 4, 10, 15),
+    (@GUID + 5, 10, 15),
+    (@GUID + 6, 10, 15),
+    (@GUID + 7, 10, 15),
+    (@GUID + 8, 10, 15);
+
+-- --------------------------------------
+-- Leveling the Field (public event 422, tier 1 Militant)
+-- Research: docs research/leveling-the-field.md. Night, the fields' Dominion units again (COPIED from The Farmer's
+-- Daughter at import, as Breach of Protocol does). The Shield Parts crates (48056) aren't here: the script spawns them at
+-- the 13 archived Jabbithole spots and brings stolen ones back after a while.
+--   phase 0  two Rebel Farmers (50713, Lysion's men) inside each grain silo, at their Jabbithole spots on the silo floors
+--            (WorldLocation2 38681 Checkpoint Gamma, 38682 Abandoned Orchards, 38683 Sunripe Fields), facing the
+--            silo's centre; two Dominion Engineering Officers (17949) at each shield-part spot (Jabbithole clusters,
+--            facing the crates; not measured)
+--   phase 0  a Dominion Recon Specialist (Teun's video check, 3 Oct 2026: a guaranteed spawn, not the kill-count alarm).
+-- Heights from surface.py: the silo floors are props (ungrounded), the rest terrain.
+-- --------------------------------------
+SET @EVENT_LEVELING = 422;
+DELETE FROM `entity_event` WHERE `eventId` = @EVENT_LEVELING;
+
+-- copies of the Farmer's Daughter's shared field units (phase 0: scouts 17856, spotlights 17763, soldiers 17857)
+SET @OFF = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`) + 1 - (SELECT MIN(e.`id`) FROM `entity` e JOIN `entity_event` ee ON ee.`id` = e.`id`
+    WHERE ee.`eventId` = 420 AND ee.`phase` = 0 AND e.`creature` IN (17856, 17763, 17857));
+INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`)
+    SELECT e.`id` + @OFF, e.`type`, e.`creature`, e.`world`, e.`area`, e.`x`, e.`y`, e.`z`, e.`rx`, e.`ry`, e.`rz`, e.`displayInfo`, e.`outfitInfo`, e.`faction1`, e.`faction2`
+    FROM `entity` e JOIN `entity_event` ee ON ee.`id` = e.`id`
+    WHERE ee.`eventId` = 420 AND ee.`phase` = 0 AND e.`creature` IN (17856, 17763, 17857);
+INSERT INTO `entity_event` (`id`, `eventId`, `phase`)
+    SELECT ee.`id` + @OFF, @EVENT_LEVELING, 0
+    FROM `entity_event` ee JOIN `entity` e ON e.`id` = ee.`id`
+    WHERE ee.`eventId` = 420 AND ee.`phase` = 0 AND e.`creature` IN (17856, 17763, 17857);
+INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`)
+    SELECT s.`id` + @OFF, s.`stat`, s.`value`
+    FROM `entity_stats` s JOIN `entity_event` ee ON ee.`id` = s.`id` JOIN `entity` e ON e.`id` = s.`id`
+    WHERE ee.`eventId` = 420 AND ee.`phase` = 0 AND e.`creature` IN (17856, 17763, 17857);
+INSERT INTO `entity_spline` (`id`, `splineId`, `mode`, `speed`, `fx`, `fy`, `fz`)
+    SELECT sp.`id` + @OFF, sp.`splineId`, sp.`mode`, sp.`speed`, sp.`fx`, sp.`fy`, sp.`fz`
+    FROM `entity_spline` sp JOIN `entity_event` ee ON ee.`id` = sp.`id`
+    WHERE ee.`eventId` = 420 AND ee.`phase` = 0;
+
+-- this mission's own spawns
+SET @GUID = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`);
+INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`) VALUES
+    (@GUID + 1, 0, 50713, @WORLD, 0, -2288.0, -922.714, -1262.0, -0.2493, 0, 0, 25726, 7912, 219, 219), -- Rebel Farmer, silo A (38681), on the floor
+    (@GUID + 2, 0, 50713, @WORLD, 0, -2281.0, -922.714, -1262.0, 0.7944, 0, 0, 25729, 7912, 219, 219), -- Rebel Farmer, silo A
+    (@GUID + 3, 0, 50713, @WORLD, 0, -2447.0, -924.699, -1224.0, -1.5096, 0, 0, 25727, 7912, 219, 219), -- Rebel Farmer, silo B (38682)
+    (@GUID + 4, 0, 50713, @WORLD, 0, -2436.0, -924.699, -1222.0, 1.2102, 0, 0, 25730, 7912, 219, 219), -- Rebel Farmer, silo B
+    (@GUID + 5, 0, 50713, @WORLD, 0, -2488.0, -925.204, -1442.0, -1.8158, 0, 0, 25728, 7912, 219, 219), -- Rebel Farmer, silo C (38683)
+    (@GUID + 6, 0, 50713, @WORLD, 0, -2479.0, -925.456, -1439.0, 1.1659, 0, 0, 25731, 7912, 219, 219), -- Rebel Farmer, silo C
+    (@GUID + 7, 0, 17949, @WORLD, 0, -2445.0, -923.0, -1400.0, -1.6234, 0, 0, 26092, 7476, 1452, 1452), -- Dominion Engineering Officer, south-west spot (13114)
+    (@GUID + 8, 0, 17949, @WORLD, 0, -2440.0, -923.5, -1410.0, -2.7367, 0, 0, 26095, 7476, 1452, 1452), -- Dominion Engineering Officer, south-west spot
+    (@GUID + 9, 0, 17949, @WORLD, 0, -2378.0, -924.5, -1275.0, -0.2742, 0, 0, 26094, 7476, 1452, 1452), -- Dominion Engineering Officer, middle spot (13152)
+    (@GUID + 10, 0, 17949, @WORLD, 0, -2377.0, -922.0, -1306.0, -2.9124, 0, 0, 26290, 7476, 1452, 1452), -- Dominion Engineering Officer, middle spot
+    (@GUID + 11, 0, 17949, @WORLD, 0, -2340.0, -921.5, -1340.0, -1.6374, 0, 0, 26092, 7476, 1452, 1452), -- Dominion Engineering Officer, east spot (13115)
+    (@GUID + 12, 0, 17949, @WORLD, 0, -2325.0, -923.75, -1330.0, -1.0808, 0, 0, 26095, 7476, 1452, 1452), -- Dominion Engineering Officer, east spot
+    (@GUID + 13, 0, 17823, @WORLD, 0, -2493.1543, -925.1499, -1355.0402, -2.4632409, 0, 0, 26107, 9005, 1452, 1452); -- Dominion Recon Specialist, always there (Teun's video; spot copied from 421/Breach of Protocol, to confirm); calls reinforcements when fought (script)
+
+INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
+    (@GUID + 1, @EVENT_LEVELING, 0),
+    (@GUID + 2, @EVENT_LEVELING, 0),
+    (@GUID + 3, @EVENT_LEVELING, 0),
+    (@GUID + 4, @EVENT_LEVELING, 0),
+    (@GUID + 5, @EVENT_LEVELING, 0),
+    (@GUID + 6, @EVENT_LEVELING, 0),
+    (@GUID + 7, @EVENT_LEVELING, 0),
+    (@GUID + 8, @EVENT_LEVELING, 0),
+    (@GUID + 9, @EVENT_LEVELING, 0),
+    (@GUID + 10, @EVENT_LEVELING, 0),
+    (@GUID + 11, @EVENT_LEVELING, 0),
+    (@GUID + 12, @EVENT_LEVELING, 0),
+    (@GUID + 13, @EVENT_LEVELING, 0);
+
+INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
+    (@GUID + 1, 10, 15),
+    (@GUID + 2, 10, 15),
+    (@GUID + 3, 10, 15),
+    (@GUID + 4, 10, 15),
+    (@GUID + 5, 10, 15),
+    (@GUID + 6, 10, 15),
+    (@GUID + 7, 10, 15),
+    (@GUID + 8, 10, 15),
+    (@GUID + 9, 10, 15),
+    (@GUID + 10, 10, 15),
+    (@GUID + 11, 10, 15),
+    (@GUID + 12, 10, 15),
+    (@GUID + 13, 10, 15);
