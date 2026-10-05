@@ -921,3 +921,32 @@ INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
     (@GUID + 11, 10, 15),
     (@GUID + 12, 10, 15),
     (@GUID + 13, 10, 15);
+
+-- --------------------------------------
+-- The Keymaster (public event 424, tier 2 Tactical)
+-- Research: docs research/the-keymaster.md. The military headquarters in Hycrest City (WorldLocation2 13106, r12).
+--   phase 0  the Field Intelligence Agent (18445, "PE424 Tactical 2", Group Superior) and two Intelligence Recovery Agents
+--            (19115) as his escort, on the headquarters' yard (Jabbithole sightings: agent around (-2398, -1984), agents
+--            around (-2394, -1975) / (-2395, -1988)), facing west, where the players come in (inferred).
+-- The two waves (19130 + 2x 19115, 50677 + 2x 50676) and the Encryption Codes (48129) aren't here: the script spawns
+-- them during the fight. The escort of two is inferred (B: "Field Intelligence Agent and two support units").
+-- Heights from surface.py: the yard is a prop floor at -868.242.
+-- --------------------------------------
+SET @EVENT_KEYMASTER = 424;
+DELETE FROM `entity_event` WHERE `eventId` = @EVENT_KEYMASTER;
+
+SET @GUID = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`);
+INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`) VALUES
+    (@GUID + 1, 0, 18445, @WORLD, 0, -2398.0, -868.242, -1980.0, 1.5708, 0, 0, 26152, 9497, 1452, 1452), -- Field Intelligence Agent, the headquarters' yard (13106)
+    (@GUID + 2, 0, 19115, @WORLD, 0, -2394.0, -868.242, -1986.0, 1.5708, 0, 0, 30967, 9010, 1452, 1452), -- Intelligence Recovery Agent, escort (inferred)
+    (@GUID + 3, 0, 19115, @WORLD, 0, -2402.0, -868.242, -1974.0, 1.5708, 0, 0, 30968, 9010, 1452, 1452); -- Intelligence Recovery Agent, escort (inferred)
+
+INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
+    (@GUID + 1, @EVENT_KEYMASTER, 0),
+    (@GUID + 2, @EVENT_KEYMASTER, 0),
+    (@GUID + 3, @EVENT_KEYMASTER, 0);
+
+INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
+    (@GUID + 1, 10, 15),
+    (@GUID + 2, 10, 15),
+    (@GUID + 3, 10, 15);
