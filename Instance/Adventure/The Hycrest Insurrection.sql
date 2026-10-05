@@ -950,3 +950,73 @@ INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
     (@GUID + 1, 10, 15),
     (@GUID + 2, 10, 15),
     (@GUID + 3, 10, 15);
+-- --------------------------------------
+-- Jailbreak (public event 425, tier 2 Militant)
+-- Research: docs research/jailbreak.md. The Detention Center (WorldLocation2 13108 panel, 49629 yard, 49634 blimp). The
+-- Chua Warblimp, its Navigation Array and Balance Stabilizers and the Rocketeers that drop in aren't here: the script
+-- spawns them when the blimp flies in (spline 4586).
+--   phase 0  the Detention Center Control Panel (48141) at its table point 13108; the laser barricade (48140) in the gap
+--            between the two Imperium fence pieces at z -1774.8 (the pen's gate, inferred: escape spline 14748 starts
+--            inside and runs through it); three Hycrest Farmers (18236, 18237, 18239) in the pen behind it, facing the
+--            gate; the guards at the Jabbithole Detention Center sightings: Dominion Shocktroopers (17858), Techsmiths
+--            (17859) and Soldiers (17857), three by the panel, three in the yard under the blimp point, four along the
+--            escape route (facings towards the yard, not measured; two spots moved off a medical station and a turret)
+--   phase 1  the two Jetpacks (48254) at the Jabbithole jetpack spots (62 and 30 sightings), with the blimp
+-- Heights from surface.py (all terrain).
+-- --------------------------------------
+SET @EVENT_JAILBREAK = 425;
+DELETE FROM `entity_event` WHERE `eventId` = @EVENT_JAILBREAK;
+
+SET @GUID = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`);
+INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`) VALUES
+    (@GUID + 1, 0, 48141, @WORLD, 0, -2671.03, -881.0, -1769.21, 0, 0, 0, 23952, 0, 219, 219), -- Detention Center Control Panel (13108; facing a guess)
+    (@GUID + 2, 0, 48140, @WORLD, 0, -2675.85, -881.0, -1774.8, 1.5708, 0, 0, 23812, 0, 219, 219), -- Detention Center Barricade, the pen's gate (inferred)
+    (@GUID + 3, 0, 18236, @WORLD, 0, -2675.0, -881.0, -1781.5, 3.0154, 0, 0, 25726, 7912, 219, 219), -- Hycrest Farmer, in the pen
+    (@GUID + 4, 0, 18237, @WORLD, 0, -2677.6, -881.0, -1783.0, -2.9313, 0, 0, 25727, 7910, 219, 219), -- Hycrest Farmer, in the pen
+    (@GUID + 5, 0, 18239, @WORLD, 0, -2673.2, -881.0, -1783.6, 2.8491, 0, 0, 25769, 7914, 219, 219), -- Hycrest Farmer, in the pen
+    (@GUID + 6, 0, 17858, @WORLD, 0, -2670.0, -881.0, -1751.0, -0.761, 0, 0, 26045, 8194, 1452, 1452), -- Dominion Shocktrooper, by the panel
+    (@GUID + 7, 0, 17859, @WORLD, 0, -2671.0, -881.0, -1758.0, -0.9828, 0, 0, 28221, 9249, 1452, 1452), -- Dominion Techsmith, by the panel
+    (@GUID + 8, 0, 17857, @WORLD, 0, -2671.0, -881.0, -1746.0, -0.6794, 0, 0, 30354, 8189, 1452, 1452), -- Dominion Soldier, by the panel
+    (@GUID + 9, 0, 17858, @WORLD, 0, -2643.0, -881.0, -1746.0, 0.263, 0, 0, 31353, 8194, 1452, 1452), -- Dominion Shocktrooper, yard under the blimp point
+    (@GUID + 10, 0, 17859, @WORLD, 0, -2646.0, -881.0, -1749.0, 0.1722, 0, 0, 28092, 9249, 1452, 1452), -- Dominion Techsmith, yard
+    (@GUID + 11, 0, 17857, @WORLD, 0, -2650.0, -881.0, -1748.0, 0, 0, 0, 30791, 8189, 1452, 1452), -- Dominion Soldier, yard
+    (@GUID + 12, 0, 17858, @WORLD, 0, -2639.0, -880.5, -1792.0, 2.6387, 0, 0, 31339, 8194, 1452, 1452), -- Dominion Shocktrooper, escape route (JH -2634,-1794, moved off a medical station)
+    (@GUID + 13, 0, 17859, @WORLD, 0, -2631.0, -879.125, -1799.0, 2.5284, 0, 0, 28223, 9249, 1452, 1452), -- Dominion Techsmith, escape route
+    (@GUID + 14, 0, 17858, @WORLD, 0, -2607.0, -878.0, -1808.0, 2.2678, 0, 0, 26045, 8194, 1452, 1452), -- Dominion Shocktrooper, escape route east (JH -2605,-1804, moved off a turret)
+    (@GUID + 15, 0, 17859, @WORLD, 0, -2608.0, -878.75, -1799.0, 2.1421, 0, 0, 28221, 9249, 1452, 1452), -- Dominion Techsmith, escape route east
+    (@GUID + 16, 0, 48254, @WORLD, 0, -2634.0, -880.0, -1792.0, 3.04, 0, 0, 27006, 0, 219, 219), -- Jetpack (JH, 62 sightings)
+    (@GUID + 17, 0, 48254, @WORLD, 0, -2639.0, -881.0, -1775.0, 3.1416, 0, 0, 27006, 0, 219, 219); -- Jetpack (JH, 30 sightings)
+
+INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
+    (@GUID + 1, @EVENT_JAILBREAK, 0),
+    (@GUID + 2, @EVENT_JAILBREAK, 0),
+    (@GUID + 3, @EVENT_JAILBREAK, 0),
+    (@GUID + 4, @EVENT_JAILBREAK, 0),
+    (@GUID + 5, @EVENT_JAILBREAK, 0),
+    (@GUID + 6, @EVENT_JAILBREAK, 0),
+    (@GUID + 7, @EVENT_JAILBREAK, 0),
+    (@GUID + 8, @EVENT_JAILBREAK, 0),
+    (@GUID + 9, @EVENT_JAILBREAK, 0),
+    (@GUID + 10, @EVENT_JAILBREAK, 0),
+    (@GUID + 11, @EVENT_JAILBREAK, 0),
+    (@GUID + 12, @EVENT_JAILBREAK, 0),
+    (@GUID + 13, @EVENT_JAILBREAK, 0),
+    (@GUID + 14, @EVENT_JAILBREAK, 0),
+    (@GUID + 15, @EVENT_JAILBREAK, 0),
+    (@GUID + 16, @EVENT_JAILBREAK, 1),
+    (@GUID + 17, @EVENT_JAILBREAK, 1);
+
+INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
+    (@GUID + 3, 10, 15),
+    (@GUID + 4, 10, 15),
+    (@GUID + 5, 10, 15),
+    (@GUID + 6, 10, 15),
+    (@GUID + 7, 10, 15),
+    (@GUID + 8, 10, 15),
+    (@GUID + 9, 10, 15),
+    (@GUID + 10, 10, 15),
+    (@GUID + 11, 10, 15),
+    (@GUID + 12, 10, 15),
+    (@GUID + 13, 10, 15),
+    (@GUID + 14, 10, 15),
+    (@GUID + 15, 10, 15);
