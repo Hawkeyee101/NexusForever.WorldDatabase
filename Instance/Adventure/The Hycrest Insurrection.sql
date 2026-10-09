@@ -698,6 +698,22 @@ INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
     (@GUID + 1, @EVENT_MAIN, 14),
     (@GUID + 2, @EVENT_MAIN, 23);
 
+-- --------------------------------------
+-- Ayita's Tavern (hideout after The Keymaster and The Thresher Initiative, regroup 1773). No NPCs inside (Teun's video
+-- check, 9 Oct 2026). Dominion Tavern Door - Platform (51062, PRP_Door_Imperium_Grey_GoldTrim_000.m3, display 29763):
+-- 419 phase 24, spawned (closed) when everyone is in the tavern, removed once the next mission has everything on the map.
+-- The model's origin is its middle (bounds -3.67..+3.65 m wide), not a hinge, so it stands in the middle of the doorway.
+-- Position: Teun's spot from the Surveyor (-2474.367, -877.425, -1967.196), moved 0.13 m onto the axis of the tavern
+-- building (STR_Imperium_Shop_000 at (-2479.7, -1976.56), yaw 0.53); facing = the building's yaw (the barn door sits on
+-- its barn's axis the same way). Turn it by pi if the gold trim faces inwards.
+-- --------------------------------------
+SET @GUID = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`);
+INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`) VALUES
+    (@GUID + 1, 11, 51062, @WORLD, 0, -2474.251, -877.425, -1967.259, 0.53, 0, 0, 29763, 0, 219, 219); -- Dominion Tavern Door - Platform
+
+INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
+    (@GUID + 1, @EVENT_MAIN, 24);
+
 INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
     (@GUID + 1, 10, 15),
     (@GUID + 2, 10, 15);
@@ -925,11 +941,10 @@ INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
 -- --------------------------------------
 -- The Keymaster (public event 424, tier 2 Tactical)
 -- Research: docs research/the-keymaster.md. The military headquarters in Hycrest City (WorldLocation2 13106, r12).
---   phase 0  the Field Intelligence Agent (18445, "PE424 Tactical 2", Group Superior) and two Intelligence Recovery Agents
---            (19115) as his escort, on the headquarters' yard (Jabbithole sightings: agent around (-2398, -1984), agents
---            around (-2394, -1975) / (-2395, -1988)), facing west, where the players come in (inferred).
--- The two waves (19130 + 2x 19115, 50677 + 2x 50676) and the Encryption Codes (48129) aren't here: the script spawns
--- them during the fight. The escort of two is inferred (B: "Field Intelligence Agent and two support units").
+--   phase 0  the Field Intelligence Agent (18445, "PE424 Tactical 2", Group Superior) alone on the headquarters' yard
+--            (Jabbithole sightings around (-2398, -1984)), facing west, where the players come in (inferred). He stands
+--            alone (Teun's video check, 9 Oct 2026).
+-- The two waves (19130 + 19115, 50677 + 2x 50676) and the Encryption Codes (48129) aren't here: the script spawns them.
 -- Heights from surface.py: the yard is a prop floor at -868.242.
 -- --------------------------------------
 SET @EVENT_KEYMASTER = 424;
@@ -938,8 +953,8 @@ DELETE FROM `entity_event` WHERE `eventId` = @EVENT_KEYMASTER;
 SET @GUID = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`);
 INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`) VALUES
     (@GUID + 1, 0, 18445, @WORLD, 0, -2398.0, -868.242, -1980.0, 1.5708, 0, 0, 26152, 9497, 1452, 1452), -- Field Intelligence Agent, the headquarters' yard (13106)
-    (@GUID + 2, 0, 19115, @WORLD, 0, -2394.0, -868.242, -1986.0, 1.5708, 0, 0, 30967, 9010, 1452, 1452), -- Intelligence Recovery Agent, escort (inferred)
-    (@GUID + 3, 0, 19115, @WORLD, 0, -2402.0, -868.242, -1974.0, 1.5708, 0, 0, 30968, 9010, 1452, 1452); -- Intelligence Recovery Agent, escort (inferred)
+    (@GUID + 2, 0, 17859, @WORLD, 0, -2383.0, -930.0, -1556.0, 3.1416, 0, 0, 28092, 9249, 1452, 1452), -- Dominion Techsmith outside Sinnatus's Barn towards the city (Teun's video check; Jabbithole 1 sighting)
+    (@GUID + 3, 0, 17858, @WORLD, 0, -2387.0, -930.0, -1555.0, 3.1416, 0, 0, 26045, 8194, 1452, 1452); -- Dominion Shocktrooper, same spot (Jabbithole 1 sighting); facing the barn (inferred)
 
 INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
     (@GUID + 1, @EVENT_KEYMASTER, 0),
@@ -1020,3 +1035,365 @@ INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
     (@GUID + 13, 10, 15),
     (@GUID + 14, 10, 15),
     (@GUID + 15, 10, 15);
+
+-- --------------------------------------
+-- Hycrest City (9 Oct 2026): Hycrest City's standing population in world 1149, the Hycrest Watch guards and the
+-- citizens of the "Hide in Crowds" mechanic. Hycrest City only; the rest of the map stays as it is.
+-- Research and caveats: docs/hycrest/research/hycrest-city-population.md.
+-- Source: the archived Jabbithole sightings of the zone-33 pages (The Hycrest Insurrection), x/z rounded to whole metres,
+-- no y. Each creature's sightings in Hycrest City (x -2600..-2240, z -2015..-1770; the Detention Center x < -2600 left
+-- out) were reduced greedily to spots: the densest point with its sightings within 5 m, their centre, the sightings
+-- within 6 m removed, repeat. Guards: one per spot with 3+ sightings (Enforcers 6+, Officers 5+: those two are one fight
+-- blob), plus 2-sighting spots 10 m from the others; single sightings left out (chases). Citizens: every spot,
+-- ceil(n/2) citizens (max 4) in a 1.4 m ring round it facing inwards, single sightings as one citizen.
+-- Heights: Surveyor pipeline/surface.py (terrain or the prop/building floor under the point); rows on a prop say so and
+-- must not be grounded. Facings are not measured: guards face the Town Square (38946), citizens their crowd's centre or
+-- the Town Square.
+-- DisplayInfo: the n-th entry of the creature's Creature2DisplayGroupEntry group (variety, not measured); OutfitInfo: the
+-- only entry of its Creature2OutfitGroupEntry group. Factions as in Creature2 (759 Hycrest Watch, 767 Enforcers, 219
+-- citizens), NOT 1452: the disguise's reputation boost is for 759, so the guards must keep it.
+-- Event: main event 419, phase 40 (@PHASE_CITY), set by the main script when the first city mission starts (424, 425,
+-- 427, 433, 434), so the guards don't stand in the city during the field missions before.
+-- Not here: Shatterforce Vanguards
+-- (17932, Priority Target 433's church adds), Hycrest Farmers (the Detention Center pen, Jailbreak 425, already spawned),
+-- Coup de Grace's incite crowd 18131-18135 (434's own), Rhadman (434).
+-- --------------------------------------
+SET @WORLD = 1149;
+SET @EVENT_MAIN = 419;
+SET @PHASE_CITY = 40;
+
+-- --------------------------------------
+-- Hycrest Watch guards (all "Hide in Crowds" in Creature2, level 15):
+--   17929 Hycrest Watchman (f759, Grunt), 17745 Shatterforce Trooper (f759, Challenger),
+--   18465 Shatterforce Enforcer (f767 Hycrest Watch Enforcers): Jabbithole "Elite Shatterforce Enforcer" = 18465 with
+--   spell 35667 (rename to 285057, x1.1 scale, props 141-143 x9); its "Shatterforce Officer" = 18465 with 27414 (rename to
+--   166233 + FactionSet 759, inferred). DB rows cannot cast spells: the Officer row carries faction 759 itself, the
+--   renames/buffs need a script. The courtyard group (Enforcers + Officer, ~(-2360, -1915)) is the Priority Target
+--   courtyard fight or Arsenax's escort in Coup de Grace (38947): open.
+--   The Town Square Watchmen (around 38946) may be Rhadman's guards in Coup de Grace (434): open.
+-- --------------------------------------
+SET @GUID = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`);
+INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`) VALUES
+    (@GUID + 1, 0, 17929, @WORLD, 0, -2481.7, -878.553, -1850.6, 2.9907, 0, 0, 30354, 9005, 759, 759), -- Hycrest Watchman, JH 10 sightings
+    (@GUID + 2, 0, 17929, @WORLD, 0, -2473.0, -881.3, -1826.8, 0.7549, 0, 0, 30791, 9005, 759, 759), -- Hycrest Watchman, JH 6 sightings
+    (@GUID + 3, 0, 17929, @WORLD, 0, -2283.8, -872.0, -1925.2, 1.982, 0, 0, 27550, 9005, 759, 759), -- Hycrest Watchman, JH 4 sightings
+    (@GUID + 4, 0, 17929, @WORLD, 0, -2473.8, -877.27, -1839.2, 1.6826, 0, 0, 31078, 9005, 759, 759), -- Hycrest Watchman, JH 5 sightings; on a prop/building floor (PRP_Platform_ImperiumMilitary_001, terrain -879.18): ungrounded
+    (@GUID + 5, 0, 17929, @WORLD, 0, -2491.0, -878.412, -1848.7, -2.5307, 0, 0, 31079, 9005, 759, 759), -- Hycrest Watchman, JH 3 sightings
+    (@GUID + 6, 0, 17929, @WORLD, 0, -2291.0, -872.0, -1934.3, 2.0342, 0, 0, 31081, 9005, 759, 759), -- Hycrest Watchman, JH 3 sightings
+    (@GUID + 7, 0, 17929, @WORLD, 0, -2408.3, -880.0, -1876.7, 2.0443, 0, 0, 31082, 9005, 759, 759), -- Hycrest Watchman, JH 3 sightings
+    (@GUID + 8, 0, 17929, @WORLD, 0, -2454.0, -881.0, -1809.0, 0.7939, 0, 0, 31062, 9005, 759, 759), -- Hycrest Watchman, JH 2 sightings
+    (@GUID + 9, 0, 17929, @WORLD, 0, -2461.5, -880.719, -1822.5, 0.9561, 0, 0, 31065, 9005, 759, 759), -- Hycrest Watchman, JH 2 sightings
+    (@GUID + 10, 0, 17929, @WORLD, 0, -2483.0, -881.247, -1810.0, 0.0213, 0, 0, 31067, 9005, 759, 759), -- Hycrest Watchman, JH 2 sightings; on a prop/building floor (STR_Building_Imperium_Inn_000, terrain -883.0): ungrounded
+    (@GUID + 11, 0, 17745, @WORLD, 0, -2371.9, -868.242, -1949.2, 2.3536, 0, 0, 31063, 8760, 759, 759), -- Shatterforce Trooper, JH 8 sightings; on a prop/building floor (PRP_MedicalStation_ImperiumMilitary_White_000, terrain -868.985): ungrounded
+    (@GUID + 12, 0, 17745, @WORLD, 0, -2592.7, -878.825, -1820.0, -1.4064, 0, 0, 31068, 8760, 759, 759), -- Shatterforce Trooper, JH 7 sightings
+    (@GUID + 13, 0, 17745, @WORLD, 0, -2515.5, -880.136, -1822.0, -1.1034, 0, 0, 31077, 8760, 759, 759), -- Shatterforce Trooper, JH 6 sightings; on a prop/building floor (STR_Building_Imperium_Inn_000, terrain -882.0): ungrounded
+    (@GUID + 14, 0, 17745, @WORLD, 0, -2365.8, -864.205, -1974.0, 2.4272, 0, 0, 31075, 8760, 759, 759), -- Shatterforce Trooper, JH 4 sightings; on a prop/building floor (STR_Building_Imperium_LargeHouse_000, terrain -866.0): ungrounded
+    (@GUID + 15, 0, 17745, @WORLD, 0, -2580.7, -881.325, -1812.7, -1.3145, 0, 0, 31069, 8760, 759, 759), -- Shatterforce Trooper, JH 3 sightings
+    (@GUID + 16, 0, 17745, @WORLD, 0, -2433.7, -880.0, -1908.7, 2.5258, 0, 0, 31073, 8760, 759, 759), -- Shatterforce Trooper, JH 3 sightings
+    (@GUID + 17, 0, 17745, @WORLD, 0, -2456.3, -880.351, -1939.3, 2.8785, 0, 0, 31074, 8760, 759, 759), -- Shatterforce Trooper, JH 3 sightings
+    (@GUID + 18, 0, 17745, @WORLD, 0, -2504.0, -881.06, -1807.3, -0.5855, 0, 0, 31076, 8760, 759, 759), -- Shatterforce Trooper, JH 3 sightings; on a prop/building floor (STR_Building_Imperium_Inn_000, terrain -882.675): ungrounded
+    (@GUID + 19, 0, 17745, @WORLD, 0, -2584.3, -879.25, -1821.0, -1.4026, 0, 0, 31072, 8760, 759, 759), -- Shatterforce Trooper, JH 3 sightings
+    (@GUID + 20, 0, 17745, @WORLD, 0, -2599.5, -878.0, -1807.0, -1.3086, 0, 0, 31071, 8760, 759, 759), -- Shatterforce Trooper, JH 2 sightings
+    (@GUID + 21, 0, 17745, @WORLD, 0, -2486.0, -882.0, -1820.5, -0.1355, 0, 0, 30354, 8760, 759, 759), -- Shatterforce Trooper, JH 2 sightings
+    (@GUID + 22, 0, 17745, @WORLD, 0, -2423.5, -880.0, -1920.5, 2.5114, 0, 0, 30791, 8760, 759, 759), -- Shatterforce Trooper, JH 2 sightings
+    (@GUID + 23, 0, 18465, @WORLD, 0, -2364.2, -873.0, -1911.6, 2.1223, 0, 0, 27550, 7921, 767, 767), -- Shatterforce Enforcer ("Elite", 35667), JH 16 sightings
+    (@GUID + 24, 0, 18465, @WORLD, 0, -2355.0, -872.987, -1911.9, 2.0915, 0, 0, 31078, 7921, 767, 767), -- Shatterforce Enforcer ("Elite", 35667), JH 14 sightings
+    (@GUID + 25, 0, 18465, @WORLD, 0, -2372.5, -873.0, -1911.3, 2.1536, 0, 0, 31079, 7921, 767, 767), -- Shatterforce Enforcer ("Elite", 35667), JH 6 sightings
+    (@GUID + 26, 0, 18465, @WORLD, 0, -2347.1, -872.825, -1914.7, 2.0824, 0, 0, 31081, 7921, 767, 767), -- Shatterforce Enforcer ("Elite", 35667), JH 7 sightings
+    (@GUID + 27, 0, 18465, @WORLD, 0, -2373.2, -873.0, -1920.7, 2.2128, 0, 0, 31082, 7921, 767, 767), -- Shatterforce Enforcer ("Elite", 35667), JH 6 sightings
+    (@GUID + 28, 0, 18465, @WORLD, 0, -2360.7, -873.0, -1916.9, 2.141, 0, 0, 31062, 7921, 759, 759); -- Shatterforce Enforcer as "Shatterforce Officer" (27414: faction 759), JH 18 sightings
+
+INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
+    (@GUID + 1, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 2, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 3, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 4, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 5, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 6, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 7, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 8, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 9, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 10, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 11, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 12, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 13, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 14, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 15, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 16, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 17, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 18, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 19, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 20, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 21, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 22, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 23, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 24, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 25, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 26, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 27, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 28, @EVENT_MAIN, @PHASE_CITY);
+
+INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
+    (@GUID + 1, 10, 15),
+    (@GUID + 2, 10, 15),
+    (@GUID + 3, 10, 15),
+    (@GUID + 4, 10, 15),
+    (@GUID + 5, 10, 15),
+    (@GUID + 6, 10, 15),
+    (@GUID + 7, 10, 15),
+    (@GUID + 8, 10, 15),
+    (@GUID + 9, 10, 15),
+    (@GUID + 10, 10, 15),
+    (@GUID + 11, 10, 15),
+    (@GUID + 12, 10, 15),
+    (@GUID + 13, 10, 15),
+    (@GUID + 14, 10, 15),
+    (@GUID + 15, 10, 15),
+    (@GUID + 16, 10, 15),
+    (@GUID + 17, 10, 15),
+    (@GUID + 18, 10, 15),
+    (@GUID + 19, 10, 15),
+    (@GUID + 20, 10, 15),
+    (@GUID + 21, 10, 15),
+    (@GUID + 22, 10, 15),
+    (@GUID + 23, 10, 15),
+    (@GUID + 24, 10, 15),
+    (@GUID + 25, 10, 15),
+    (@GUID + 26, 10, 15),
+    (@GUID + 27, 10, 15),
+    (@GUID + 28, 10, 15);
+
+-- --------------------------------------
+-- Dominion Herald 19095 ("Hide in Crowds Flavor", f759 but no combat kit), one sighting on the Town Square platform
+-- (38946, where Rhadman stands in 434). Barks 446641-446643 ("Look alive, Soldier!...") are probably his (inferred).
+-- --------------------------------------
+SET @GUID = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`);
+INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`) VALUES
+    (@GUID + 1, 0, 19095, @WORLD, 0, -2483.0, -878.127, -1837.0, 3.0985, 0, 0, 26094, 8264, 759, 759); -- Dominion Herald, JH 1 sighting (Town Square, 38946); on a prop/building floor (PRP_Platform_ImperiumMilitary_001, terrain -880.125): ungrounded
+
+INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
+    (@GUID + 1, @EVENT_MAIN, @PHASE_CITY);
+
+INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
+    (@GUID + 1, 10, 15);
+
+-- --------------------------------------
+-- Hycrest Citizens 17733-17738 (f219, actionset 260 "Hide Player Visual": action 516 "Stay Within This Circle to Be
+-- Hidden", visual 9684, a ring on the ground while the player is not in combat). The variants rotate; Jabbithole merges
+-- all citizens on one page, so which variant stood where is unknown.
+-- --------------------------------------
+SET @GUID = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`);
+INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`) VALUES
+    (@GUID + 1, 0, 17733, @WORLD, 0, -2492.2, -878.302, -1851.1, 0.6, 0, 0, 25682, 8066, 219, 219), -- Hycrest Citizen, crowd of 4 round (-2493.0, -1852.3), JH 7 sightings
+    (@GUID + 2, 0, 17736, @WORLD, 0, -2491.8, -878.247, -1853.1, 2.1708, 0, 0, 26095, 8058, 219, 219), -- Hycrest Citizen, crowd of 4 round (-2493.0, -1852.3), JH 7 sightings
+    (@GUID + 3, 0, 17734, @WORLD, 0, -2493.8, -878.935, -1853.4, -2.5416, 0, 0, 26110, 8065, 219, 219), -- Hycrest Citizen, crowd of 4 round (-2493.0, -1852.3), JH 7 sightings
+    (@GUID + 4, 0, 17737, @WORLD, 0, -2494.2, -879.0, -1851.5, -0.9708, 0, 0, 26098, 8059, 219, 219), -- Hycrest Citizen, crowd of 4 round (-2493.0, -1852.3), JH 7 sightings
+    (@GUID + 5, 0, 17735, @WORLD, 0, -2471.5, -879.0, -1854.3, 0.6, 0, 0, 26284, 8064, 219, 219), -- Hycrest Citizen, crowd of 3 round (-2472.3, -1855.5), JH 6 sightings
+    (@GUID + 6, 0, 17738, @WORLD, 0, -2471.7, -879.0, -1856.8, 2.6944, 0, 0, 26292, 8060, 219, 219), -- Hycrest Citizen, crowd of 3 round (-2472.3, -1855.5), JH 6 sightings
+    (@GUID + 7, 0, 17733, @WORLD, 0, -2473.7, -879.0, -1855.4, -1.4944, 0, 0, 26353, 8066, 219, 219), -- Hycrest Citizen, crowd of 3 round (-2472.3, -1855.5), JH 6 sightings
+    (@GUID + 8, 0, 17736, @WORLD, 0, -2458.5, -879.0, -1833.5, 0.6, 0, 0, 26302, 8058, 219, 219), -- Hycrest Citizen, crowd of 3 round (-2459.3, -1834.7), JH 6 sightings
+    (@GUID + 9, 0, 17734, @WORLD, 0, -2458.7, -879.0, -1835.9, 2.6944, 0, 0, 27182, 8065, 219, 219), -- Hycrest Citizen, crowd of 3 round (-2459.3, -1834.7), JH 6 sightings
+    (@GUID + 10, 0, 17737, @WORLD, 0, -2460.7, -879.0, -1834.6, -1.4944, 0, 0, 30676, 8059, 219, 219), -- Hycrest Citizen, crowd of 3 round (-2459.3, -1834.7), JH 6 sightings
+    (@GUID + 11, 0, 17735, @WORLD, 0, -2535.0, -877.875, -1859.5, 0.6, 0, 0, 26283, 8064, 219, 219), -- Hycrest Citizen, crowd of 3 round (-2535.8, -1860.7), JH 6 sightings
+    (@GUID + 12, 0, 17738, @WORLD, 0, -2535.2, -877.7, -1861.9, 2.6944, 0, 0, 26357, 8060, 219, 219), -- Hycrest Citizen, crowd of 3 round (-2535.8, -1860.7), JH 6 sightings
+    (@GUID + 13, 0, 17733, @WORLD, 0, -2537.2, -877.2, -1860.6, -1.4944, 0, 0, 26289, 8066, 219, 219), -- Hycrest Citizen, crowd of 3 round (-2535.8, -1860.7), JH 6 sightings
+    (@GUID + 14, 0, 17736, @WORLD, 0, -2445.0, -880.5, -1889.4, 0.6, 0, 0, 26092, 8058, 219, 219), -- Hycrest Citizen, crowd of 3 round (-2445.8, -1890.6), JH 5 sightings
+    (@GUID + 15, 0, 17734, @WORLD, 0, -2445.2, -880.5, -1891.9, 2.6944, 0, 0, 26110, 8065, 219, 219), -- Hycrest Citizen, crowd of 3 round (-2445.8, -1890.6), JH 5 sightings
+    (@GUID + 16, 0, 17737, @WORLD, 0, -2447.2, -880.8, -1890.5, -1.4944, 0, 0, 26096, 8059, 219, 219), -- Hycrest Citizen, crowd of 3 round (-2445.8, -1890.6), JH 5 sightings
+    (@GUID + 17, 0, 17735, @WORLD, 0, -2512.2, -881.0, -1859.4, 0.6, 0, 0, 26282, 8064, 219, 219), -- Hycrest Citizen, crowd of 3 round (-2513.0, -1860.6), JH 5 sightings
+    (@GUID + 18, 0, 17738, @WORLD, 0, -2512.4, -881.0, -1861.9, 2.6944, 0, 0, 26291, 8060, 219, 219), -- Hycrest Citizen, crowd of 3 round (-2513.0, -1860.6), JH 5 sightings
+    (@GUID + 19, 0, 17733, @WORLD, 0, -2514.4, -881.0, -1860.5, -1.4944, 0, 0, 26284, 8066, 219, 219), -- Hycrest Citizen, crowd of 3 round (-2513.0, -1860.6), JH 5 sightings
+    (@GUID + 20, 0, 17736, @WORLD, 0, -2460.8, -879.0, -1844.6, 0.6, 0, 0, 26299, 8058, 219, 219), -- Hycrest Citizen, crowd of 3 round (-2461.6, -1845.8), JH 5 sightings
+    (@GUID + 21, 0, 17734, @WORLD, 0, -2461.0, -879.0, -1847.1, 2.6944, 0, 0, 27182, 8065, 219, 219), -- Hycrest Citizen, crowd of 3 round (-2461.6, -1845.8), JH 5 sightings
+    (@GUID + 22, 0, 17737, @WORLD, 0, -2463.0, -879.0, -1845.7, -1.4944, 0, 0, 30673, 8059, 219, 219), -- Hycrest Citizen, crowd of 3 round (-2461.6, -1845.8), JH 5 sightings
+    (@GUID + 23, 0, 17735, @WORLD, 0, -2548.2, -895.625, -1781.5, 0.6, 0, 0, 26281, 8064, 219, 219), -- Hycrest Citizen, crowd of 2 round (-2549.0, -1782.7), JH 3 sightings
+    (@GUID + 24, 0, 17738, @WORLD, 0, -2549.8, -895.05, -1783.8, -2.5416, 0, 0, 26356, 8060, 219, 219), -- Hycrest Citizen, crowd of 2 round (-2549.0, -1782.7), JH 3 sightings
+    (@GUID + 25, 0, 17733, @WORLD, 0, -2528.2, -877.81, -1874.2, 0.6, 0, 0, 26283, 8066, 219, 219), -- Hycrest Citizen, crowd of 2 round (-2529.0, -1875.3), JH 3 sightings
+    (@GUID + 26, 0, 17736, @WORLD, 0, -2529.8, -876.763, -1876.5, -2.5416, 0, 0, 26358, 8058, 219, 219), -- Hycrest Citizen, crowd of 2 round (-2529.0, -1875.3), JH 3 sightings
+    (@GUID + 27, 0, 17734, @WORLD, 0, -2477.5, -878.0, -1872.5, 0.6, 0, 0, 26110, 8065, 219, 219), -- Hycrest Citizen, crowd of 2 round (-2478.3, -1873.7), JH 3 sightings
+    (@GUID + 28, 0, 17737, @WORLD, 0, -2479.1, -878.09, -1874.8, -2.5416, 0, 0, 30678, 8059, 219, 219), -- Hycrest Citizen, crowd of 2 round (-2478.3, -1873.7), JH 3 sightings
+    (@GUID + 29, 0, 17735, @WORLD, 0, -2463.9, -879.0, -1851.8, 0.6, 0, 0, 25682, 8064, 219, 219), -- Hycrest Citizen, crowd of 2 round (-2464.7, -1853.0), JH 3 sightings
+    (@GUID + 30, 0, 17738, @WORLD, 0, -2465.5, -879.0, -1854.2, -2.5416, 0, 0, 26290, 8060, 219, 219), -- Hycrest Citizen, crowd of 2 round (-2464.7, -1853.0), JH 3 sightings
+    (@GUID + 31, 0, 17733, @WORLD, 0, -2574.5, -877.75, -1827.0, -1.4493, 0, 0, 26282, 8066, 219, 219), -- Hycrest Citizen, JH 2 sightings
+    (@GUID + 32, 0, 17736, @WORLD, 0, -2510.5, -878.25, -1879.0, -2.5598, 0, 0, 26292, 8058, 219, 219), -- Hycrest Citizen, JH 2 sightings
+    (@GUID + 33, 0, 17734, @WORLD, 0, -2463.0, -880.875, -1897.0, 2.8051, 0, 0, 27182, 8065, 219, 219), -- Hycrest Citizen, JH 2 sightings
+    (@GUID + 34, 0, 17737, @WORLD, 0, -2473.5, -879.0, -1864.5, 2.7762, 0, 0, 26102, 8059, 219, 219), -- Hycrest Citizen, JH 2 sightings
+    (@GUID + 35, 0, 17735, @WORLD, 0, -2499.0, -877.75, -1890.0, -2.8531, 0, 0, 26353, 8064, 219, 219), -- Hycrest Citizen, JH 1 sighting
+    (@GUID + 36, 0, 17738, @WORLD, 0, -2521.0, -879.0, -1874.0, -2.3357, 0, 0, 26355, 8060, 219, 219), -- Hycrest Citizen, JH 1 sighting
+    (@GUID + 37, 0, 17733, @WORLD, 0, -2453.0, -881.25, -1808.0, 0.7936, 0, 0, 26281, 8066, 219, 219), -- Hycrest Citizen, JH 1 sighting
+    (@GUID + 38, 0, 17736, @WORLD, 0, -2386.0, -880.25, -1883.0, 2.002, 0, 0, 26357, 8058, 219, 219), -- Hycrest Citizen, JH 1 sighting
+    (@GUID + 39, 0, 17734, @WORLD, 0, -2526.0, -880.25, -1859.0, -2.0288, 0, 0, 26110, 8065, 219, 219), -- Hycrest Citizen, JH 1 sighting
+    (@GUID + 40, 0, 17737, @WORLD, 0, -2478.0, -878.238, -1841.0, 2.0486, 0, 0, 30704, 8059, 219, 219), -- Hycrest Citizen, JH 1 sighting; on a prop/building floor (PRP_Platform_ImperiumMilitary_001, terrain -879.25): ungrounded
+    (@GUID + 41, 0, 17735, @WORLD, 0, -2270.0, -871.0, -1926.0, 1.9612, 0, 0, 26289, 8064, 219, 219), -- Hycrest Citizen, JH 1 sighting
+    (@GUID + 42, 0, 17738, @WORLD, 0, -2319.0, -869.875, -1951.0, 2.172, 0, 0, 26094, 8060, 219, 219), -- Hycrest Citizen, JH 1 sighting
+    (@GUID + 43, 0, 17733, @WORLD, 0, -2300.0, -871.0, -1956.0, 2.1416, 0, 0, 25682, 8066, 219, 219), -- Hycrest Citizen, JH 1 sighting
+    (@GUID + 44, 0, 17736, @WORLD, 0, -2415.5, -880.0, -1922.0, 2.4598, 0, 0, 26291, 8058, 219, 219), -- Hycrest Citizen, JH 2 sightings
+    (@GUID + 45, 0, 17734, @WORLD, 0, -2533.0, -886.0, -1805.0, -0.9805, 0, 0, 27182, 8065, 219, 219), -- Hycrest Citizen, JH 1 sighting
+    (@GUID + 46, 0, 17737, @WORLD, 0, -2480.0, -878.5, -1853.0, 2.9045, 0, 0, 26098, 8059, 219, 219), -- Hycrest Citizen, JH 1 sighting
+    (@GUID + 47, 0, 17735, @WORLD, 0, -2469.0, -880.25, -1881.0, 2.8136, 0, 0, 26284, 8064, 219, 219), -- Hycrest Citizen, JH 1 sighting
+    (@GUID + 48, 0, 17738, @WORLD, 0, -2451.0, -881.0, -1887.0, 2.5536, 0, 0, 26352, 8060, 219, 219), -- Hycrest Citizen, JH 1 sighting
+    (@GUID + 49, 0, 17733, @WORLD, 0, -2571.0, -876.5, -1838.0, -1.5697, 0, 0, 26353, 8066, 219, 219), -- Hycrest Citizen, JH 1 sighting
+    (@GUID + 50, 0, 17736, @WORLD, 0, -2450.0, -881.0, -1899.0, 2.6374, 0, 0, 26356, 8058, 219, 219), -- Hycrest Citizen, JH 1 sighting
+    (@GUID + 51, 0, 17734, @WORLD, 0, -2350.0, -871.0, -1928.0, 2.1631, 0, 0, 26110, 8065, 219, 219), -- Hycrest Citizen, JH 1 sighting
+    (@GUID + 52, 0, 17737, @WORLD, 0, -2270.0, -871.0, -1935.0, 1.9967, 0, 0, 30676, 8059, 219, 219), -- Hycrest Citizen, JH 1 sighting
+    (@GUID + 53, 0, 17735, @WORLD, 0, -2323.0, -871.0, -1928.0, 2.0811, 0, 0, 26283, 8064, 219, 219), -- Hycrest Citizen, JH 1 sighting; moved off a fence pillar onto the terrain
+    (@GUID + 54, 0, 17738, @WORLD, 0, -2382.0, -874.75, -1919.0, 2.2433, 0, 0, 26095, 8060, 219, 219), -- Hycrest Citizen, JH 1 sighting
+    (@GUID + 55, 0, 17733, @WORLD, 0, -2404.0, -880.0, -1911.0, 2.3123, 0, 0, 26289, 8066, 219, 219), -- Hycrest Citizen, JH 1 sighting
+    (@GUID + 56, 0, 17736, @WORLD, 0, -2416.0, -880.0, -1896.0, 2.2791, 0, 0, 26290, 8058, 219, 219), -- Hycrest Citizen, JH 1 sighting
+    (@GUID + 57, 0, 17734, @WORLD, 0, -2503.0, -881.0, -1852.0, -2.1925, 0, 0, 27182, 8065, 219, 219), -- Hycrest Citizen, JH 1 sighting
+    (@GUID + 58, 0, 17737, @WORLD, 0, -2491.0, -878.75, -1858.0, -2.7856, 0, 0, 26096, 8059, 219, 219), -- Hycrest Citizen, JH 1 sighting
+    (@GUID + 59, 0, 17735, @WORLD, 0, -2584.0, -877.75, -1829.0, -1.4804, 0, 0, 26282, 8064, 219, 219), -- Hycrest Citizen, JH 1 sighting
+    (@GUID + 60, 0, 17738, @WORLD, 0, -2565.0, -877.5, -1832.0, -1.496, 0, 0, 26302, 8060, 219, 219), -- Hycrest Citizen, JH 1 sighting
+    (@GUID + 61, 0, 17733, @WORLD, 0, -2539.0, -886.0, -1807.0, -1.0593, 0, 0, 26284, 8066, 219, 219), -- Hycrest Citizen, JH 1 sighting
+    (@GUID + 62, 0, 17736, @WORLD, 0, -2478.0, -879.0, -1860.0, 2.8912, 0, 0, 26355, 8058, 219, 219), -- Hycrest Citizen, JH 1 sighting
+    (@GUID + 63, 0, 17734, @WORLD, 0, -2410.0, -880.0, -1915.0, 2.3781, 0, 0, 26110, 8065, 219, 219), -- Hycrest Citizen, JH 1 sighting
+    (@GUID + 64, 0, 17737, @WORLD, 0, -2468.0, -879.0, -1861.0, 2.5436, 0, 0, 30673, 8059, 219, 219); -- Hycrest Citizen, JH 1 sighting
+
+INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
+    (@GUID + 1, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 2, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 3, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 4, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 5, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 6, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 7, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 8, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 9, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 10, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 11, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 12, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 13, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 14, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 15, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 16, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 17, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 18, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 19, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 20, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 21, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 22, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 23, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 24, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 25, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 26, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 27, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 28, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 29, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 30, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 31, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 32, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 33, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 34, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 35, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 36, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 37, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 38, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 39, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 40, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 41, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 42, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 43, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 44, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 45, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 46, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 47, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 48, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 49, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 50, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 51, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 52, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 53, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 54, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 55, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 56, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 57, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 58, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 59, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 60, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 61, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 62, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 63, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 64, @EVENT_MAIN, @PHASE_CITY);
+
+INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
+    (@GUID + 1, 10, 15),
+    (@GUID + 2, 10, 15),
+    (@GUID + 3, 10, 15),
+    (@GUID + 4, 10, 15),
+    (@GUID + 5, 10, 15),
+    (@GUID + 6, 10, 15),
+    (@GUID + 7, 10, 15),
+    (@GUID + 8, 10, 15),
+    (@GUID + 9, 10, 15),
+    (@GUID + 10, 10, 15),
+    (@GUID + 11, 10, 15),
+    (@GUID + 12, 10, 15),
+    (@GUID + 13, 10, 15),
+    (@GUID + 14, 10, 15),
+    (@GUID + 15, 10, 15),
+    (@GUID + 16, 10, 15),
+    (@GUID + 17, 10, 15),
+    (@GUID + 18, 10, 15),
+    (@GUID + 19, 10, 15),
+    (@GUID + 20, 10, 15),
+    (@GUID + 21, 10, 15),
+    (@GUID + 22, 10, 15),
+    (@GUID + 23, 10, 15),
+    (@GUID + 24, 10, 15),
+    (@GUID + 25, 10, 15),
+    (@GUID + 26, 10, 15),
+    (@GUID + 27, 10, 15),
+    (@GUID + 28, 10, 15),
+    (@GUID + 29, 10, 15),
+    (@GUID + 30, 10, 15),
+    (@GUID + 31, 10, 15),
+    (@GUID + 32, 10, 15),
+    (@GUID + 33, 10, 15),
+    (@GUID + 34, 10, 15),
+    (@GUID + 35, 10, 15),
+    (@GUID + 36, 10, 15),
+    (@GUID + 37, 10, 15),
+    (@GUID + 38, 10, 15),
+    (@GUID + 39, 10, 15),
+    (@GUID + 40, 10, 15),
+    (@GUID + 41, 10, 15),
+    (@GUID + 42, 10, 15),
+    (@GUID + 43, 10, 15),
+    (@GUID + 44, 10, 15),
+    (@GUID + 45, 10, 15),
+    (@GUID + 46, 10, 15),
+    (@GUID + 47, 10, 15),
+    (@GUID + 48, 10, 15),
+    (@GUID + 49, 10, 15),
+    (@GUID + 50, 10, 15),
+    (@GUID + 51, 10, 15),
+    (@GUID + 52, 10, 15),
+    (@GUID + 53, 10, 15),
+    (@GUID + 54, 10, 15),
+    (@GUID + 55, 10, 15),
+    (@GUID + 56, 10, 15),
+    (@GUID + 57, 10, 15),
+    (@GUID + 58, 10, 15),
+    (@GUID + 59, 10, 15),
+    (@GUID + 60, 10, 15),
+    (@GUID + 61, 10, 15),
+    (@GUID + 62, 10, 15),
+    (@GUID + 63, 10, 15),
+    (@GUID + 64, 10, 15);
+
+-- --------------------------------------
+-- Dominion Commando 17804 (f759, "Hide in Crowds") at the one Commando cluster that is not at a
+-- Coup de Grace fight (Detention Center, Town Square, Feraakh's spot): between the military headquarters and City Hall.
+-- Jabbithole links the Commando only to 434, but the Priority Target video (E 54:04) shows a fight with Shatterforce
+-- Troopers and Dominion Commandos at the headquarters. Teun's Keymaster video check (9 Oct 2026): two Commandos in the city.
+-- --------------------------------------
+SET @GUID = (SELECT IFNULL(MAX(`id`), 0) FROM `entity`);
+INSERT INTO `entity` (`Id`, `Type`, `Creature`, `World`, `Area`, `X`, `Y`, `Z`, `RX`, `RY`, `RZ`, `DisplayInfo`, `OutfitInfo`, `Faction1`, `Faction2`) VALUES
+    (@GUID + 1, 0, 17804, @WORLD, 0, -2424.4, -880.0, -1936.5, 2.6, 0, 0, 31078, 8760, 759, 759), -- JH 8 sightings
+    (@GUID + 2, 0, 17804, @WORLD, 0, -2439.5, -879.0, -1937.5, 2.724, 0, 0, 31079, 8760, 759, 759); -- JH 2 sightings
+INSERT INTO `entity_event` (`id`, `eventId`, `phase`) VALUES
+    (@GUID + 1, @EVENT_MAIN, @PHASE_CITY),
+    (@GUID + 2, @EVENT_MAIN, @PHASE_CITY);
+INSERT INTO `entity_stats` (`Id`, `Stat`, `Value`) VALUES
+    (@GUID + 1, 10, 15),
+    (@GUID + 2, 10, 15);
